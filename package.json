@@ -1,0 +1,20 @@
+{
+  "name": "sos-2016-02",
+  "version": "0.0.1",
+  "description": "Initialize site",
+  "main": "index.js",
+  "scripts": {
+    "start":"node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sos-2016-02/sos-2016-02.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sos-2016-02/sos-2016-02/issues"
+  },
+  "homepage": "https://github.com/sos-2016-02/sos-2016-02#readme"
+}
