@@ -9,6 +9,17 @@ app.get('/',function(req, res) {
 	res.send(cool());
 });
 
-app.get('/about/population',function(req, res) {
-	  res.send("TODO introduice this part of the data");
+var populationIntroduction = `
+<p>
+  Data: Population
+</p>
+<p>
+  Collums:  year, province, age, birthplace, number
+</p>
+<p>
+  Description: The number of people from EU and South America, separated in two age ranges (15-19, 20-24), by province, on the years 2014 and 2015
+</p>
+`;
+app.get('/about/population', function(req, res) {
+	  res.send(populationIntroduction);
 });
