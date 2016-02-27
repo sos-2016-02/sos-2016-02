@@ -11,16 +11,3 @@ app.get('/',function(req, res){
 });
 
 app.listen("3000");
-
-
-
-/*function calcimc(){
-	var masa = 50.0;
-	
-	var altura  = 1.58;
-	var altura = altura*altura;
-	return   masa / altura ;
-}
-
-console.log(calcimc());
-*/
