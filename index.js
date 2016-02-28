@@ -22,7 +22,7 @@ app.get("/about/workers", function(req, res) {
 app.get("/about/olders", function(req, res) {
 	  res.send(v_info_olders);
 });
-
+/*
 var v_info_population = "
 <p>
   Data: Population
@@ -58,3 +58,4 @@ var v_info_olders = "
   Description: Population 18 years old.
 </p>
 ";
+*/
