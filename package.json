@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/sos-2016-02/sos-2016-02#readme",
   "dependencies": {
-    "cool-ascii-faces": "^1.3.3",
     "express": "^4.13.4"
   }
 }

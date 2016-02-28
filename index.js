@@ -1,12 +1,13 @@
-var cool = require("cool-ascii-faces");
-/*console.log(cool());*/
-
 var express =require("express");
 var app = express(); 
-app.listen("3000");
+app.listen(process.ev.PORT);
 
 app.get('/',function(req, res) {
-	res.send(cool());
+	res.write("<html>");
+	res.write("<head><title>Mi primera apliación Heroku</title></head>");
+	res.write("<body><h2>Hola mundo SOS-2016-02</h2></body>");
+	res.write("</html>");
+	res.end();
 });
 
 var populationIntroduction = `
