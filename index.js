@@ -1,8 +1,9 @@
 var express =require("express");
 var app = express(); 
-app.listen(process.ev.PORT);
 
-app.get('/',function(req, res) {
+app.listen(process.env.PORT);
+
+app.get("/",(req,res) => {
 	res.write("<html>");
 	res.write("<head><title>Mi primera apliación Heroku</title></head>");
 	res.write("<body><h2>Hola mundo SOS-2016-02</h2></body>");
@@ -10,6 +11,8 @@ app.get('/',function(req, res) {
 	res.end();
 });
 
+
+/*
 var populationIntroduction = `
 <p>
   Data: Population
@@ -24,3 +27,4 @@ var populationIntroduction = `
 app.get('/about/population', function(req, res) {
 	  res.send(populationIntroduction);
 });
+*/
