@@ -30,7 +30,7 @@ app.get("/about/olders", function(req, res) {
 
 var v_about           = "";
 // change my name was spelled wrong 
-    v_about           += "<p>Cristina Leal Echevarria: <a href='/about/workers'>workers</a></p>";
+    v_about           += "<p><font size="3" color="red">Cristina Leal Echevarria: <a href='/about/workers'>workers</a></font></p>";
     v_about           += "<p>Victor Grousset Aburto Duran: <a href='/about/population'>population</a></p>";
     v_about           += "<p>Miguel Angel Cifredo Campos: <a href='/about/olders'>olders</a></p>";
 //change some  words was spelled wrong
