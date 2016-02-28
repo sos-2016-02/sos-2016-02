@@ -11,6 +11,10 @@ app.get("/", (req,res) => {
 	res.end();
 });
 
+app.get("/about", function(req, res) {
+	  res.send(v_about);
+});
+
 app.get("/about/population", function(req, res) {
 	  res.send(v_info_population);
 });
@@ -22,6 +26,11 @@ app.get("/about/workers", function(req, res) {
 app.get("/about/olders", function(req, res) {
 	  res.send(v_info_olders);
 });
+
+var v_about           = "";
+    v_about           += "<p>Critina Leal Echevarria: <a href='/about/workers'>workers</a></p>";
+    v_about           += "<p>Victor Grousset Aburto Duran: <a href='/about/population'>population</a></p>";
+    v_about           += "<p>Miguel Angel Cifredo Campos: <a href='/about/olders'>olders</a></p>";
 
 var v_info_population = "<p>Data: Population</p><p>Collums: year, province, age, birthplace, number</p><p>Description: The number of people from EU and South America, separated in two age ranges (15-19, 20-24), by province, on the years 2014 and 2015.</p>";
 var v_info_workers    = "<p>Data: Workers</p>   <p>Collums: province, year, industry, value</p>        <p>Description: Labor market activity, employment and unemployment survey working population.</p>";
