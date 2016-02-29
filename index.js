@@ -1,3 +1,4 @@
+
 var express =require("express");
 var app = express(); 
 
@@ -6,7 +7,7 @@ app.listen(process.env.PORT);
 app.get("/", (req,res) => {
 	res.write("<html>");
 	res.write("<head><title>My first application on Heroku</title></head>");
-	res.write("<body><h2>Hello word from sos-2016-02 </h2></body>");
+	res.write("<body><h2>Hello world from sos-2016-02 </h2></body>");
 	res.write("</html>");
 	res.end();
 });
@@ -31,7 +32,7 @@ app.get("/about/olders", function(req, res) {
 var v_about           = "";
 // change my name was spelled wrong 
 	
-    v_about           += "<p> Cristina Leal Echevarria:  <a href='/about/workers'>workers</a></p>";
+    v_about           += "<p><body><h3> <font face="Franklin Gothic Medium">Cristina Leal Echevarria:</font></h3></body>  <a href='/about/workers'>workers</a></p>";
     v_about           += "<p>Victor Grousset Aburto Duran: <a href='/about/population'>population</a></p>";
     v_about           += "<p>Miguel Angel Cifredo Campos: <a href='/about/olders'>olders</a></p>";
 //change some  words was spelled wrong
