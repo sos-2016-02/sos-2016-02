@@ -3,7 +3,9 @@ var express =require("express");
 var app = express(); 
 
 // establecido el puerto de heroku de este otro modo 5000 es una alternativa 
-app.set('port',(process.env.PORT || 5000);
+// app.set('port',(process.env.PORT || 5000));
+
+app.listen(process.env.PORT);
 
 app.get("/", (req,res) => {
 	res.write("<html>");
@@ -21,8 +23,7 @@ app.get("/about/population", function(req, res) {
 	  res.send(v_info_population);
 });
 
-// change function for the oder version =>
-app.get("/about/workers", (req, res)=> {
+app.get("/about/workers", function(req, res) {
 	  res.send(v_info_workers);
 });
 
