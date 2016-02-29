@@ -1,7 +1,7 @@
 var express =require("express");
 var app = express(); 
 
-// establecido el puerto de heroku de este otro modo 5000 es una alternativa 
+// Establecido el puerto de heroku de este otro modo 5000 es una alternativa 
 // app.set('port',(process.env.PORT || 5000));
 
 app.listen(process.env.PORT);
