@@ -1,8 +1,8 @@
 
 var express =require("express");
 var app = express(); 
-
-app.listen(process.env.PORT);
+// establecido el puerto de heroku de este otro modo 5000 es una alternativa 
+app.set('port',(process.env.PORT || 5000);
 
 app.get("/", (req,res) => {
 	res.write("<html>");
