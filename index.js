@@ -3,7 +3,7 @@ var express =require("express");
 var app = express(); 
 
 // establecido el puerto de heroku de este otro modo 5000 es una alternativa 
-app.listen(process.env.PORT);
+app.set('port',(process.env.PORT || 5000);
 
 app.get("/", (req,res) => {
 	res.write("<html>");
@@ -38,9 +38,9 @@ var v_about           = "";
     v_about           += "<p>Miguel Angel Cifredo Campos: <a href='/about/olders'>olders</a></p>";
 //change some  words was spelled wrong
 var v_info_population = "<p>Data: Population</p><p>Columns: year, province, age, birthplace, number</p><p>Description: The number of people from EU and South America, separated in two age ranges (15-19, 20-24), by province, on the years 2014 and 2015.</p>";
-var v_info_workers    = "<p>Data: Workers </p>   <p>Columns: province , year, industry, value </p> <p>Description: Labor market activity, employment and unemployment survey working population.</p>";
-/*var fs =require("fs");
-var data-workers = [];
+var v_info_workers    = "<p>Data: Workers </p><p>Columns: province , year, industry, value </p> <p>Description: Labor market activity, employment and unemployment survey working population.</p>";
+var fs =require("fs");
+var dataWorkers = [];
 var content = fs.readFileSync('data-Workers.json','utf-8');
-data-workers = JSON.parse(content);*/
+dataWorkers = JSON.parse(content);
 var v_info_olders     = "<p>Data: Olders</p>    <p>Columns: year, province, men, women</p>            <p>Description: Population 18 years old.</p>";
