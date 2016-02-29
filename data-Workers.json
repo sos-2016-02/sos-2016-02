@@ -1,5 +1,5 @@
-[	{"province": "Seville", "year":"2015","industry": "Building", "value": "43.8" },
+[	
+	{"province": "Seville", "year":"2015","industry": "Building", "value": "43.8" },
 	{"province": "Asturias", "year":"2014","industry": "Agriculture", "value": "18.3" }
 	
-
 ]
