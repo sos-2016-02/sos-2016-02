@@ -39,7 +39,7 @@ app.get("/about/olders", function(req, res) {
 <<<<<<< HEAD
 var v_about           = "";
 // change my name was spelled wrong 
-	v_about           += "<font face = "Cooper Black" color="blue" size ='6'> CRISTINA LEAL ECHEVARRÍA :</font>"
+	v_about           += "<font face = "Cooper Black" color="blue" size ='6'>CRISTINA LEAL ECHEVARRÍA :</font>";
     v_about           += "<p>CRISTINA LEAL ECHEVARRÍA : <a href='/about/workers'>workers</a></p>";
     v_about           += "<p>Victor Grousset Aburto Duran: <a href='/about/population'>population</a></p>";
     v_about           += "<p>Miguel Angel Cifredo Campos: <a href='/about/olders'>olders</a></p>";
