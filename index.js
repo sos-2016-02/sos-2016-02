@@ -14,7 +14,7 @@ var app = express();
 // app.set('port',(process.env.PORT || 5000));
 
 >>>>>>> fdbee8f936e096f3cc3bf22776deed188613942b
-app.listen(process.env.PORT);
+app.listen(5000);
 
 app.get("/", (req,res) => {
 	res.send(v_html_code);
@@ -36,18 +36,18 @@ app.get("/about/olders", function(req, res) {
 	res.send(v_info_olders);
 });
 
-<<<<<<< HEAD
+//<<<<<<< HEAD
 var v_about           = "";
 // change my name was spelled wrong 
 	
-    v_about           += "<p>CRISTINA LEAL ECHEVARRÍA : <a href='/about/workers'>workers</a></p>";
+    v_about           += "<font face = "Cooper Black" color="blue" size ='6'> CRISTINA LEAL ECHEVARRÍA :</font>" "<p>CRISTINA LEAL ECHEVARRÍA : <a href='/about/workers'>workers</a></p>";
     v_about           += "<p>Victor Grousset Aburto Duran: <a href='/about/population'>population</a></p>";
     v_about           += "<p>Miguel Angel Cifredo Campos: <a href='/about/olders'>olders</a></p>";
 //change some  words was spelled wrong
 var v_info_population = "<p>Data: Population</p><p>Columns: year, province, age, birthplace, number</p><p>Description: The number of people from EU and South America, separated in two age ranges (15-19, 20-24), by province, on the years 2014 and 2015.</p>";
 var v_info_workers    = "<p>Data: Workers </p><p>Columns: province , year, industry, value </p> <p>Description: Labor market activity, employment and unemployment survey working population.</p>";
-var v_info_olders     = "<p>Data: Olders</p>    <p>Columns: year, province, men, women</p>            <p>Description: Population 18 years old.</p>";
-=======
+var v_info_olders     = "<p>Data: Olders</p><p>Columns: year, province, men, women</p> <p>Description: Population 18 years old.</p>";
+//=======
 var v_html_code        = "";
 	v_html_code       += "<html>";
 	v_html_code       += "<head><title>My first application on Heroku</title></head>";
