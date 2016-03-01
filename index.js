@@ -35,7 +35,7 @@ var v_html_code        = "";
 	v_html_code       += "</body>";
 	v_html_code       += "</html>";	
 
-var v_about            = "";
+var v_about            = "<p>Our sources of information are designed to analyze, at the provincial level in Spain, the relationship between the volume of people who meet the age of majority, the employment sector and part of the population born in EU and South America.</p>";
     v_about           += "<p>Cristina Leal Echevarria:     <a href='/about/workers'>workers</a>      </p>";
     v_about           += "<p>Victor Grousset Aburto Duran: <a href='/about/population'>population</a></p>";
     v_about           += "<p>Miguel Angel Cifredo Campos:  <a href='/about/olders'>olders</a>        </p>";
