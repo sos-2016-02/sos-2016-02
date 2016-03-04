@@ -8,47 +8,46 @@ app.listen(port, () => {
 	console.log("Web server is running and listening on port: " + port);
 });
 
-
 app.get("/", (req, res) => {
-	res.send(v_redirect);
+	res.send(redirect("index.html"));
 });
 
 
+app.get("/time", (req, res) => {
+	res.send(getFecha());
+});
+
 app.get("/about", function(req, res) {
-	res.send(v_about);
+	res.send(redirect("about.html"));
 });
 
 
 app.get("/about/population", function(req, res) {
-	res.send(v_info_population);
+	res.send(redirect("population.html"));
 });
 
 
 app.get("/about/workers", function(req, res) {
-	res.send(v_info_workers);
+	res.send(redirect("workers.html"));
 });
 
 
 app.get("/about/olders", function(req, res) {
-	res.send(v_info_olders);
+	res.send(redirect("olders.html"));
 });
 
-var v_redirect         = "<script>window.location.href='/index.html';</script>";
+function redirect(pageName){
+	return "<script>window.location.href='/" + pageName + "';</script>";
+};
 
-var v_html_code        = "";
-	v_html_code       += "<html>";
-	v_html_code       += "<head><title>My first application on Heroku</title></head>";
-	v_html_code       += "<body>";
-	v_html_code       += "<h2>Hello world from sos-2016-02 </h2>";
-	v_html_code       += "<p><a href='/about'>about</a></p>";
-	v_html_code       += "</body>";
-	v_html_code       += "</html>";	
-
-var v_about            = "<p>Our sources of information are designed to analyze, at the provincial level in Spain, the relationship between the volume of people who meet the age of majority, the employment sector and part of the population born in EU and South America.</p>";
-    v_about           += "<p>CRISTINA LEAL ECHEVARRÍA:     <a href='/about/workers'>workers</a>      </p>";
-    v_about           += "<p>Victor Grousset Aburto Duran: <a href='/about/population'>population</a></p>";
-    v_about           += "<p>Miguel Angel Cifredo Campos:  <a href='/about/olders'>olders</a>        </p>";
-
-var v_info_population  = "<p>Data: Population</p><p>Columns: year, province, age, birthplace, number</p><p>Description: The number of people from EU and South America, separated in two age ranges (15-19, 20-24), by province, on the years 2014 and 2015.</p>";
-var v_info_workers     = "<p>Data: Workers </p>  <p>Columns: province , year, industry, value       </p><p>Description: Labor market activity, employment and unemployment survey working population.</p>";
-var v_info_olders      = "<p>Data: Olders</p>    <p>Columns: year, province, men, women             </p><p>Description: Population 18 years old.</p>";
+function getFecha(){
+	var meses = new Array ("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+	var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
+	var f = new Date();
+	var m = f.getMinutes();
+	var s = f.getSeconds();
+	var minutos  = (m < 10) ? '0' + m : m;
+	var segundos = (s < 10) ? '0' + s : s;
+	var ret = diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear() + " [" + f.getHours() + ":" + minutos + ":" + segundos + "]";
+	return ret;
+};
