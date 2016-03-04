@@ -10,7 +10,7 @@ app.listen(port, () => {
 
 
 app.get("/", (req, res) => {
-	res.send(v_html_code);
+	res.send(v_redirect);
 });
 
 
@@ -33,7 +33,9 @@ app.get("/about/olders", function(req, res) {
 	res.send(v_info_olders);
 });
 
-var v_html_code      = "";
+var v_redirect         = "<script>window.location.href='/index.html';</script>";
+
+var v_html_code        = "";
 	v_html_code       += "<html>";
 	v_html_code       += "<head><title>My first application on Heroku</title></head>";
 	v_html_code       += "<body>";
