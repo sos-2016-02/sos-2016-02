@@ -1,9 +1,12 @@
 var express =require("express");
 var app = express();
+var port = (process.env.PORT || 3000);
 
+app.use("/", express.static(__dirname + "/static"));
 
-// get port from ENV in Heroku, use 3000 in local
-app.listen(process.env.PORT || 3000);
+app.listen(port, () => {
+	console.log("Web server is running and listening on port: " + port);
+});
 
 
 app.get("/", (req, res) => {
