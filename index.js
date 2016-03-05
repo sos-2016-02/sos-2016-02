@@ -14,8 +14,7 @@ app.get("/", (req, res) => {
 
 //modify getFecha
 app.get("/time", (req, res) => {
-	
-	res.send(redirect(getFecha());
+	res.send(getFecha());
 		
 });
 
