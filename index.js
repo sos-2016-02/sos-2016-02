@@ -14,7 +14,8 @@ app.get("/", (req, res) => {
 
 //modify getFecha
 app.get("/time", (req, res) => {
-	res.send(getFecha)
+	
+	res.send(redirect(getFecha());
 		
 });
 
@@ -81,7 +82,7 @@ mesok[8]="Septiembre";
 mesok[9]="Octubre";
 mesok[10]="Noviembre";
 mesok[11]="Diciembre";
-document.write("Hoy es: " + dia[d.getDay()]+ "Este mes es: " + mesok[mm.getMonth()]);
-
+var ret = ("Hoy es: " + dia[d.getDay()]+ "Este mes es: " + mesok[mm.getMonth()]);
+return ret;
 };
 
