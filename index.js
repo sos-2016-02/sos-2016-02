@@ -9,7 +9,7 @@ app.listen(port, () => {
 });
 
 app.get("/", (req, res) => {
-	res.send("<h1>Hello Word</h1><a href='/about'>about</a>");
+	res.send("<h1>Hello Word from group 02</h1><a href='/about'>about</a>");
 });
 
 app.get("/time", (req, res) => {
