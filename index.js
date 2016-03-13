@@ -102,12 +102,21 @@ app.delete("/api/sandbox/books/:id", (req,res) => {
 
 // linux-distributions API **************************************************
 app.get("/api-test/linux-distributions/loadInitialData", (req,res)=> {
-    linuxDistributions = ["Debian", "Arch Linux", "Antergos"];
+    linuxDistributions = [{ name: "Debian" },
+                          { name: "Arch Linux" },
+                          { name: "Antergos" }
+                         ];
     res.sendStatus(200);
 });
 
 app.get("/api/sandbox/linux-distributions/", (req,res)=> {
     res.send(linuxDistributions);
+});
+
+app.post("/api/sandbox/linux-distributions/", (req,res)=> {
+    distro = req.body;
+    linuxDistributions.push(distro);
+    res.sendStatus(200);
 });
 // **************************************************
 
