@@ -25,12 +25,6 @@ app.get("/time", (req, res) => {
 
 
 // books API **************************************************
-// http code status:
-//     200 - Ok
-//     404 - Not found
-//     405 - Method Not Allowed
-//     
-
 var books = loadInitialData();
 var linuxDistributions = [];
 
