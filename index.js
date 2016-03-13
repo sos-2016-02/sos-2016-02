@@ -35,9 +35,9 @@ var books = LoadInitialData();
 
 function LoadInitialData() {
 	arr = [];
-	arr.push( { isbn : "123", name : "Administración de Oracle" } );
-	arr.push( { isbn : "234", name : "Programación Java" } );
-	arr.push( { isbn : "345", name : "Ingeniería del software" } );
+	arr.push( { id : "123", title : "Administración de Oracle" } );
+	arr.push( { id : "234", title : "Programación Java" } );
+	arr.push( { id : "345", title : "Ingeniería del software" } );
 	return arr;
 }
 
@@ -67,19 +67,19 @@ app.delete("/api/sandbox/books", (req,res)=> {
 	res.sendStatus(200);
 });
 // --------------------------------------------------
-app.get("/api/sandbox/books/:isbn", (req,res) => {
-	var isbn = req.params.isbn;
-	var item = findByAttr(books,'isbn',isbn);
+app.get("/api/sandbox/books/:id", (req,res) => {
+	var idValue = req.params.id;
+	var item = findByAttr(books,'id',idValue);
 	if (item == null) {
 		res.sendStatus(404);
 	} else {
 		res.send(item);
 	}
 });
-app.put("/api/sandbox/books/:isbn", (req,res) => {
-	var isbn = req.params.isbn;
+app.put("/api/sandbox/books/:id", (req,res) => {
+	var idValue = req.params.id;
 	var statusCode;
-	if (removeByAttr(books,'isbn',isbn) == 0){
+	if (removeByAttr(books,'id',idValue) == 0){
 		statusCode = 404;
 	} else {
 		var book = req.body;
@@ -88,10 +88,10 @@ app.put("/api/sandbox/books/:isbn", (req,res) => {
 	}
 	res.sendStatus(statusCode);
 });
-app.delete("/api/sandbox/books/:isbn", (req,res) => {
-	var isbn = req.params.isbn;
+app.delete("/api/sandbox/books/:id", (req,res) => {
+	var idValue = req.params.id;
 	var statusCode;
-	if (removeByAttr(books,'isbn',isbn) == 0){
+	if (removeByAttr(books,'id',idValue) == 0){
 		statusCode = 404;
 	} else {
 		statusCode = 200;
