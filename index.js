@@ -31,9 +31,9 @@ app.get("/time", (req, res) => {
 //     405 - Method Not Allowed
 //     
 
-var books = LoadInitialData();
+var books = loadInitialData();
 
-function LoadInitialData() {
+function loadInitialData() {
 	arr = [];
 	arr.push( { id : "123", title : "Administración de Oracle" } );
 	arr.push( { id : "234", title : "Programación Java" } );
@@ -42,8 +42,8 @@ function LoadInitialData() {
 }
 
 // --------------------------------------------------
-app.get("/api-test/books/LoadInitialData", (req,res)=> {
-	books = LoadInitialData();
+app.get("/api-test/books/loadInitialData", (req,res)=> {
+	books = loadInitialData();
 	res.sendStatus(200);
 });
 // --------------------------------------------------
