@@ -24,7 +24,7 @@ app.get("/time", (req, res) => {
 
 
 
-// **************************************************
+// books API **************************************************
 // http code status:
 //     200 - Ok
 //     404 - Not found
@@ -32,6 +32,7 @@ app.get("/time", (req, res) => {
 //     
 
 var books = loadInitialData();
+var linuxDistributions = [];
 
 function loadInitialData() {
 	arr = [];
@@ -97,6 +98,16 @@ app.delete("/api/sandbox/books/:id", (req,res) => {
 		statusCode = 200;
 	}
 	res.sendStatus(statusCode);
+});
+
+// linux-distributions API **************************************************
+app.get("/api-test/linux-distributions/loadInitialData", (req,res)=> {
+    linuxDistributions = ["Debian", "Arch Linux", "Antergos"];
+    res.sendStatus(200);
+});
+
+app.get("/api/sandbox/linux-distributions/", (req,res)=> {
+    res.send(linuxDistributions);
 });
 // **************************************************
 
