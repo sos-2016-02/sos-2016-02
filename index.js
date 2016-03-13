@@ -113,7 +113,7 @@ var removeByAttr = function(arr, attr, value) {
 		}
 	}
 	return cont;
-}
+};
 
 var findByAttr = function(arr, attr, value) {
 	var ret = null;
@@ -121,7 +121,7 @@ var findByAttr = function(arr, attr, value) {
 		if (arr[i][attr] == value)
 			ret = arr[i];
 	return ret;
-}
+};
 
 function getFecha(){
 	var meses      = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
