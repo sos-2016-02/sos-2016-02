@@ -25,9 +25,9 @@ app.get("/time", (req, res) => {
 
 
 // **************************************************
-var books = loadInitialData();
+var books = loadInitialDataBooks();
 
-function loadInitialData() {
+function loadInitialDataBooks() {
 	arr = [];
 	arr.push( { id : "123", title : "Administración de Oracle" } );
 	arr.push( { id : "234", title : "Programación Java" } );
@@ -37,7 +37,7 @@ function loadInitialData() {
 
 // --------------------------------------------------
 app.get("/api-test/books/loadInitialData", (req,res)=> {
-	books = loadInitialData();
+	books = loadInitialDataBooks();
 	res.sendStatus(200);
 });
 // --------------------------------------------------
