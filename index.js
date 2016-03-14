@@ -113,6 +113,112 @@ var findByAttr = function(arr, attr, value) {
 	return ret;
 };
 
+//-----------------------------------------------
+
+//Cargo los valores iniciales 
+var films = loadInitialData();
+
+function loadInitialData(){
+	array = [];
+	array.push( { name : "True Grit", year : "2011" , genre : "Western", runningTime : "106", director: "Joel & Eazan Coen"} );
+	array.push( { name : "13 days", year : "2000" , genre : "Political-Drama", runningTime : "148", director: "Roger Donalson"} );
+	array.push( { name : "Jaws", year : "1975" , genre : "Action/Adventure", runningTime : "2h 4min", director: "Steven Spielberg"} );
+	return array;
+}
+
+
+
+//------------------------------------------------
+
+app.get("/api-test/films/loadInitialData", (req,res)=> {
+	films = loadInitialData();
+	res.sendStatus(200);
+});
+//-------------------------------------------------
+
+
+app.get("/api/sandbox/films", (req,res)=> {
+	var film = req.params.name;
+	console.log("New GET to my resource fimls" +name);
+	res.sendStatus(200);
+});
+app.post("/api/sandbox/films", (req,res)=> {
+	var film = req.body;
+	films.push(film);
+	console.log("New Post to my resource films" +film.name);
+	res.sendStatus(200);
+});
+
+app.put("/api/sandbox/films", (req,res)=> {
+	res.sendStatus(404);
+});
+app.delete("/api/sandbox/films", (req,res)=> {
+	films = {};
+	res.sendStatus(200);
+});
+
+//---------------------------------------------------
+
+app.get("/api/sandbox/films/:name", (req,res) => {
+	var idValue = req.params.name;
+	var item = findByAttr(films,'name',idValue);
+	if (item == null) {
+		res.sendStatus(404);
+	} else {
+		res.send(item);
+	}
+});
+app.put("/api/sandbox/films/:name", (req,res) => {
+	var idValue = req.params.name;
+	var statusCode;
+	if (removeByAttr(films,'name',idValue) == 0){
+		statusCode = 404;
+	} else {
+		var film = req.body;
+		films.push(film);
+		statusCode = 200;
+	}
+	res.sendStatus(statusCode);
+});
+app.delete("/api/sandbox/films/:name", (req,res) => {
+	var idValue = req.params.name;
+	var statusCode;
+	if (removeByAttr(films,'name',idValue) == 0){
+		statusCode = 404;
+	} else {
+		statusCode = 200;
+	}
+	res.sendStatus(statusCode);
+});
+
+//-----------------------------------------------------------
+
+
+var removeByAttr = function(arr, attr, value) {
+	var i = arr.length;
+	var cont = 0;
+	while (i--) {
+		if  (  arr[i]
+			&& arr[i].hasOwnProperty(attr)
+			&& (arguments.length > 2 && arr[i][attr] === value)
+			) {
+			arr.splice(i,1);
+		cont++;
+		}
+	}
+	return cont;
+};
+
+var findByAttr = function(arr, attr, value) {
+	var ret = null;
+	for (var i=0; i<arr.length; i++)
+		if (arr[i][attr] == value)
+			ret = arr[i];
+	return ret;
+};
+
+
+
 function getFecha(){
 	var meses      = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 	var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
