@@ -95,7 +95,7 @@ app.delete("/api/sandbox/books/:id", (req,res) => {
 });
 
 // linux-distributions API **************************************************
-app.get("/api-test/linux-distributions/loadInitialData", (req,res)=> {
+app.get("/api-test/linux-distributions/loadInitialData", (req, res) => {
     linuxDistributions = [{ name: "Debian" },
                           { name: "Arch Linux" },
                           { name: "Antergos" }
@@ -103,15 +103,40 @@ app.get("/api-test/linux-distributions/loadInitialData", (req,res)=> {
     res.sendStatus(200);
 });
 
-app.get("/api/sandbox/linux-distributions/", (req,res)=> {
+
+app.get("/api/sandbox/linux-distributions/", (req, res) => {
     res.send(linuxDistributions);
 });
 
-app.post("/api/sandbox/linux-distributions/", (req,res)=> {
+
+app.post("/api/sandbox/linux-distributions/", (req, res) => {
     distro = req.body;
     linuxDistributions.push(distro);
     res.sendStatus(200);
 });
+
+
+app.get("/api/sandbox/linux-distributions/:name", (req, res) => {
+	  var name = req.params.name;
+	  var distro = findByAttr(linuxDistributions, 'name', name);
+	  if (distro == undefined) {
+		    res.sendStatus(404);
+	  } else {
+		    res.send(distro);
+	  }
+});
+
+
+app.delete("/api/sandbox/linux-distributions/:name", (req, res) => {
+	  var name = req.params.name;
+	  if (removeByProperty(linuxDistributions, "name", name)) {
+		    res.sendStatus(200);
+	  } else {
+		    res.sendStatus(404);
+	  }
+});
+
+
 // **************************************************
 
 var removeByAttr = function(arr, attr, value) {
@@ -129,6 +154,22 @@ var removeByAttr = function(arr, attr, value) {
 	return cont;
 };
 
+
+function removeByProperty(objectsArray, property, value) {
+    var oldArrayLength = objectsArray.length;
+    var newArray = objectsArray.filter((obj) => {
+        return obj[property] != value;  // keep all except those with the value
+    });
+    if (newArray.length == objectsArray.length) {
+        return false; // not found
+    }
+    // replace the old array by the new array
+	  objectsArray.length = 0;
+    Array.prototype.push.apply(objectsArray, newArray);
+    return true;
+};
+
+
 var findByAttr = function(arr, attr, value) {
 	var ret = null;
 	for (var i=0; i<arr.length; i++)
@@ -136,6 +177,14 @@ var findByAttr = function(arr, attr, value) {
 			ret = arr[i];
 	return ret;
 };
+
+
+function findByProperty(objectsArray, property, value) {
+    return objectsArray.find((obj) => {
+        return obj[property] == value;
+    });
+};
+
 
 function getFecha(){
 	var meses      = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
