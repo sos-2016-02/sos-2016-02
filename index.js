@@ -25,10 +25,9 @@ app.get("/time", (req, res) => {
 
 
 // books API **************************************************
-var books = loadInitialData();
-var linuxDistributions = [];
+var books = loadInitialDataBooks();
 
-function loadInitialData() {
+function loadInitialDataBooks() {
 	arr = [];
 	arr.push( { id : "123", title : "Administración de Oracle" } );
 	arr.push( { id : "234", title : "Programación Java" } );
@@ -38,7 +37,7 @@ function loadInitialData() {
 
 // --------------------------------------------------
 app.get("/api-test/books/loadInitialData", (req,res)=> {
-	books = loadInitialData();
+	books = loadInitialDataBooks();
 	res.sendStatus(200);
 });
 // --------------------------------------------------
@@ -91,6 +90,8 @@ app.delete("/api/sandbox/books/:id", (req,res) => {
 });
 
 // linux-distributions API **************************************************
+var linuxDistributions = [];
+
 app.get("/api-test/linux-distributions/loadInitialData", (req, res) => {
     linuxDistributions = [{ name: "Debian", url: "https://www.debian.org/" },
                           { name: "Arch Linux", url: "https://www.archlinux.org/" },
@@ -111,14 +112,17 @@ app.post("/api/sandbox/linux-distributions/", (req, res) => {
     res.sendStatus(200);
 });
 
+
 app.delete("/api/sandbox/linux-distributions/", (req, res) => {
 		linuxDistributions = [];
     res.sendStatus(200);
 });
 
+
 app.put("/api/sandbox/linux-distributions/", (req, res) => {
 		res.sendStatus(405);
 });
+
 
 app.get("/api/sandbox/linux-distributions/:name", (req, res) => {
 	  var name = req.params.name;
