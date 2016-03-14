@@ -24,10 +24,10 @@ app.get("/time", (req, res) => {
 
 
 
-// **************************************************
-var books = loadInitialData();
+// books API **************************************************
+var books = loadInitialDataBooks();
 
-function loadInitialData() {
+function loadInitialDataBooks() {
 	arr = [];
 	arr.push( { id : "123", title : "Administración de Oracle" } );
 	arr.push( { id : "234", title : "Programación Java" } );
@@ -37,7 +37,7 @@ function loadInitialData() {
 
 // --------------------------------------------------
 app.get("/api-test/books/loadInitialData", (req,res)=> {
-	books = loadInitialData();
+	books = loadInitialDataBooks();
 	res.sendStatus(200);
 });
 // --------------------------------------------------
@@ -88,6 +88,78 @@ app.delete("/api/sandbox/books/:id", (req,res) => {
 	}
 	res.sendStatus(statusCode);
 });
+
+// linux-distributions API **************************************************
+var linuxDistributions = [];
+
+app.get("/api-test/linux-distributions/loadInitialData", (req, res) => {
+    linuxDistributions = [{ name: "Debian", url: "https://www.debian.org/" },
+                          { name: "Arch Linux", url: "https://www.archlinux.org/" },
+                          { name: "Antergos", url: "https://antergos.com/" }
+                         ];
+    res.sendStatus(200);
+});
+
+
+app.get("/api/sandbox/linux-distributions/", (req, res) => {
+    res.send(linuxDistributions);
+});
+
+
+app.post("/api/sandbox/linux-distributions/", (req, res) => {
+    distro = req.body;
+    linuxDistributions.push(distro);
+    res.sendStatus(200);
+});
+
+
+app.delete("/api/sandbox/linux-distributions/", (req, res) => {
+		linuxDistributions = [];
+    res.sendStatus(200);
+});
+
+
+app.put("/api/sandbox/linux-distributions/", (req, res) => {
+		res.sendStatus(405);
+});
+
+
+app.get("/api/sandbox/linux-distributions/:name", (req, res) => {
+	  var name = req.params.name;
+	  var distro = findByAttr(linuxDistributions, 'name', name);
+	  if (distro == undefined) {
+		    res.sendStatus(404);
+	  } else {
+		    res.send(distro);
+	  }
+});
+
+
+app.delete("/api/sandbox/linux-distributions/:name", (req, res) => {
+	  var name = req.params.name;
+	  if (removeByProperty(linuxDistributions, "name", name)) {
+		    res.sendStatus(200);
+	  } else {
+		    res.sendStatus(404);
+	  }
+});
+
+
+app.put("/api/sandbox/linux-distributions/:name", (req, res) => {
+    var name = req.params.name;
+    if (removeByProperty(linuxDistributions, "name", name)) {
+        distro = req.body;
+        linuxDistributions.push(distro);
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
+
+app.post("/api/sandbox/linux-distributions/:name", (req, res) => {
+		res.sendStatus(405);
+});
 // **************************************************
 
 var removeByAttr = function(arr, attr, value) {
@@ -105,6 +177,22 @@ var removeByAttr = function(arr, attr, value) {
 	return cont;
 };
 
+
+function removeByProperty(objectsArray, property, value) {
+    var oldArrayLength = objectsArray.length;
+    var newArray = objectsArray.filter((obj) => {
+        return obj[property] != value;  // keep all except those with the value
+    });
+    if (newArray.length == objectsArray.length) {
+        return false; // not found
+    }
+    // replace the old array by the new array
+	  objectsArray.length = 0;
+    Array.prototype.push.apply(objectsArray, newArray);
+    return true;
+};
+
+
 var findByAttr = function(arr, attr, value) {
 	var ret = null;
 	for (var i=0; i<arr.length; i++)
@@ -113,6 +201,7 @@ var findByAttr = function(arr, attr, value) {
 	return ret;
 };
 
+<<<<<<< HEAD
 //-----------------------------------------------
 
 //Cargo los valores iniciales 
@@ -219,6 +308,16 @@ var findByAttr = function(arr, attr, value) {
 
 
 
+=======
+
+function findByProperty(objectsArray, property, value) {
+    return objectsArray.find((obj) => {
+        return obj[property] == value;
+    });
+};
+
+
+>>>>>>> 6ebbc7ea4c9fad7719b4cf3a2010ab7f6b283e1d
 function getFecha(){
 	var meses      = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 	var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
