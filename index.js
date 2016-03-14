@@ -92,9 +92,9 @@ app.delete("/api/sandbox/books/:id", (req,res) => {
 
 // linux-distributions API **************************************************
 app.get("/api-test/linux-distributions/loadInitialData", (req, res) => {
-    linuxDistributions = [{ name: "Debian" },
-                          { name: "Arch Linux" },
-                          { name: "Antergos" }
+    linuxDistributions = [{ name: "Debian", url: "https://www.debian.org/" },
+                          { name: "Arch Linux", url: "https://www.archlinux.org/" },
+                          { name: "Antergos", url: "https://antergos.com/" }
                          ];
     res.sendStatus(200);
 });
