@@ -8,20 +8,16 @@ app.use(bodyParser.json());
 app.use("/", express.static(__dirname + "/static"));
 
 app.listen(port, () => {
-	console.log("Web server is running and listening on port: " + port);
+	console.log("Web server is running and listening on port: " +port);
 });
 
 app.get("/", (req, res) => {
-	res.send("<h1>Hello Word from group 02</h1><a href='/about'>about</a>");
+	res.send("<h1>Hello World from group 02</h1><a href='/about'>about</a>");
 });
 
 app.get("/time", (req, res) => {
 	res.send(getFecha());
 });
-
-
-
-
 
 
 // books API **************************************************
@@ -201,40 +197,39 @@ var findByAttr = function(arr, attr, value) {
 	return ret;
 };
 
-<<<<<<< HEAD
+
 //-----------------------------------------------
 
 //Cargo los valores iniciales 
-var films = loadInitialData();
+var films = loadInitialDataFilms();
 
-function loadInitialData(){
-	array = [];
-	array.push( { name : "True Grit", year : "2011" , genre : "Western", runningTime : "106", director: "Joel & Eazan Coen"} );
-	array.push( { name : "13 days", year : "2000" , genre : "Political-Drama", runningTime : "148", director: "Roger Donalson"} );
-	array.push( { name : "Jaws", year : "1975" , genre : "Action/Adventure", runningTime : "2h 4min", director: "Steven Spielberg"} );
-	return array;
+
+function loadInitialDataFilms() {
+	arr = [ ];
+	arr.push( { name : "True Grit", year : "2011" , genre : "Western", runningTime : "106", director: "Joel & Eazan Coen"});
+	arr.push( { name : "13 days", year : "2000" , genre : "Political-Drama", runningTime : "148", director: "Roger Donalson"});
+	arr.push( { name : "Jaws", year : "1975" , genre : "Action/Adventure", runningTime : "2h 4min", director: "Steven Spielberg"});
+	return arr;
 }
 
+
+app.get("/api-test/films/loadInitialData", (req,res)=> {
+	films = loadInitialDataFilms();
+	res.sendStatus(200);
+});
 
 
 //------------------------------------------------
 
-app.get("/api-test/films/loadInitialData", (req,res)=> {
-	films = loadInitialData();
-	res.sendStatus(200);
-});
-//-------------------------------------------------
-
 
 app.get("/api/sandbox/films", (req,res)=> {
-	var film = req.params.name;
-	console.log("New GET to my resource fimls" +name);
-	res.sendStatus(200);
+	
+	res.send(films);
 });
 app.post("/api/sandbox/films", (req,res)=> {
 	var film = req.body;
 	films.push(film);
-	console.log("New Post to my resource films" +film.name);
+	//console.log("New Post to my resource films" +film.name);
 	res.sendStatus(200);
 });
 
@@ -249,8 +244,8 @@ app.delete("/api/sandbox/films", (req,res)=> {
 //---------------------------------------------------
 
 app.get("/api/sandbox/films/:name", (req,res) => {
-	var idValue = req.params.name;
-	var item = findByAttr(films,'name',idValue);
+	var name = req.params.name;
+	var item = findByAttr(films,'name',name);
 	if (item == null) {
 		res.sendStatus(404);
 	} else {
@@ -258,9 +253,9 @@ app.get("/api/sandbox/films/:name", (req,res) => {
 	}
 });
 app.put("/api/sandbox/films/:name", (req,res) => {
-	var idValue = req.params.name;
+	var name = req.params.name;
 	var statusCode;
-	if (removeByAttr(films,'name',idValue) == 0){
+	if (removeByAttr(films,'name',name) == 0){
 		statusCode = 404;
 	} else {
 		var film = req.body;
@@ -270,9 +265,9 @@ app.put("/api/sandbox/films/:name", (req,res) => {
 	res.sendStatus(statusCode);
 });
 app.delete("/api/sandbox/films/:name", (req,res) => {
-	var idValue = req.params.name;
+	var name = req.params.name;
 	var statusCode;
-	if (removeByAttr(films,'name',idValue) == 0){
+	if (removeByAttr(films,'name',name) == 0){
 		statusCode = 404;
 	} else {
 		statusCode = 200;
@@ -308,7 +303,7 @@ var findByAttr = function(arr, attr, value) {
 
 
 
-=======
+
 
 function findByProperty(objectsArray, property, value) {
     return objectsArray.find((obj) => {
@@ -317,7 +312,7 @@ function findByProperty(objectsArray, property, value) {
 };
 
 
->>>>>>> 6ebbc7ea4c9fad7719b4cf3a2010ab7f6b283e1d
+
 function getFecha(){
 	var meses      = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 	var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
