@@ -111,6 +111,14 @@ app.post("/api/sandbox/linux-distributions/", (req, res) => {
     res.sendStatus(200);
 });
 
+app.delete("/api/sandbox/linux-distributions/", (req, res) => {
+		linuxDistributions = [];
+    res.sendStatus(200);
+});
+
+app.put("/api/sandbox/linux-distributions/", (req, res) => {
+		res.sendStatus(405);
+});
 
 app.get("/api/sandbox/linux-distributions/:name", (req, res) => {
 	  var name = req.params.name;
@@ -133,6 +141,21 @@ app.delete("/api/sandbox/linux-distributions/:name", (req, res) => {
 });
 
 
+app.put("/api/sandbox/linux-distributions/:name", (req, res) => {
+    var name = req.params.name;
+    if (removeByProperty(linuxDistributions, "name", name)) {
+        distro = req.body;
+        linuxDistributions.push(distro);
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
+});
+
+
+app.post("/api/sandbox/linux-distributions/:name", (req, res) => {
+		res.sendStatus(405);
+});
 // **************************************************
 
 var removeByAttr = function(arr, attr, value) {
