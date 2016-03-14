@@ -37,22 +37,25 @@ app.get("/api-test/books/loadInitialData", (req,res)=> {
 	res.sendStatus(200);
 });
 // --------------------------------------------------
-app.post("/api/sandbox/books", (req,res)=> {
+app.post("/api/sandbox/books", (req,res) => {
 	var book = req.body;
 	books.push(book);
 	res.sendStatus(200);
 });
-app.get("/api/sandbox/books", (req,res)=> {
+app.get("/api/sandbox/books", (req,res) => {
 	res.send(books);
 });
-app.put("/api/sandbox/books", (req,res)=> {
+app.put("/api/sandbox/books", (req,res) => {
 	res.sendStatus(405);
 });
-app.delete("/api/sandbox/books", (req,res)=> {
-	books = {};
+app.delete("/api/sandbox/books", (req,res) => {
+	books = [];
 	res.sendStatus(200);
 });
 // --------------------------------------------------
+app.post("/api/sandbox/books/:id", (req, res) => {
+		res.sendStatus(405);
+});
 app.get("/api/sandbox/books/:id", (req,res) => {
 	var idValue = req.params.id;
 	var item = findByAttr(books,'id',idValue);
@@ -88,6 +91,7 @@ app.delete("/api/sandbox/books/:id", (req,res) => {
 // linux-distributions API **************************************************
 var linuxDistributions = [];
 
+// --------------------------------------------------
 app.get("/api-test/linux-distributions/loadInitialData", (req, res) => {
     linuxDistributions = [{ name: "Debian", url: "https://www.debian.org/" },
                           { name: "Arch Linux", url: "https://www.archlinux.org/" },
@@ -95,52 +99,35 @@ app.get("/api-test/linux-distributions/loadInitialData", (req, res) => {
                          ];
     res.sendStatus(200);
 });
-
-
-app.get("/api/sandbox/linux-distributions/", (req, res) => {
-    res.send(linuxDistributions);
-});
-
-
+// --------------------------------------------------
 app.post("/api/sandbox/linux-distributions/", (req, res) => {
     distro = req.body;
     linuxDistributions.push(distro);
     res.sendStatus(200);
 });
-
-
+app.get("/api/sandbox/linux-distributions/", (req, res) => {
+    res.send(linuxDistributions);
+});
+app.put("/api/sandbox/linux-distributions/", (req, res) => {
+	res.sendStatus(405);
+});
 app.delete("/api/sandbox/linux-distributions/", (req, res) => {
-		linuxDistributions = [];
+	linuxDistributions = [];
     res.sendStatus(200);
 });
-
-
-app.put("/api/sandbox/linux-distributions/", (req, res) => {
-		res.sendStatus(405);
+// --------------------------------------------------
+app.post("/api/sandbox/linux-distributions/:name", (req, res) => {
+	res.sendStatus(405);
 });
-
-
 app.get("/api/sandbox/linux-distributions/:name", (req, res) => {
-	  var name = req.params.name;
-	  var distro = findByAttr(linuxDistributions, 'name', name);
-	  if (distro == undefined) {
-		    res.sendStatus(404);
-	  } else {
-		    res.send(distro);
-	  }
+	var name = req.params.name;
+	var distro = findByAttr(linuxDistributions, 'name', name);
+	if (distro == undefined) {
+		res.sendStatus(404);
+	} else {
+		res.send(distro);
+	}
 });
-
-
-app.delete("/api/sandbox/linux-distributions/:name", (req, res) => {
-	  var name = req.params.name;
-	  if (removeByProperty(linuxDistributions, "name", name)) {
-		    res.sendStatus(200);
-	  } else {
-		    res.sendStatus(404);
-	  }
-});
-
-
 app.put("/api/sandbox/linux-distributions/:name", (req, res) => {
     var name = req.params.name;
     if (removeByProperty(linuxDistributions, "name", name)) {
@@ -151,98 +138,51 @@ app.put("/api/sandbox/linux-distributions/:name", (req, res) => {
         res.sendStatus(404);
     }
 });
-
-
-app.post("/api/sandbox/linux-distributions/:name", (req, res) => {
-		res.sendStatus(405);
-});
-// **************************************************
-
-var removeByAttr = function(arr, attr, value) {
-	var i = arr.length;
-	var cont = 0;
-	while (i--) {
-		if  (  arr[i]
-			&& arr[i].hasOwnProperty(attr)
-			&& (arguments.length > 2 && arr[i][attr] === value)
-			) {
-			arr.splice(i,1);
-		cont++;
-		}
+app.delete("/api/sandbox/linux-distributions/:name", (req, res) => {
+	var name = req.params.name;
+	if (removeByProperty(linuxDistributions, "name", name)) {
+		res.sendStatus(200);
+	} else {
+		res.sendStatus(404);
 	}
-	return cont;
-};
+});
 
-
-function removeByProperty(objectsArray, property, value) {
-    var oldArrayLength = objectsArray.length;
-    var newArray = objectsArray.filter((obj) => {
-        return obj[property] != value;  // keep all except those with the value
-    });
-    if (newArray.length == objectsArray.length) {
-        return false; // not found
-    }
-    // replace the old array by the new array
-	  objectsArray.length = 0;
-    Array.prototype.push.apply(objectsArray, newArray);
-    return true;
-};
-
-
-var findByAttr = function(arr, attr, value) {
-	var ret = null;
-	for (var i=0; i<arr.length; i++)
-		if (arr[i][attr] == value)
-			ret = arr[i];
-	return ret;
-};
-
-
-//-----------------------------------------------
-
-//Cargo los valores iniciales 
+// films API **************************************************
 var films = loadInitialDataFilms();
 
-
+//------------------------------------------------
 function loadInitialDataFilms() {
-	arr = [ ];
+	arr = [];
 	arr.push( { name : "True Grit", year : "2011" , genre : "Western", runningTime : "106", director: "Joel & Eazan Coen"});
 	arr.push( { name : "13 days", year : "2000" , genre : "Political-Drama", runningTime : "148", director: "Roger Donalson"});
 	arr.push( { name : "Jaws", year : "1975" , genre : "Action/Adventure", runningTime : "2h 4min", director: "Steven Spielberg"});
 	return arr;
 }
-
-
-app.get("/api-test/films/loadInitialData", (req,res)=> {
+//------------------------------------------------
+app.get("/api-test/films/loadInitialData", (req,res) => {
 	films = loadInitialDataFilms();
 	res.sendStatus(200);
 });
-
-
 //------------------------------------------------
-
-
-app.get("/api/sandbox/films", (req,res)=> {
-	
-	res.send(films);
-});
-app.post("/api/sandbox/films", (req,res)=> {
+app.post("/api/sandbox/films", (req,res) => {
 	var film = req.body;
 	films.push(film);
-	//console.log("New Post to my resource films" +film.name);
 	res.sendStatus(200);
 });
-
-app.put("/api/sandbox/films", (req,res)=> {
+app.get("/api/sandbox/films", (req,res) => {
+	res.send(films);
+});
+app.put("/api/sandbox/films", (req,res) => {
 	res.sendStatus(404);
 });
-app.delete("/api/sandbox/films", (req,res)=> {
-	films = {};
+app.delete("/api/sandbox/films", (req,res) => {
+	films = [];
 	res.sendStatus(200);
 });
-
 //---------------------------------------------------
-
+app.post("/api/sandbox/films/:name", (req, res) => {
+	res.sendStatus(405);
+});
 app.get("/api/sandbox/films/:name", (req,res) => {
 	var name = req.params.name;
 	var item = findByAttr(films,'name',name);
@@ -275,8 +215,8 @@ app.delete("/api/sandbox/films/:name", (req,res) => {
 	res.sendStatus(statusCode);
 });
 
-//-----------------------------------------------------------
 
+// Gobla functions ******************************************
 
 var removeByAttr = function(arr, attr, value) {
 	var i = arr.length;
@@ -293,6 +233,20 @@ var removeByAttr = function(arr, attr, value) {
 	return cont;
 };
 
+var removeByProperty = function(objectsArray, property, value) {
+    var oldArrayLength = objectsArray.length;
+    var newArray = objectsArray.filter((obj) => {
+        return obj[property] != value;  // keep all except those with the value
+    });
+    if (newArray.length == objectsArray.length) {
+        return false; // not found
+    }
+    // replace the old array by the new array
+	objectsArray.length = 0;
+    Array.prototype.push.apply(objectsArray, newArray);
+    return true;
+};
+
 var findByAttr = function(arr, attr, value) {
 	var ret = null;
 	for (var i=0; i<arr.length; i++)
@@ -301,17 +255,11 @@ var findByAttr = function(arr, attr, value) {
 	return ret;
 };
 
-
-
-
-
-function findByProperty(objectsArray, property, value) {
+var findByProperty = function(objectsArray, property, value) {
     return objectsArray.find((obj) => {
         return obj[property] == value;
     });
 };
-
-
 
 function getFecha(){
 	var meses      = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
