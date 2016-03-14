@@ -47,11 +47,7 @@ app.post("/api/sandbox/books", (req,res)=> {
 	res.sendStatus(200);
 });
 app.get("/api/sandbox/books", (req,res)=> {
-	if (books.length == undefined) {
-		res.sendStatus(404);
-	} else {
-		res.send(books);	
-	}
+	res.send(books);
 });
 app.put("/api/sandbox/books", (req,res)=> {
 	res.sendStatus(405);
