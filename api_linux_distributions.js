@@ -2,10 +2,15 @@ var tools = require('./tools');
 var express = require('express');
 var router = express.Router();
 
-var linuxDistributions = [{ name: "Debian"    , url: "https://www.debian.org/"    }
-                         ,{ name: "Arch Linux", url: "https://www.archlinux.org/" }
-                         ,{ name: "Antergos"  , url: "https://antergos.com/"      }
-                         ];;
+var linuxDistributions = [];
+
+router.get('/loadInitialData', (req, res) => {
+    linuxDistributions = [{ name: 'Debian', url: 'https://www.debian.org/' },
+                          { name: 'Arch Linux', url: 'https://www.archlinux.org/' },
+                          { name: 'Antergos', url: 'https://antergos.com/' }
+                         ];
+    res.sendStatus(200);
+});
 
 // --------------------------------------------------
 router.post('/', (req,res) => {
@@ -39,7 +44,7 @@ router.get('/:name', (req,res) => {
 });
 router.put('/:name', (req,res) => {
     var name = req.params.name;
-    if (removeByProperty(linuxDistributions, "name", name)) {
+    if (removeByProperty(linuxDistributions, 'name', name)) {
         distro = req.body;
         linuxDistributions.push(distro);
         res.sendStatus(200);
@@ -49,7 +54,7 @@ router.put('/:name', (req,res) => {
 });
 router.delete('/:name', (req,res) => {
     var name = req.params.name;
-    if (tools.removeByProperty(linuxDistributions, "name", name)) {
+    if (tools.removeByProperty(linuxDistributions, 'name', name)) {
         res.sendStatus(200);
     } else {
         res.sendStatus(404);
