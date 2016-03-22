@@ -33,7 +33,7 @@ router.post('/:name', (req,res) => {
 });
 router.get('/:name', (req,res) => {
     var name = req.params.name;
-    var distro = tools.findByAttr(linuxDistributions,'name',name);
+    var distro = tools.findByProperty(linuxDistributions,'name',name);
     if (distro == undefined) {
         res.sendStatus(404);
     } else {
