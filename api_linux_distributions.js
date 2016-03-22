@@ -1,7 +1,10 @@
 var tools = require('./tools');
 var express = require('express');
-var router = express.Router();
+var bodyParser = require('body-parser');
 var fs = require('fs');
+
+var router = express.Router();
+router.use(bodyParser.json());
 
 var linuxDistributions = [];
 
@@ -42,7 +45,7 @@ router.get('/:name', (req,res) => {
 });
 router.put('/:name', (req,res) => {
     var name = req.params.name;
-    if (removeByProperty(linuxDistributions, 'name', name)) {
+    if (tools.removeByProperty(linuxDistributions, 'name', name)) {
         distro = req.body;
         linuxDistributions.push(distro);
         res.sendStatus(200);

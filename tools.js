@@ -13,6 +13,9 @@ exports.removeByAttr = function(arr, attr, value) {
 	return cont;
 };
 
+
+
+// return true if the object was found and deleted
 exports.removeByProperty = function(objectsArray, property, value) {
     var oldArrayLength = objectsArray.length;
     var newArray = objectsArray.filter((obj) => {
@@ -22,10 +25,31 @@ exports.removeByProperty = function(objectsArray, property, value) {
         return false; // not found
     }
     // replace the old array by the new array
-	objectsArray.length = 0;
+    objectsArray.length = 0;
     Array.prototype.push.apply(objectsArray, newArray);
     return true;
 };
+
+
+// return true if the object was found and deleted
+exports.removeByTwoProperties = function(objectsArray,
+                                         property1, value1,
+                                         property2, value2) {
+    var oldArrayLength = objectsArray.length;
+    var newArray = objectsArray.filter((obj) => {
+        // keep all except those with the right values
+        return obj[property1] != value1 &&
+               obj[property2] != value2;
+    });
+    if (newArray.length == objectsArray.length) {
+        return false; // not found
+    }
+    // replace the old array by the new array
+    objectsArray.length = 0;
+    Array.prototype.push.apply(objectsArray, newArray);
+    return true;
+};
+
 
 exports.findByAttr = function(arr, attr, value) {
 	var ret = null;
@@ -37,6 +61,12 @@ exports.findByAttr = function(arr, attr, value) {
 
 exports.findByProperty = function(objectsArray, property, value) {
     return objectsArray.find((obj) => {
+        return obj[property] == value;
+    });
+};
+
+exports.findAllByProperty = function(objectsArray, property, value) {
+    return objectsArray.filter((obj) => {
         return obj[property] == value;
     });
 };
