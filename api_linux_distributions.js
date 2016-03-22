@@ -6,7 +6,7 @@ var fs = require('fs');
 var linuxDistributions = [];
 
 router.get('/loadInitialData', (req, res) => {
-    linuxDistributions = JSON.parse(fs.readFileSync('data/linuxDistributions.json', 'utf8'));
+    linuxDistributions = JSON.parse(fs.readFileSync('data/linux_distributions_initial_data.json', 'utf8'));
     res.sendStatus(200);
 });
 
