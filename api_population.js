@@ -22,7 +22,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     var datum = req.body;
     populationData.push(datum);
-    res.sendStatus(200);
+    res.sendStatus(201);
 });
 
 
@@ -55,7 +55,7 @@ router.get('/:province(\\D+)/', (req, res) => {
 
 
 router.get('/:year(\\d+)/', (req, res) => {
-    var year = req.params.province;
+    var year = req.params.year;
     var data = tools.findAllByProperty(populationData, 'year', year);
     res.send(data);
 });
