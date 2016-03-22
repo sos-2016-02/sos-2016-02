@@ -9,8 +9,9 @@ var api_workers             = require('./api_workers');
 var api_population          = require('./api_population');
 
 // __ VAR -> Others __
-var tools      = require('./tools');
 var bodyParser = require('body-parser');
+var express    = require('express');
+var tools      = require('./tools');
 var app        = express();
 var port       = (process.env.PORT || 3000);
 
