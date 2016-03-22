@@ -1,0 +1,6 @@
+[
+    { "name": "Debian", "url": "https://www.debian.org/" },
+    { "name": "Arch Linux", "url": "https://www.archlinux.org/" },
+    { "name": "Exampl", "url": "example.com" },
+    { "name": "Antergos", "url": "https://antergos.com/" }
+]

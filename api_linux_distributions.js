@@ -1,14 +1,12 @@
 var tools = require('./tools');
 var express = require('express');
 var router = express.Router();
+var fs = require('fs');
 
 var linuxDistributions = [];
 
 router.get('/loadInitialData', (req, res) => {
-    linuxDistributions = [{ name: 'Debian', url: 'https://www.debian.org/' },
-                          { name: 'Arch Linux', url: 'https://www.archlinux.org/' },
-                          { name: 'Antergos', url: 'https://antergos.com/' }
-                         ];
+    linuxDistributions = JSON.parse(fs.readFileSync('data/linuxDistributions.json', 'utf8'));
     res.sendStatus(200);
 });
 
