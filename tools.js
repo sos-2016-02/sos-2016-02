@@ -85,3 +85,8 @@ exports.getFecha = function() {
 	var ret        = diasSemana[fecha.getDay()] + ", " + fecha.getDate() + " de " + meses[fecha.getMonth()] + " de " + fecha.getFullYear() + " [" + fecha.getHours() + ":" + minutos + ":" + segundos + "]";
 	return ret;
 };
+
+exports.readJSONfromFile = function(fileName) {
+    var fs = require('fs');
+    return JSON.parse(fs.readFileSync(fileName, 'utf8'));
+}
