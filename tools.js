@@ -71,6 +71,12 @@ exports.findAllByProperty = function(objectsArray, property, value) {
     });
 };
 
+exports.findAllByTwoProperties = function(objectsArray, propertyFirst, valueFirst, propertySecond, valueSecond ) {
+    return objectsArray.filter((obj) => {
+        return (obj[propertyFirst] == valueFirst && obj[propertySecond] == valueSecond);
+    });
+};
+
 exports.getFecha = function() {
 	var meses      = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 	var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
