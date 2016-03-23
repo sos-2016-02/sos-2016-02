@@ -1,12 +1,12 @@
-exports.removeByAttr = function(arr, attr, value) {
-	var i = arr.length;
+exports.removeByAttr = function(objectsArray, property, value) {
+	var i = objectsArray.length;
 	var cont = 0;
 	while (i--) {
-		if  (  arr[i]
-			&& arr[i].hasOwnProperty(attr)
-			&& (arguments.length > 2 && arr[i][attr] === value)
+		if  (  objectsArray[i]
+			&& objectsArray[i].hasOwnProperty(property)
+			&& (arguments.length > 2 && objectsArray[i][property] === value)
 			) {
-			arr.splice(i,1);
+			objectsArray.splice(i,1);
 		cont++;
 		}
 	}
@@ -51,10 +51,10 @@ exports.removeByTwoProperties = function(objectsArray,
 };
 
 
-exports.findByAttr = function(arr, attr, value) {
+exports.findByAttr = function(objectsArray, property, value) {
 	var ret = null;
 	for (var i=0; i<arr.length; i++)
-		if (arr[i][attr] == value)
+		if (arr[i][property] == value)
 			ret = arr[i];
 	return ret;
 };
@@ -71,9 +71,11 @@ exports.findAllByProperty = function(objectsArray, property, value) {
     });
 };
 
-exports.findAllByTwoProperties = function(objectsArray, propertyFirst, valueFirst, propertySecond, valueSecond ) {
+exports.findAllByTwoProperties = function(objectsArray,
+                                          property1, value1,
+                                          property2, value2) {
     return objectsArray.filter((obj) => {
-        return (obj[propertyFirst] == valueFirst && obj[propertySecond] == valueSecond);
+        return (obj[property1] == value1 && obj[property2] == value2);
     });
 };
 
