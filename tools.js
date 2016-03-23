@@ -13,13 +13,11 @@ exports.removeByAttr = function(objectsArray, property, value) {
 	return cont;
 };
 
-
-
 // return true if the object was found and deleted
 exports.removeByProperty = function(objectsArray, property, value) {
-    var oldArrayLength = objectsArray.length;
     var newArray = objectsArray.filter((obj) => {
-        return obj[property] != value;  // keep all except those with the value
+        // keep all except those with the value
+        return obj[property] != value;
     });
     if (newArray.length == objectsArray.length) {
         return false; // not found
@@ -29,17 +27,14 @@ exports.removeByProperty = function(objectsArray, property, value) {
     Array.prototype.push.apply(objectsArray, newArray);
     return true;
 };
-
 
 // return true if the object was found and deleted
 exports.removeByTwoProperties = function(objectsArray,
                                          property1, value1,
                                          property2, value2) {
-    var oldArrayLength = objectsArray.length;
     var newArray = objectsArray.filter((obj) => {
         // keep all except those with the right values
-        return obj[property1] != value1 &&
-               obj[property2] != value2;
+        return (obj[property1] != value1 || obj[property2] != value2);
     });
     if (newArray.length == objectsArray.length) {
         return false; // not found
@@ -47,9 +42,9 @@ exports.removeByTwoProperties = function(objectsArray,
     // replace the old array by the new array
     objectsArray.length = 0;
     Array.prototype.push.apply(objectsArray, newArray);
+
     return true;
 };
-
 
 exports.findByAttr = function(objectsArray, property, value) {
 	var ret = null;
