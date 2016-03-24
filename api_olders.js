@@ -19,6 +19,7 @@ router.get('/loadInitialData', (req,res) => {
 
 // ============================================================================ ACCESS TO URL BASE
 router.post('/', (req,res) => {
+	if (!req.query.apikey || req.query.apikey!="keyWrite") { return res.sendStatus(401); }
 	var item = req.body;
 	var statusCode;
 	if (  item["year"]     == undefined
@@ -39,77 +40,80 @@ router.post('/', (req,res) => {
 	res.sendStatus(statusCode);
 });
 router.get('/', (req,res) => {
-	if (req.query.apikey && req.query.apikey=="sos") {
-		var subData = data;
-		subData = tools.findAllByMapProperties(subData,req.query);
-		subData = tools.selectFields(subData,req.query.fields);
-		subData = tools.getInterval(subData,req.query.offset,req.query.limit);
-		res.send(subData);
-	} else {
-		res.sendStatus(401);
-	}
+	if (!req.query.apikey || req.query.apikey!="keyRead") { return res.sendStatus(401); }
+	var subData = data;
+	subData = tools.findAllByMapProperties(subData,req.query);
+	subData = tools.selectFields(subData,req.query.fields);
+	subData = tools.getInterval(subData,req.query.offset,req.query.limit);
+	res.send(subData);
 });
 router.put('/', (req,res) => {
 	res.sendStatus(405);
 });
 router.delete('/', (req,res) => {
+	if (!req.query.apikey || req.query.apikey!="keyWrite") { return res.sendStatus(401); }
 	data = [];
 	res.sendStatus(200);
 });
 
 // ============================================================================ ACCESS TO RESOURCE
 router.post('/:province/:year', (req, res) => {
-    res.sendStatus(405);
+	res.sendStatus(405);
 });
 router.get('/:province(\\D+)/', (req, res) => {
-    var provinceId   = req.params.province;
-    var filteredData = tools.findAllByProperty(data, 'province', provinceId);
-    if (filteredData.length > 0) {
-        res.send(filteredData);
-    } else {
-        res.sendStatus(404);
-    }
+	if (!req.query.apikey || req.query.apikey!="keyRead") { return res.sendStatus(401); }
+	var provinceId   = req.params.province;
+	var filteredData = tools.findAllByProperty(data, 'province', provinceId);
+	if (filteredData.length > 0) {
+		res.send(filteredData);
+	} else {
+		res.sendStatus(404);
+	}
 });
 router.get('/:year(\\d+)/', (req, res) => {
-    var yearId   = req.params.year;
-    var filteredData = tools.findAllByProperty(data, 'year', yearId);
-    if (filteredData.length > 0)
-    {
-        res.send(filteredData);
-    } else {
-        res.sendStatus(404);
-    }
+	if (!req.query.apikey || req.query.apikey!="keyRead") { return res.sendStatus(401); }
+	var yearId   = req.params.year;
+	var filteredData = tools.findAllByProperty(data, 'year', yearId);
+	if (filteredData.length > 0)
+	{
+		res.send(filteredData);
+	} else {
+		res.sendStatus(404);
+	}
 });
 router.get('/:province/:year', (req, res) => {
-    var provinceId   = req.params.province;
-    var yearId       = req.params.year;
-    var filteredData = tools.findAllByTwoProperties(data, 'province', provinceId, 'year', yearId);
-    if (filteredData.length > 0)
-    {
-        res.send(filteredData);
-    } else {
-        res.sendStatus(404);
-    }
+	if (!req.query.apikey || req.query.apikey!="keyWrite") { return res.sendStatus(401); }
+	var provinceId   = req.params.province;
+	var yearId       = req.params.year;
+	var filteredData = tools.findAllByTwoProperties(data, 'province', provinceId, 'year', yearId);
+	if (filteredData.length > 0)
+	{
+		res.send(filteredData);
+	} else {
+		res.sendStatus(404);
+	}
 });
 router.put('/:province/:year', (req, res) => {
-    var provinceId = req.params.province;
+	if (!req.query.apikey || req.query.apikey!="keyWrite") { return res.sendStatus(401); }
+	var provinceId = req.params.province;
 	var yearId     = req.params.year;
 	var item       = req.body;
 	var statusCode;
 	if(item["province"]!=provinceId || item["year"]!=yearId) {
 		statusCode = 409;
 	} else {
-	    if (tools.removeByTwoProperties(data, 'province', provinceId, 'year', yearId))
-	    {
-	        data.push(item);
-	        statusCode = 200;
-	    } else {
-	        statusCode = 404;
-	    }
+		if (tools.removeByTwoProperties(data, 'province', provinceId, 'year', yearId))
+		{
+			data.push(item);
+			statusCode = 200;
+		} else {
+			statusCode = 404;
+		}
 	}
-    res.sendStatus(statusCode);
+	res.sendStatus(statusCode);
 });
 router.delete('/:province/:year', (req, res) => {
+	if (!req.query.apikey || req.query.apikey!="keyWrite") { return res.sendStatus(401); }
 	var provinceId = req.params.province;
 	var yearId     = req.params.year;
 	var statusCode;
