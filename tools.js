@@ -90,3 +90,10 @@ exports.readJSONfromFile = function(fileName) {
     var fs = require('fs');
     return JSON.parse(fs.readFileSync(fileName, 'utf8'));
 }
+
+exports.getInterval = function(objectsArray, offset, limit) {
+    var desde   = (offset == undefined) ? 0: Math.abs(Number(offset));
+    var cuantos = (limit  == undefined) ? objectsArray.length - desde: Math.abs(Number(limit));
+    var hasta   = desde + cuantos;
+    return objectsArray.slice(desde,hasta);
+}
