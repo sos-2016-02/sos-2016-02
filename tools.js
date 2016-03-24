@@ -116,5 +116,17 @@ exports.selectFields = function(objectsArray, fieldsArray) {
     if (fieldsArray == undefined)
         return objectsArray;
     else
-        return JSON.parse(JSON.stringify(objectsArray,fieldsArray.split(',')));
+        return JSON.parse(JSON.stringify(objectsArray, fieldsArray.split(',')));
+}
+
+exports.findAllByRange = function(objectsArray, propertyName, minValue, maxValue) {
+    return objectsArray.filter((obj) => {
+        return (isBetween(obj, propertyName, minValue, maxValue));
+    });
+};
+function isBetween(obj, propertyName, minValue, maxValue){
+    var ret = false;
+    if (minValue) { ret = obj[propertyName] >= minValue; }
+    if (maxValue) { ret = obj[propertyName] <= maxValue; }
+    return ret;
 }
