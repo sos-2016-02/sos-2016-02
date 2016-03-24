@@ -74,6 +74,30 @@ exports.findAllByTwoProperties = function(objectsArray,
     });
 };
 
+exports.findAllByMapProperties = function(objectsArray, mapProperties) {
+    for (var prop in mapProperties) {
+        console.log("trabajando: ", prop, mapProperties[prop]);
+    }
+
+    return objectsArray.filter((obj) => {
+        return ( existe(obj, mapProperties)
+            
+            
+            //obj[property1] == value1 && obj[property2] == value2
+            
+            );
+    });
+
+};
+function existe(obj, mapProperties){
+    var ret = true;
+    for (var prop in mapProperties) {
+        if (obj[prop]!=mapProperties[prop])
+            ret=false;
+    }
+    return ret;
+}
+
 exports.getFecha = function() {
 	var meses      = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 	var diasSemana = new Array("Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado");
@@ -93,7 +117,7 @@ exports.readJSONfromFile = function(fileName) {
 
 exports.getInterval = function(objectsArray, offset, limit) {
     var vFrom = (offset == undefined) ? 0: Math.abs(Number(offset));
-    var vMany = (limit  == undefined) ? objectsArray.length - desde: Math.abs(Number(limit));
+    var vMany = (limit  == undefined) ? objectsArray.length - vFrom: Math.abs(Number(limit));
     var vTo   = vFrom + vMany;
     return objectsArray.slice(vFrom,vTo);
 }
