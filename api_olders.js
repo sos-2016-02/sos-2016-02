@@ -21,17 +21,28 @@ router.get('/loadInitialData', (req,res) => {
 router.post('/', (req,res) => {
 	var item = req.body;
 	var statusCode;
-	if (tools.findAllByTwoProperties(data, 'province', item["province"], 'year', item["year"]).length > 0)
-	{
-		statusCode = 409;
+	if (  item["year"]     == undefined
+	   || item["province"] == undefined
+	   || item["men"]      == undefined
+	   || item["women"]    == undefined
+	   ) {
+		statusCode = 400;	
 	} else {
-		data.push(item);
-		statusCode = 201;
+		if (tools.findAllByTwoProperties(data, 'province', item["province"], 'year', item["year"]).length > 0)
+		{
+			statusCode = 409;
+		} else {
+			data.push(item);
+			statusCode = 201;
+		}
 	}
 	res.sendStatus(statusCode);
 });
 router.get('/', (req,res) => {
-	res.send(data);
+	var subData = data;
+	subData = tools.findAllByMapProperties(subData,req.query);
+	subData = tools.getInterval(subData,req.query.offset,req.query.limit);
+	res.send(subData);
 });
 router.put('/', (req,res) => {
 	res.sendStatus(405);

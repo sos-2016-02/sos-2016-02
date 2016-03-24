@@ -75,26 +75,16 @@ exports.findAllByTwoProperties = function(objectsArray,
 };
 
 exports.findAllByMapProperties = function(objectsArray, mapProperties) {
-    for (var prop in mapProperties) {
-        console.log("trabajando: ", prop, mapProperties[prop]);
-    }
-
     return objectsArray.filter((obj) => {
-        return ( existe(obj, mapProperties)
-            
-            
-            //obj[property1] == value1 && obj[property2] == value2
-            
-            );
+        return (searchingProperty(obj, mapProperties));
     });
-
 };
-function existe(obj, mapProperties){
+function searchingProperty(obj, mapProperties){
     var ret = true;
-    for (var prop in mapProperties) {
-        if (obj[prop]!=mapProperties[prop])
-            ret=false;
-    }
+    for (var propName in mapProperties)
+        if (obj.hasOwnProperty(propName))
+            if (obj[propName] != mapProperties[propName])
+                ret = false;
     return ret;
 }
 
