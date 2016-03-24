@@ -125,7 +125,7 @@ exports.findAllByRange = function(objectsArray, propertyName, minValue, maxValue
     });
 };
 function isBetween(obj, propertyName, minValue, maxValue){
-    var ret = false;
+    var ret = true;
     if (minValue) { ret = obj[propertyName] >= minValue; }
     if (maxValue) { ret = obj[propertyName] <= maxValue; }
     return ret;
