@@ -130,3 +130,7 @@ function isBetween(obj, propertyName, minValue, maxValue){
     if (maxValue) { ret = obj[propertyName] <= maxValue; }
     return ret;
 }
+
+exports.checkApiKey = function(request, keyValue) {
+    return (request.query.apikey && request.query.apikey == keyValue);
+}
