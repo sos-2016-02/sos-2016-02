@@ -113,5 +113,8 @@ exports.getInterval = function(objectsArray, offset, limit) {
 }
 
 exports.selectFields = function(objectsArray, fieldsArray) {
-    return JSON.parse(JSON.stringify(objectsArray,fieldsArray.split(',')));
+    if (fieldsArray == undefined)
+        return objectsArray;
+    else
+        return JSON.parse(JSON.stringify(objectsArray,fieldsArray.split(',')));
 }
