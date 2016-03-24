@@ -111,3 +111,7 @@ exports.getInterval = function(objectsArray, offset, limit) {
     var vTo   = vFrom + vMany;
     return objectsArray.slice(vFrom,vTo);
 }
+
+exports.selectFields = function(objectsArray, fieldsArray) {
+    return JSON.parse(JSON.stringify(objectsArray,fieldsArray.split(',')));
+}

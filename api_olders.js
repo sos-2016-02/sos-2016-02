@@ -6,8 +6,8 @@ var router     = express.Router();
 
 router.use(bodyParser.json());
 
-var data = [];
-
+//var data = [];
+var data = tools.readJSONfromFile('data/olders_initial_data.json');
 
 
 
@@ -41,6 +41,7 @@ router.post('/', (req,res) => {
 router.get('/', (req,res) => {
 	var subData = data;
 	subData = tools.findAllByMapProperties(subData,req.query);
+	subData = tools.selectFields(subData,req.query.fields);
 	subData = tools.getInterval(subData,req.query.offset,req.query.limit);
 	res.send(subData);
 });
