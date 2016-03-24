@@ -92,8 +92,8 @@ exports.readJSONfromFile = function(fileName) {
 }
 
 exports.getInterval = function(objectsArray, offset, limit) {
-    var desde   = (offset == undefined) ? 0: Math.abs(Number(offset));
-    var cuantos = (limit  == undefined) ? objectsArray.length - desde: Math.abs(Number(limit));
-    var hasta   = desde + cuantos;
-    return objectsArray.slice(desde,hasta);
+    var vFrom = (offset == undefined) ? 0: Math.abs(Number(offset));
+    var vMany = (limit  == undefined) ? objectsArray.length - desde: Math.abs(Number(limit));
+    var vTo   = vFrom + vMany;
+    return objectsArray.slice(vFrom,vTo);
 }
