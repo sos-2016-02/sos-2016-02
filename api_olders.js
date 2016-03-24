@@ -39,11 +39,15 @@ router.post('/', (req,res) => {
 	res.sendStatus(statusCode);
 });
 router.get('/', (req,res) => {
-	var subData = data;
-	subData = tools.findAllByMapProperties(subData,req.query);
-	subData = tools.selectFields(subData,req.query.fields);
-	subData = tools.getInterval(subData,req.query.offset,req.query.limit);
-	res.send(subData);
+	if (req.query.apikey && req.query.apikey=="sos") {
+		var subData = data;
+		subData = tools.findAllByMapProperties(subData,req.query);
+		subData = tools.selectFields(subData,req.query.fields);
+		subData = tools.getInterval(subData,req.query.offset,req.query.limit);
+		res.send(subData);
+	} else {
+		res.sendStatus(401);
+	}
 });
 router.put('/', (req,res) => {
 	res.sendStatus(405);
