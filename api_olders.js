@@ -2,14 +2,14 @@
 var tools      = require('./tools');
 var bodyParser = require('body-parser');
 var express    = require('express');
+var keyWrite   = "keyWrite";
+var keyRead    = "keyRead";
 var router     = express.Router();
+var data       = [];
 
-router.use(bodyParser.json());
-
-//var data = [];
 var data = tools.readJSONfromFile('data/olders_initial_data.json');
 
-
+router.use(bodyParser.json());
 
 // ============================================================================ LOAD INITIAL DATA
 router.get('/loadInitialData', (req,res) => {
@@ -19,7 +19,7 @@ router.get('/loadInitialData', (req,res) => {
 
 // ============================================================================ ACCESS TO URL BASE
 router.post('/', (req,res) => {
-	if (!req.query.apikey || req.query.apikey!="keyWrite") { return res.sendStatus(401); }
+	if (!tools.checkApiKey(req, keyWrite)) { return res.sendStatus(401); }
 	var item = req.body;
 	var statusCode;
 	if (  item["year"]     == undefined
@@ -40,7 +40,7 @@ router.post('/', (req,res) => {
 	res.sendStatus(statusCode);
 });
 router.get('/', (req,res) => {
-	if (!req.query.apikey || req.query.apikey!="keyRead") { return res.sendStatus(401); }
+	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	var subData = data;
 	subData = tools.findAllByMapProperties(subData,req.query);
 	subData = tools.selectFields(subData,req.query.fields);
@@ -51,7 +51,7 @@ router.put('/', (req,res) => {
 	res.sendStatus(405);
 });
 router.delete('/', (req,res) => {
-	if (!req.query.apikey || req.query.apikey!="keyWrite") { return res.sendStatus(401); }
+	if (!tools.checkApiKey(req, keyWrite)) { return res.sendStatus(401); }
 	data = [];
 	res.sendStatus(200);
 });
@@ -61,17 +61,20 @@ router.post('/:province/:year', (req, res) => {
 	res.sendStatus(405);
 });
 router.get('/:province(\\D+)/', (req, res) => {
-	if (!req.query.apikey || req.query.apikey!="keyRead") { return res.sendStatus(401); }
+	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	var provinceId   = req.params.province;
 	var filteredData = tools.findAllByProperty(data, 'province', provinceId);
 	if (filteredData.length > 0) {
+		var minValue = (req.query.from == undefined) ? undefined : Number(req.query.from);
+		var maxValue = (req.query.to   == undefined) ? undefined : Number(req.query.to);
+		filteredData = tools.findAllByRange(filteredData, 'year', minValue, maxValue);
 		res.send(filteredData);
 	} else {
 		res.sendStatus(404);
 	}
 });
 router.get('/:year(\\d+)/', (req, res) => {
-	if (!req.query.apikey || req.query.apikey!="keyRead") { return res.sendStatus(401); }
+	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	var yearId   = req.params.year;
 	var filteredData = tools.findAllByProperty(data, 'year', yearId);
 	if (filteredData.length > 0)
@@ -82,7 +85,7 @@ router.get('/:year(\\d+)/', (req, res) => {
 	}
 });
 router.get('/:province/:year', (req, res) => {
-	if (!req.query.apikey || req.query.apikey!="keyWrite") { return res.sendStatus(401); }
+	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	var provinceId   = req.params.province;
 	var yearId       = req.params.year;
 	var filteredData = tools.findAllByTwoProperties(data, 'province', provinceId, 'year', yearId);
@@ -94,7 +97,7 @@ router.get('/:province/:year', (req, res) => {
 	}
 });
 router.put('/:province/:year', (req, res) => {
-	if (!req.query.apikey || req.query.apikey!="keyWrite") { return res.sendStatus(401); }
+	if (!tools.checkApiKey(req, keyWrite)) { return res.sendStatus(401); }
 	var provinceId = req.params.province;
 	var yearId     = req.params.year;
 	var item       = req.body;
@@ -113,7 +116,7 @@ router.put('/:province/:year', (req, res) => {
 	res.sendStatus(statusCode);
 });
 router.delete('/:province/:year', (req, res) => {
-	if (!req.query.apikey || req.query.apikey!="keyWrite") { return res.sendStatus(401); }
+	if (!tools.checkApiKey(req, keyWrite)) { return res.sendStatus(401); }
 	var provinceId = req.params.province;
 	var yearId     = req.params.year;
 	var statusCode;
