@@ -7,7 +7,7 @@ var keyRead    = "keyRead";
 var router     = express.Router();
 var data       = [];
 
-//var data = tools.readJSONfromFile('data/olders_initial_data.json');
+var data = tools.readJSONfromFile('data/olders_initial_data.json');
 
 router.use(bodyParser.json());
 
