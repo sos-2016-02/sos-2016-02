@@ -125,10 +125,10 @@ exports.findAllByRange = function(objectsArray, propertyName, minValue, maxValue
     });
 };
 function isBetween(obj, propertyName, minValue, maxValue){
-    var ret = true;
-    if (minValue) { ret = obj[propertyName] >= minValue; }
-    if (maxValue) { ret = obj[propertyName] <= maxValue; }
-    return ret;
+    if ( minValue && !maxValue) { return obj[propertyName] >= minValue; }
+    if (!minValue &&  maxValue) { return obj[propertyName] <= maxValue; }
+    if ( minValue &&  maxValue) { return obj[propertyName] >= minValue && obj[propertyName] <= maxValue; }
+    return true;
 }
 
 exports.checkApiKey = function(request, keyValue) {
