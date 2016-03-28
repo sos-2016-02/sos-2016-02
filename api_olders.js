@@ -32,7 +32,9 @@ router.post('/', (req,res) => {
 	}
 	for(var i=0; i<arrayJSON.length; i++){
         var objJSON = arrayJSON[i];
+        var contentData = false;
         for(var key in objJSON){
+        	contentData = true;
             var attrName = key;
             var attrValue = objJSON[key];
 			if ( ['year', 'province', 'men', 'women'].indexOf(attrName) == -1) // Validador de campos
@@ -42,6 +44,9 @@ router.post('/', (req,res) => {
 				if (attrName=='province') { provinceValue = attrValue; }
 				if (attrName=='year')     { yearValue     = attrValue; }
 			}
+		}
+		if(!contentData) {
+			return res.sendStatus(400);	
 		}
 		if  (  tools.findAllByTwoProperties(data    , 'province', provinceValue, 'year', yearValue).length > 0
 			|| tools.findAllByTwoProperties(arrayAUX, 'province', provinceValue, 'year', yearValue).length > 0
