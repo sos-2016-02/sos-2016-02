@@ -20,9 +20,51 @@ router.get('/loadInitialData', (req,res) => {
 // ============================================================================ ACCESS TO URL BASE
 router.post('/', (req,res) => {
 	if (!tools.checkApiKey(req, keyWrite)) { return res.sendStatus(401); }
+	var body = req.body;
+	var arrayJSON = [];
+	var arrayAUX  = [];
+	var provinceValue;
+	var yearValue;
+	if (body.length == undefined) { // Si envían {} convertirlo en [{}]
+		arrayJSON.push(body);
+	} else {
+		arrayJSON = body;
+	}
+	for(var i=0; i<arrayJSON.length; i++){
+        var objJSON = arrayJSON[i];
+        for(var key in objJSON){
+            var attrName = key;
+            var attrValue = objJSON[key];
+			if ( ['year', 'province', 'men', 'women'].indexOf(attrName) == -1) // Validador de campos
+			{
+				return res.sendStatus(400);
+			} else {
+				if (attrName=='province') { provinceValue = attrValue; }
+				if (attrName=='year')     { yearValue     = attrValue; }
+			}
+		}
+		if  (  tools.findAllByTwoProperties(data    , 'province', provinceValue, 'year', yearValue).length > 0
+			|| tools.findAllByTwoProperties(arrayAUX, 'province', provinceValue, 'year', yearValue).length > 0
+			) // Verificar duplicidades sobre el array de datos y sobre el vector aux.
+		{
+			return res.sendStatus(409);
+		} else {
+			arrayAUX.push(objJSON);
+		}
+    }
+    Array.prototype.push.apply(data, arrayAUX);
+	return res.sendStatus(201);
+});
+
+/*
+router.post('/', (req,res) => {
+	if (!tools.checkApiKey(req, keyWrite)) { return res.sendStatus(401); }
 	var item = req.body;
+	console.log(item);
+	console.log(item.length);
+	for()
 	var statusCode;
-	if (  item["year"]     == undefined
+	if (  var item = req.body;
 	   || item["province"] == undefined
 	   || item["men"]      == undefined
 	   || item["women"]    == undefined
@@ -39,6 +81,8 @@ router.post('/', (req,res) => {
 	}
 	res.sendStatus(statusCode);
 });
+*/
+
 router.get('/', (req,res) => {
 	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	var subData = data;
