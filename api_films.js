@@ -7,7 +7,7 @@ var films = loadInitialData();
 // --------------------------------------------------
 router.post('/', (req,res) => {
 	var film = req.body;
-	films.push(book);
+	films.push(film);
 	res.sendStatus(200);
 });
 router.get('/', (req,res) => {

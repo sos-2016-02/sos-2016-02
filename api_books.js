@@ -27,11 +27,16 @@ router.post('/:id', (req,res) => {
 });
 router.get('/:id', (req,res) => {
 	var idValue = req.params.id;
-	var item = tools.findByAttr(books,'id',idValue);
-	if (item == null) {
-		res.sendStatus(404);
+	if (idValue == "loadInitialData") {
+		books = loadInitialData();
+		res.sendStatus(200);
 	} else {
-		res.send(item);
+		var item = tools.findByAttr(books,'id',idValue);
+		if (item == null) {
+			res.sendStatus(404);
+		} else {
+			res.send(item);
+		}
 	}
 });
 router.put('/:id', (req,res) => {
