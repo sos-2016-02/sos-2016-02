@@ -2,9 +2,32 @@ var tools = require('./tools');
 var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
+var passport = require('passport');
+LocalAPIKeyStrategy = require('passport-localapikey-update').Strategy;
 
 var router = express.Router();
 router.use(bodyParser.json());
+router.use(passport.initialize());
+
+passport.use(new LocalAPIKeyStrategy(
+    function(apikey, done) {
+        if (apikey == 'correct-key-1' ||
+            apikey == 'correct-key-2') {
+            return done(null, true);
+        } else {
+            return done(null, false);
+        }
+    }
+));
+
+function checkAuthentication(req, res, next) {
+    passport.authenticate('localapikey', function(err, user, info) {
+        if (user == false) {
+            return res.sendStatus(401);
+        }
+        return next();
+    })(req, res, next);
+};
 
 var populationData = [];
 
@@ -19,7 +42,7 @@ router.get('/', (req, res) => {
 });
 
 
-router.post('/', (req, res) => {
+router.post('/', checkAuthentication, (req, res) => {
     var datum = req.body;
     populationData.push(datum);
     res.sendStatus(201);
