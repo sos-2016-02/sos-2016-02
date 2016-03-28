@@ -1,8 +1,8 @@
-[{"province": "Alabacete","year": "2015","industry": "Agriculture","value":"17.0"},
-{"province": "Asturias","year": "2014","industry": "Agriculture","value":"13.8"},
-{"province": "Barcelona","year": "2015","industry": "Building","value":"132.1"},
-{"province": "Bizkaia","year": "2013","industry": "Services","value":"369.4"},
-{"province": "Burgos","year": "2013","industry": "Agriculture","value":"9.2"},
-{"province": "Ciudad Real","year": "2012","industry": "Factories Industries","value":"29.2"},
-{"province": "Sevilla","year": "2015","industry": "Building","value":"50.0"}
+[{"province": "Alabacete","year": 2015,"industry": "Agriculture","value":17.0},
+{"province": "Asturias","year": 2014,"industry": "Agriculture","value":13.8},
+{"province": "Barcelona","year": 2015,"industry": "Building","value":132.1},
+{"province": "Bizkaia","year": 2013,"industry": "Services","value":369.4},
+{"province": "Burgos","year": 2013,"industry": "Agriculture","value":9.2},
+{"province": "Ciudad Real","year": 2012,"industry": "Factories Industries","value":29.2},
+{"province": "Sevilla","year": 2015,"industry": "Building","value":50.0}
 ]
