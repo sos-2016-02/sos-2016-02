@@ -63,6 +63,12 @@ router.post('/:industry', (req,res) => {
 // GET para un identificador
 router.get('/:industry', (req,res) => {
 	var industryValue = req.params.industry;
+
+	/*hacer un for recorre todo los datos 
+	si el dato.industry == industryValue lo meto en un array nuevo que he creado previamente vacio. Devuelvo 
+	
+	despues del for el array con todos los recursos que cumplen la condicion.*/
+	
 	if (industryValue == "loadInitialData") {
 		workers = loadInitialData();
 		res.sendStatus(200);
