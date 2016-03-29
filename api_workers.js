@@ -13,7 +13,6 @@ var workers = [];
 
 // Cargo datos Iniiciales
 
-
 router.get('/loadInitialData',function(req,res){
 	workers = JSON.parse(fs.readFileSync('data/workers_initial_data.json','utf8'));
 	res.sendStatus(200);
@@ -23,7 +22,15 @@ router.get('/loadInitialData',function(req,res){
 //GET de todos los workers 
 
 router.get('/', (req, res) => {
-    res.send(workers);
+	var apikey = req.query.apikey;
+	if(!(apikey && apikey=="api_key_id")){
+		res.sendStatus(403) // forbiden
+	}else{
+		res.send(200);
+		res.send(workers);
+	}
+
+    
 });
 
 
@@ -56,6 +63,12 @@ router.post('/:industry', (req,res) => {
 // GET para un identificador
 router.get('/:industry', (req,res) => {
 	var industryValue = req.params.industry;
+
+	/*hacer un for recorre todo los datos 
+	si el dato.industry == industryValue lo meto en un array nuevo que he creado previamente vacio. Devuelvo 
+	
+	despues del for el array con todos los recursos que cumplen la condicion.*/
+	
 	if (industryValue == "loadInitialData") {
 		workers = loadInitialData();
 		res.sendStatus(200);
@@ -101,74 +114,18 @@ router.delete('/:industry', (req,res) => {
 
 
 //=====================METODO DE PAGINACION ====================================
-/*
-router.get('/req) {
-  console.log(req.query);
-  var page = req.query.page;
-      items = req.query.items;
-  page = page !== 'undefined' ? parseInt(page, 10) : undefined;
-  items = items !== 'undefined' ? parseInt(items, 10) : undefined;
 
-  //The search method will filter the data
-  var searchResults = exports.search(req.query);
-  //Then, I call sliceUsers(), passing the filtered data, page and items parameters
-  return exports.sliceUsers(searchResults , page, items);
-}*/
-
-//===========================================================================
-router.get('/:industry',function(req,res){
-	var industry =req.params.industry;
+router.get('/workers/:industry',function(req,res){
+	var industryValue =req.params.industry;
 	var limit = req.query.limit;
-	if(limit)
-		console.log("Limit:" +limit);
-	else
-		console.log("Limit Undefined" );
-	res.send(workers[0]);
-	console.log("New GET  of resource :"+workers);
+	if(limit && offset){
+		workers.splice(0,offset);
+		workers.splice(limit,workers.length-limit);
+	}
+	res.sendStatus(workers);
 	
 });
 
 //========================================================
-//LOGIN FUNCTION 
-/*
-function login() {
-  performRequest('/api/v1/workers/login', 'POST', {
-    username: username,
-    password: password,
-    api_key_id: apiKey
-  }, function(data) {
-    sessionId = data.result.id;
-    console.log('Logged in:', sessionId);
-    getWorkers();
-  });
-}
-
-function getWorkers() {
-  performRequest('/api/v1/' + deckId + '/workers', 'GET', {
-    session_id: sessionId,
-    "_items_per_page": 100
-  }, function(data) {
-    console.log('Fetched ' + data.result.paging.total_items + ' workers');
-  });
-}
-
-login();*/
-
-
-//======================================
-
-/*router.post('/api/v1/workers/:login',function(req,res){
-	var user = req.query.user;
-	var password = req.query.password;
-
-	if(user !="crileaech" || password != "sevilla2016"){
-		res.writeHead(403); // forbiden
-
-	}else{
-		res.setHeader('access-token',"You are welcome");
-		res.writeHead(200);
-	}
-	res.end;
-});*/
 
 module.exports = router;
