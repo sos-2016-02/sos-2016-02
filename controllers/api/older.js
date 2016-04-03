@@ -1,4 +1,4 @@
-var tools    = require('./tools.js');
+var tools    = require('../../tools.js');
 var keyRead  = 'keyRead';
 var keyWrite = 'keyWrite';
 
@@ -111,7 +111,7 @@ exports.getResourceByProvinceYear = function (req,res) {
 	{
 		res.send(filteredData);
 	} else {
-		res.sendStatus(404);
+		res.sendStatus(400);
 	}
 };
 
@@ -122,7 +122,7 @@ exports.putResourceByProvinceYear = function (req,res) {
 	var item       = req.body;
 	var statusCode;
 	if(item["province"]!=provinceId || item["year"]!=yearId) {
-		statusCode = 409;
+		statusCode = 400;
 	} else {
 		if (tools.removeByTwoProperties(data, 'province', provinceId, 'year', yearId))
 		{
