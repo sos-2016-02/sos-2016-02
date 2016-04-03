@@ -1,11 +1,11 @@
-var tools = require('./tools');
-var express = require('express');
+var controller = require('./controllers/api/population.js');
 var bodyParser = require('body-parser');
-var fs = require('fs');
+var express = require('express');
+var router = express.Router();
+
 var passport = require('passport');
 LocalAPIKeyStrategy = require('passport-localapikey-update').Strategy;
 
-var router = express.Router();
 router.use(bodyParser.json());
 router.use(passport.initialize());
 
@@ -29,97 +29,22 @@ function checkAuthentication(req, res, next) {
     })(req, res, next);
 };
 
-var populationData = [];
+router.get('/loadInitialData', (req,res) => controller.loadInitialData(req, res) );
 
-router.get('/loadInitialData', (req, res) => {
-    populationData = JSON.parse(fs.readFileSync('data/population_initial_data.json', 'utf8'));
-    res.sendStatus(200);
-});
+// on collection
+router.get('/', (req, res) => controller.getPopulationData(req, res));
+router.post('/', checkAuthentication, (req, res) => controller.postNewDatum(req, res));
+router.put('/', (req, res) => res.sendStatus(405));
+router.delete('/', (req, res) => controller.deleteAllData(req, res));
 
+// on a subset of collection
+router.get('/:province(\\D+)/', (req, res) => controller.getDataByProvince(req, res));
+router.get('/:year(\\d+)/', (req, res) => controller.getDataByYear(req, res));
 
-router.get('/', (req, res) => {
-    res.send(populationData);
-});
-
-
-router.post('/', checkAuthentication, (req, res) => {
-    var datum = req.body;
-    populationData.push(datum);
-    res.sendStatus(201);
-});
-
-
-router.put('/', (req, res) => {
-    res.sendStatus(405);
-});
-
-
-router.delete('/', (req, res) => {
-    populationData = [];
-    res.sendStatus(200);
-});
-
-
-router.post('/:province/:year', (req, res) => {
-    res.sendStatus(405);
-});
-
-
-router.get('/:province(\\D+)/', (req, res) => {
-    var province = req.params.province;
-    var provinceData = tools.findAllByProperty(populationData, 'province', province);
-    if (req.query.minPopulation != undefined) {
-        provinceData = provinceData.filter((datum) => {
-            return datum['number'] >= req.query.minPopulation;
-        });
-    }
-    res.send(provinceData);
-});
-
-
-router.get('/:year(\\d+)/', (req, res) => {
-    var year = req.params.year;
-    var data = tools.findAllByProperty(populationData, 'year', year);
-    res.send(data);
-});
-
-
-router.get('/:province/:year', (req, res) => {
-    var province = req.params.province;
-    var year = req.params.year;
-    var filteredByProvince = tools.findAllByProperty(populationData, 'province', province);
-    // province and year can indentify one datum
-    var datum = tools.findByProperty(filteredByProvince, 'year', year);
-    if (datum == undefined) {
-        res.sendStatus(404);
-    } else {
-        res.send(datum);
-    }
-});
-
-
-router.put('/:province/:year', (req, res) => {
-    var province = req.params.province;
-    if (tools.removeByTwoProperties(populationData,
-                                    'province', req.params.province,
-                                    'year', req.params.year)) {
-        datum = req.body;
-        populationData.push(datum);
-        res.sendStatus(200);
-    } else {
-        res.sendStatus(404);
-    }
-});
-
-
-router.delete('/:province/:year', (req, res) => {
-    if (tools.removeByTwoProperties(populationData,
-                                    'province', req.params.province,
-                                    'year', req.params.year)) {
-        res.sendStatus(200);
-    } else {
-        res.sendStatus(404);
-    }
-});
+// on individual ressources
+router.get('/:province/:year', (req, res) => controller.getDatum(req, res));
+router.put('/:province/:year', (req, res) => controller.putDatumToUpdate(req, res));
+router.delete('/:province/:year', (req, res) => controller.deleteDatum(req, res));
+router.post('/:province/:year', (req, res) => res.sendStatus(405));
 
 module.exports = router;
