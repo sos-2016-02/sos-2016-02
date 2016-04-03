@@ -37,6 +37,15 @@ exports.getPopulationData = (req, res) => {
 
 exports.postNewDatum = (req, res) => {
     var datum = req.body;
+    var filteredByProvince = tools.findAllByProperty(populationData,
+                                                     'province', datum.province);
+    // province and year are the primary key
+    var existingDatum = tools.findByProperty(filteredByProvince, 'year', datum.year);
+    if (existingDatum != undefined) {
+        res.sendStatus(409); // already exist
+        return;
+    }
+
     populationData.push(datum);
     res.sendStatus(201);
 };
