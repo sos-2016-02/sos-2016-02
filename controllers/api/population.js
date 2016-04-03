@@ -32,7 +32,10 @@ exports.loadInitialData = (req, res) => {
 };
 
 exports.getPopulationData = (req, res) => {
-    res.send(populationData);
+    var data = tools.getInterval(populationData,
+                                 req.query.offset,
+                                 req.query.limit);
+    res.send(data);
 };
 
 exports.postNewDatum = (req, res) => {
