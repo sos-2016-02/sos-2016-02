@@ -37,6 +37,16 @@ exports.getPopulationData = (req, res) => {
 
 exports.postNewDatum = (req, res) => {
     var datum = req.body;
+    var fieldIsMissing =
+            datum.province == undefined ||
+            datum.year == undefined ||
+            datum.number == undefined;
+
+    if (fieldIsMissing) {
+        res.sendStatus(400);
+        return;
+    }
+
     var filteredByProvince = tools.findAllByProperty(populationData,
                                                      'province', datum.province);
     // province and year are the primary key
