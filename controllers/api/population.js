@@ -67,7 +67,7 @@ exports.getDatum = (req, res) => {
     var province = req.params.province;
     var year = req.params.year;
     var filteredByProvince = tools.findAllByProperty(populationData, 'province', province);
-    // province and year can indentify one datum
+    // province and year are the primary key
     var datum = tools.findByProperty(filteredByProvince, 'year', year);
     if (datum == undefined) {
         res.sendStatus(404);
@@ -78,15 +78,29 @@ exports.getDatum = (req, res) => {
 
 exports.putDatumToUpdate = (req, res) => {
     var province = req.params.province;
-    if (tools.removeByTwoProperties(populationData,
-                                    'province', req.params.province,
-                                    'year', req.params.year)) {
-        datum = req.body;
-        populationData.push(datum);
-        res.sendStatus(200);
-    } else {
+    var year = req.params.year;
+    var filteredByProvince = tools.findAllByProperty(populationData, 'province', province);
+    // province and year are the primary key
+    var datum = tools.findByProperty(filteredByProvince, 'year', year);
+    if (datum == undefined) {
         res.sendStatus(404);
+        return;
     }
+
+    newDatum = req.body;
+    var primaryKeyIsNotTheSame =
+            datum.province != newDatum.province ||
+            datum.year != newDatum.year;
+    if (primaryKeyIsNotTheSame) {
+        res.sendStatus(400);
+        return;
+    }
+
+    tools.removeByTwoProperties(populationData,
+                                'province', province,
+                                'year', year);
+    populationData.push(newDatum);
+    res.sendStatus(200);
 };
 
 exports.deleteDatum = (req, res) => {
