@@ -5,6 +5,7 @@ var keyWrite = 'keyWrite';
 var data = tools.readJSONfromFile('data/olders_initial_data.json');
 
 exports.loadInitialData = function (req,res) {
+	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	data = tools.readJSONfromFile('data/olders_initial_data.json');
 	res.sendStatus(200);
 };
