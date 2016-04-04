@@ -103,28 +103,28 @@ exports.getFecha = function() {
 exports.readJSONfromFile = function(fileName) {
     var fs = require('fs');
     return JSON.parse(fs.readFileSync(fileName, 'utf8'));
-}
+};
 
 exports.getInterval = function(objectsArray, offset, limit) {
     var vFrom = (offset == undefined) ? 0: Math.abs(Number(offset));
     var vMany = (limit  == undefined) ? objectsArray.length - vFrom: Math.abs(Number(limit));
     var vTo   = vFrom + vMany;
-    return objectsArray.slice(vFrom,vTo);
-}
+    return objectsArray.slice(vFrom, vTo);
+};
 
 exports.selectFields = function(objectsArray, fieldsArray) {
     if (fieldsArray == undefined)
         return objectsArray;
     else
         return JSON.parse(JSON.stringify(objectsArray, fieldsArray.split(',')));
-}
+};
 
 exports.findAllByRange = function(objectsArray, propertyName, minValue, maxValue) {
     return objectsArray.filter((obj) => {
         return (isBetween(obj, propertyName, minValue, maxValue));
     });
 };
-function isBetween(obj, propertyName, minValue, maxValue){
+function isBetween(obj, propertyName, minValue, maxValue) {
     if ( minValue && !maxValue) { return obj[propertyName] >= minValue; }
     if (!minValue &&  maxValue) { return obj[propertyName] <= maxValue; }
     if ( minValue &&  maxValue) { return obj[propertyName] >= minValue && obj[propertyName] <= maxValue; }
@@ -133,4 +133,4 @@ function isBetween(obj, propertyName, minValue, maxValue){
 
 exports.checkApiKey = function(request, keyValue) {
     return (request.query.apikey && request.query.apikey == keyValue);
-}
+};
