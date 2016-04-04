@@ -72,7 +72,7 @@ router.get('/:industry(\\D+/)', (req,res) => {
 	var industryData = tools.findAllByProperty(workers,'industry',industry);
 	if(req.query.minIndustry !=undefined){
 		workers = workers.filter((content)=>{
-			return content ['number'] >= req.query..minIndustry;
+			return content ['number'] >= req.query.minIndustry;
 		});
 	}
 	res.send(workers);
