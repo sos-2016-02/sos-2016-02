@@ -9,17 +9,14 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
+	var vAPIname;
+	var vAPIversion;
+	var vConnection;
+
 	$("#btnEnviar").click(function(){
-		var vAPIname    = $("#selAPIname option:selected").val();
-		var vAPIversion = $("#selAPIversion option:selected").val();
-		var vConnection = $("#txtServer").val() + "/api/" + vAPIversion + "/" + vAPIname + "/" + $("#txtURI").val();
-		if ($("#apikey").val() != ""){
-			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
-			vConnection = vConnection + vChar + "apikey=" + $("#txtKey").val()
-		}
-		$("#txtRequest").text(vConnection);
+		obtenerDireccion();
 console.log("PAUSA");
-		var vType     = $("#txtType").val();
+		var vType     = $("input[type=radio]:checked").attr("id");
 		var vDataJSON = JSON.stringify($("#txtData").val());
 
 		var request = $.ajax({
@@ -38,7 +35,33 @@ console.log("PAUSA");
 		});;
 
 	});
+
+	$("input[name=txtURL]").keyup(function(){
+		obtenerDireccion();
+	});
+
+	$("#selAPIname").change(function(){
+		obtenerDireccion();
+	});
+
+	$("#selAPIversion").change(function(){
+		obtenerDireccion();
+	});
+
+	function obtenerDireccion() {
+		vAPIname    = $("#selAPIname option:selected").val();
+		vAPIversion = $("#selAPIversion option:selected").val();
+		vConnection = $("#txtServer").val() + "/api/" + vAPIversion + "/" + vAPIname + "/" + $("#txtURI").val();
+		if ($("#apikey").val() != ""){
+			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
+			vConnection = vConnection + vChar + "apikey=" + $("#txtKey").val()
+		}
+		$("#txtRequest").text(vConnection);
+	}
+
 });
+// https://sos-2016-02.herokuapp.com
+// http://localhost:3000
 </script>
 </head>
 
@@ -61,19 +84,19 @@ console.log("PAUSA");
 	<section id="connection">
 		<hr/>
 		<table>
-		<tr><td>Server:</td><td><input type="text" id="txtServer" size = "40" value = "http://localhost:3000"/></td></tr>
-		<tr><td>URI:</td><td><input type="text" id="txtURI" size = "40" value = "Sevilla"/></td></tr>
-		<tr><td>apikey:</td><td><input type="text" id="txtKey" size = "40" value = "keyRead"/></td></tr>
+		<tr><td>Server:</td><td><input type="text" name="txtURL" id="txtServer" size= "40" value="https://sos-2016-02.herokuapp.com"/></td></tr>
+		<tr><td>URI:</td><td><input type="text" name="txtURL" id="txtURI" size= "40" value="Sevilla"/></td></tr>
+		<tr><td>apikey:</td><td><input type="text" name="txtURL" id="txtKey" size= "40" value="keyRead"/></td></tr>
 		</table>
 	</section>
 	<section id="request">
 		<hr/>
 		<p>Data to send (payload):<br/><textarea id="txtData" cols="50" rows = "5"></textarea></p>
 		<p>Method:
-		<input type="radio" name="method" id="GET" checked="checked" />GET&nbsp;
-		<input type="radio" name="method" id="POST" />POST&nbsp;
-		<input type="radio" name="method" id="PUT" />PUT&nbsp;
-		<input type="radio" name="method" id="DELETE" />DELETE&nbsp;
+		<input type="radio" name="chkMethod" id="GET" checked="checked" />GET&nbsp;
+		<input type="radio" name="chkMethod" id="POST" />POST&nbsp;
+		<input type="radio" name="chkMethod" id="PUT" />PUT&nbsp;
+		<input type="radio" name="chkMethod" id="DELETE" />DELETE&nbsp;
 		</p>
 		<input type="button" id="btnEnviar" value="SEND"/>
 	</section>
