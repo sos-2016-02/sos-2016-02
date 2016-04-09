@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+<title>API REST - Olders</title>
+<meta charset="utf-8" />
+<script src="/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$("#btnEnviar").click(function(){
+		var vAPIname    = $("#selAPIname option:selected").val();
+		var vAPIversion = $("#selAPIversion option:selected").val();
+		var vConnection = $("#txtServer").val() + "/api/" + vAPIversion + "/" + vAPIname + "/" + $("#txtURI").val();
+		if ($("#apikey").val() != ""){
+			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
+			vConnection = vConnection + vChar + "apikey=" + $("#txtKey").val()
+		}
+		$("#txtRequest").text(vConnection);
+console.log("PAUSA");
+		var vType     = $("#txtType").val();
+		var vDataJSON = JSON.stringify($("#txtData").val());
+
+		var request = $.ajax({
+			 url        : vConnection
+			,type       : vType
+			,data       : vDataJSON
+			,contentType: "application/json"
+		});
+
+		request.done(function(data, status, jqXHR){
+			$("#txtReceived").text( JSON.stringify(data) );
+		});;
+
+		request.always(function(jqXHR, status){
+			$("#txtStatus").text(status);
+		});;
+
+	});
+});
+</script>
+</head>
+
+<body>
+	<header>
+		<h1>JQuery REST Client</h1>
+	</header>
+	<section id="api">
+		API:
+		<select id="selAPIname">
+		<option value="workers">Workers</option>
+		<option value="olders">Olders</option>
+		<option value="population">Population</option>
+		</select>
+		Version:
+		<select id="selAPIversion">
+		<option value="v1">1.0</option>
+		</select>
+	</section>
+	<section id="connection">
+		<hr/>
+		<table>
+		<tr><td>Server:</td><td><input type="text" id="txtServer" size = "40" value = "http://localhost:3000"/></td></tr>
+		<tr><td>URI:</td><td><input type="text" id="txtURI" size = "40" value = "Sevilla"/></td></tr>
+		<tr><td>apikey:</td><td><input type="text" id="txtKey" size = "40" value = "keyRead"/></td></tr>
+		</table>
+	</section>
+	<section id="request">
+		<hr/>
+		<p>Data to send (payload):<br/><textarea id="txtData" cols="50" rows = "5"></textarea></p>
+		<p>Method:
+		<input type="radio" name="method" id="GET" checked="checked" />GET&nbsp;
+		<input type="radio" name="method" id="POST" />POST&nbsp;
+		<input type="radio" name="method" id="PUT" />PUT&nbsp;
+		<input type="radio" name="method" id="DELETE" />DELETE&nbsp;
+		</p>
+		<input type="button" id="btnEnviar" value="SEND"/>
+	</section>
+	<section id="response">
+		<hr/>
+		<p>Request: <span id="txtRequest"></span></p>
+		<p>Status: <span id="txtStatus"></span></p>
+		<p>Data received:</p><p><span id="txtReceived"></span></p>
+	</section>
+</body>
+</html>
