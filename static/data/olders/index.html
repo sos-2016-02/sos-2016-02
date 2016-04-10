@@ -68,7 +68,7 @@ $(document).ready(function(){
 		$('input[name=txtURL]').val("");
 		// https://sos-2016-02.herokuapp.com
 		// http://localhost:3000
-		$('#txtServer').val("http://localhost:3000");
+		$('#txtServer').val("https://sos-2016-02.herokuapp.com");
 		$('#txtURI').val("Sevilla");
 		$('#txtKey').val("keyRead");
 	}
@@ -80,10 +80,6 @@ $(document).ready(function(){
 		if ($("#apikey").val() != ""){
 			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
 			vConnection = vConnection + vChar + "apikey=" + $("#txtKey").val()
-		}
-		if ($("#txtFields").val() != ""){
-			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
-			vConnection = vConnection + vChar + "fields=" + $("#txtFields").val()
 		}
 		if ($("#txtOffset").val() != ""){
 			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
@@ -100,6 +96,14 @@ $(document).ready(function(){
 		if ($("#txtTo").val() != ""){
 			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
 			vConnection = vConnection + vChar + "to=" + $("#txtTo").val()
+		}
+		if ($("#txtFields").val() != ""){
+			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
+			vConnection = vConnection + vChar + "fields=" + $("#txtFields").val()
+		}
+		if ($("#txtValues").val() != ""){
+			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
+			vConnection = vConnection + vChar + $("#txtValues").val()
 		}
 
 		$('#lnkRequest').attr('href',vConnection);
@@ -176,7 +180,8 @@ $(document).ready(function(){
 			<fieldset>
 				<legend>Filter</legend>
 				<table>
-				<tr><td>Fields:</td><td><input type="text" name="txtParam" id="txtFields" size= "25" /></td></tr>
+				<tr><td>Fields:</td><td><input type="text" name="txtParam" id="txtFields" size= "25" />&nbsp;<img id="imgInfoFileds" src="/images/info.png" title="province,men"/></td></tr>
+				<tr><td>Values:</td><td><input type="text" name="txtParam" id="txtValues" size= "25" />&nbsp;<img id="imgInfoValues" src="/images/info.png" title="year=2010&men=4827"/></td></tr>
 				</table>
 			</fieldset>
 		</td></tr>
