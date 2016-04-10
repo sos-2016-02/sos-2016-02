@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+<title>API REST - Olders</title>
+<meta charset="utf-8" />
+<script src="/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	var vAPIname;
+	var vAPIversion;
+	var vConnection;
+
+	setDefaultValues();
+
+	obtenerDireccion();
+
+	$("#btnEnviar").click(function(){
+		$("#txtReceived").html( "" );
+		var vType     = $("input[type=radio]:checked").attr("id");
+		var vDataJSON = $("#txtData").val();
+
+		var request = $.ajax({
+			 url        : vConnection
+			,type       : vType
+			,data       : vDataJSON
+			,contentType: "application/json; charset=utf-8"
+			,cache      : false
+		});
+
+		request.done(function(data, status, jqXHR){
+			$("#txtStatus").text("");
+			$("#txtReceived").text( JSON.stringify(data) );
+			var table = $.makeTable(data);
+			$(table).appendTo("#txtReceived");
+		});;
+
+		request.always(function(jqXHR, status){
+			if (status == "success"){
+				$("#txtStatus").text("Ok.");
+			} else {
+				$("#txtStatus").text("ERROR " + jqXHR.status + " " + jqXHR.statusText);	
+			}
+		});;
+
+	});
+
+	$("input[name=txtURL]").keyup(function(){
+		obtenerDireccion();
+	});
+
+	$("#selAPIname").change(function(){
+		obtenerDireccion();
+	});
+
+	$("#selAPIversion").change(function(){
+		obtenerDireccion();
+	});
+
+	function setDefaultValues() {
+		$('input[name=txtURL]').val("");
+		// https://sos-2016-02.herokuapp.com
+		// http://localhost:3000
+		$('#txtServer').val("http://localhost:3000");
+		$('#txtURI').val("Sevilla");
+		$('#txtKey').val("keyRead");
+	}
+
+	function obtenerDireccion() {
+		vAPIname    = $("#selAPIname option:selected").val();
+		vAPIversion = $("#selAPIversion option:selected").val();
+		vConnection = $("#txtServer").val() + "/api/" + vAPIversion + "/" + vAPIname + "/" + $("#txtURI").val();
+		if ($("#apikey").val() != ""){
+			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
+			vConnection = vConnection + vChar + "apikey=" + $("#txtKey").val()
+		}
+		$("#txtRequest").text(vConnection);
+	}
+
+	$.makeTable = function (dataJSON) {
+		var table = $('<table border="1">');
+		var tblHeader = "<tr>";
+		for (var h in dataJSON[0]) tblHeader += "<th>" + h + "</th>";
+		tblHeader += "</tr>";
+		$(tblHeader).appendTo(table);
+		$.each(dataJSON, function (index, value) {
+			var TableRow = "<tr>";
+			$.each(value, function (key, val) {
+				TableRow += "<td>" + val + "</td>";
+			});
+			TableRow += "</tr>";
+			$(table).append(TableRow);
+		});
+		return ($(table));
+	};
+
+});
+</script>
+</head>
+
+<body>
+	<header>
+		<h1>JQuery REST Client</h1>
+	</header>
+	<section id="api">
+		API:
+		<select id="selAPIname">
+		<option value="workers">Workers</option>
+		<option value="olders" selected="selected">Olders</option>
+		<option value="population">Population</option>
+		</select>
+		Version:
+		<select id="selAPIversion">
+		<option value="v1">1.0</option>
+		</select>
+	</section>
+	<section id="connection">
+		<hr/>
+		<table>
+		<tr><td>Server:</td><td><input type="text" name="txtURL" id="txtServer" size= "40" /></td></tr>
+		<tr><td>URI:</td><td><input type="text" name="txtURL" id="txtURI" size= "40" /></td></tr>
+		<tr><td>apikey:</td><td><input type="text" name="txtURL" id="txtKey" size= "40" /></td></tr>
+		</table>
+	</section>
+	<section id="request">
+		<hr/>
+		<p>Data to send (payload):<br/><textarea id="txtData" cols="50" rows = "5"></textarea></p>
+		<p>Method:
+		<input type="radio" name="chkMethod" id="GET" checked="checked" />GET&nbsp;
+		<input type="radio" name="chkMethod" id="POST" />POST&nbsp;
+		<input type="radio" name="chkMethod" id="PUT" />PUT&nbsp;
+		<input type="radio" name="chkMethod" id="DELETE" />DELETE&nbsp;
+		</p>
+		<hr/>
+		<p>Request: <span id="txtRequest"></span></p>
+		<input type="button" id="btnEnviar" value="SEND"/>
+	</section>
+	<section id="response">
+		<hr/>
+		<p>Status: <span id="txtStatus"></span></p>
+		<p>Data received:</p><p>
+		<span id="txtReceived">
+			<table id="tblJSON"></table>			
+		</span></p>
+	</section>
+</body>
+</html>
