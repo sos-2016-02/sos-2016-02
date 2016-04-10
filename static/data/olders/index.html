@@ -32,7 +32,7 @@ $(document).ready(function(){
 
 		request.done(function(data, status, jqXHR){
 			$("#txtStatus").text("");
-			$("#txtReceived").text( JSON.stringify(data) );
+			//$("#txtReceived").text( JSON.stringify(data) );
 			var table = $.makeTable(data);
 			$(table).appendTo("#txtReceived");
 		});;
@@ -48,6 +48,11 @@ $(document).ready(function(){
 	});
 
 	$("input[name=txtURL]").keyup(function(){
+		obtenerDireccion();
+	});
+
+	$("input[name=txtParam]").keyup(function(){
+		$("#txtURI").val("");
 		obtenerDireccion();
 	});
 
@@ -76,7 +81,29 @@ $(document).ready(function(){
 			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
 			vConnection = vConnection + vChar + "apikey=" + $("#txtKey").val()
 		}
-		$("#txtRequest").text(vConnection);
+		if ($("#txtFields").val() != ""){
+			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
+			vConnection = vConnection + vChar + "fields=" + $("#txtFields").val()
+		}
+		if ($("#txtOffset").val() != ""){
+			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
+			vConnection = vConnection + vChar + "offset=" + $("#txtOffset").val()
+		}
+		if ($("#txtLimit").val() != ""){
+			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
+			vConnection = vConnection + vChar + "limit=" + $("#txtLimit").val()
+		}
+		if ($("#txtFrom").val() != ""){
+			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
+			vConnection = vConnection + vChar + "from=" + $("#txtFrom").val()
+		}
+		if ($("#txtTo").val() != ""){
+			var vChar  = ( vConnection.indexOf("?")==-1) ? "?" : "&";
+			vConnection = vConnection + vChar + "to=" + $("#txtTo").val()
+		}
+
+		$('#lnkRequest').attr('href',vConnection);
+		$('#lnkRequest').text(vConnection);
 	}
 
 	$.makeTable = function (dataJSON) {
@@ -86,12 +113,12 @@ $(document).ready(function(){
 		tblHeader += "</tr>";
 		$(tblHeader).appendTo(table);
 		$.each(dataJSON, function (index, value) {
-			var TableRow = "<tr>";
+			var tblRow = "<tr>";
 			$.each(value, function (key, val) {
-				TableRow += "<td>" + val + "</td>";
+				tblRow += "<td>" + val + "</td>";
 			});
-			TableRow += "</tr>";
-			$(table).append(TableRow);
+			tblRow += "</tr>";
+			$(table).append(tblRow);
 		});
 		return ($(table));
 	};
@@ -119,14 +146,46 @@ $(document).ready(function(){
 	<section id="connection">
 		<hr/>
 		<table>
-		<tr><td>Server:</td><td><input type="text" name="txtURL" id="txtServer" size= "40" /></td></tr>
-		<tr><td>URI:</td><td><input type="text" name="txtURL" id="txtURI" size= "40" /></td></tr>
-		<tr><td>apikey:</td><td><input type="text" name="txtURL" id="txtKey" size= "40" /></td></tr>
+		<tr><td>Server:</td><td><input type="text" name="txtURL" id="txtServer" size= "30" /></td></tr>
+		<tr><td>URI:</td><td><input type="text" name="txtURL" id="txtURI" size= "30" /></td></tr>
+		<tr><td>apikey:</td><td><input type="text" name="txtURL" id="txtKey" size= "30" /></td></tr>
 		</table>
+	</section>
+	<section id="parameters">
+		<hr/>
+		<table>
+		<tr><td>
+			<fieldset>
+				<legend>Pages</legend>
+				<table>
+				<tr><td>Offset:</td><td><input type="text" name="txtParam" id="txtOffset" size= "5" /></td></tr>
+				<tr><td>Limit:</td><td><input type="text" name="txtParam" id="txtLimit" size= "5" /></td></tr>
+				</table>
+			</fieldset>
+		</td>
+		<td>
+			<fieldset>
+				<legend>Interval</legend>
+				<table>
+				<tr><td>From:</td><td><input type="text" name="txtParam" id="txtFrom" size= "5" /></td></tr>
+				<tr><td>to:</td><td><input type="text" name="txtParam" id="txtTo" size= "5" /></td></tr>
+				</table>
+			</fieldset>
+		</td></tr>
+		<tr><td colspan="2">
+			<fieldset>
+				<legend>Filter</legend>
+				<table>
+				<tr><td>Fields:</td><td><input type="text" name="txtParam" id="txtFields" size= "25" /></td></tr>
+				</table>
+			</fieldset>
+		</td></tr>
+		</table>
+
 	</section>
 	<section id="request">
 		<hr/>
-		<p>Data to send (payload):<br/><textarea id="txtData" cols="50" rows = "5"></textarea></p>
+		<p>Data to send (payload):<br/><textarea id="txtData" cols="40" rows = "5"></textarea></p>
 		<p>Method:
 		<input type="radio" name="chkMethod" id="GET" checked="checked" />GET&nbsp;
 		<input type="radio" name="chkMethod" id="POST" />POST&nbsp;
@@ -134,8 +193,8 @@ $(document).ready(function(){
 		<input type="radio" name="chkMethod" id="DELETE" />DELETE&nbsp;
 		</p>
 		<hr/>
-		<p>Request: <span id="txtRequest"></span></p>
-		<input type="button" id="btnEnviar" value="SEND"/>
+		<a id="lnkRequest"></a><br/><br/>
+		<input type="button" id="btnEnviar" value="SEND THIS REQUEST"/>
 	</section>
 	<section id="response">
 		<hr/>
