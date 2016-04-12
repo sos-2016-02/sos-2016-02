@@ -56,6 +56,11 @@ $(document).ready(function(){
 		obtenerDireccion();
 	});
 
+	$("#txtURI").keyup(function(){
+		$('input[name=txtParam]').val("");
+		obtenerDireccion();
+	});
+
 	$("#selAPIname").change(function(){
 		obtenerDireccion();
 	});
