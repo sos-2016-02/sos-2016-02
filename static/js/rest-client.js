@@ -1,5 +1,5 @@
-$(document).ready(function(){
-	  $("#btnSend").click(function(){
+$(document).ready(function() {
+	  $("#btnSend").click(function() {
 		    $("#responseRaw").html( "" );
 		    $("#responsePrettyPrinted").html( "" );
 		    var request = $.ajax({
@@ -8,13 +8,13 @@ $(document).ready(function(){
 			      ,data       : $("#requestPayload").val()
 			      ,contentType: "application/json"
 		    });
-		    request.done(function(data, status, jqXHR){
+		    request.done(function(data, status, jqXHR) {
 			      $("#resonseStatus").text("");
             $("#responseRaw").text( JSON.stringify(data) );
 			      $("#responsePrettyPrinted").html( prettyPrint(data) );
 		    });;
 
-		    request.always(function(jqXHR, status){
+		    request.always(function(jqXHR, status) {
 			      if (status == "success")
 				        $("#responseStatus").text(status);
 			      else
