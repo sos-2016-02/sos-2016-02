@@ -18,11 +18,11 @@
 	</header>
 	<section id="connection">
 		<hr/>
-		URL: </td><td><input type="text" name="strRequestUrl" id="strRequestUrl" size= "40" />
+		URL: </td><td><input type="text" name="requestUrl" id="requestUrl" size= "40" />
 	</section>
 	<section id="request">
 		<hr/>
-		<p>Data to send (payload):<br/><textarea id="strRequestPayload" cols="50" rows = "5"></textarea></p>
+		<p>Data to send (payload):<br/><textarea id="requestPayload" cols="50" rows = "5"></textarea></p>
 		<p>Method:
 		<input type="radio" name="chkMethod" id="GET" checked="checked" />GET&nbsp;
 		<input type="radio" name="chkMethod" id="POST" />POST&nbsp;
@@ -30,8 +30,7 @@
 		<input type="radio" name="chkMethod" id="DELETE" />DELETE&nbsp;
 		</p>
 		<hr/>
-		<p>Request: <span id="strRequest"></span></p>
-		<input type="button" id="btnEnviar" value="SEND"/>
+		<input type="button" id="btnSend" value="SEND"/>
 	</section>
 	<section id="response">
 		<hr/>

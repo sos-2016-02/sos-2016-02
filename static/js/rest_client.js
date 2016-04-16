@@ -1,11 +1,11 @@
 $(document).ready(function(){
-	  $("#btnEnviar").click(function(){
+	  $("#btnSend").click(function(){
 		    $("#responseRaw").html( "" );
 		    $("#responsePrettyPrinted").html( "" );
 		    var request = $.ajax({
-			      url        : $("#strRequestUrl").val()
+			      url        : $("#requestUrl").val()
 			      ,type       : $("input[type=radio]:checked").attr("id")
-			      ,data       : $("#strRequestPayload").val()
+			      ,data       : $("#requestPayload").val()
 			      ,contentType: "application/json"
 		    });
 		    request.done(function(data, status, jqXHR){
