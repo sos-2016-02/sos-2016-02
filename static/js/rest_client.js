@@ -1,23 +1,24 @@
 $(document).ready(function(){
 	  $("#btnEnviar").click(function(){
-		    $("#txtReceived").html( "" );
-		    console.log("HOLA");
+		    $("#responseRaw").html( "" );
+		    $("#responsePrettyPrinted").html( "" );
 		    var request = $.ajax({
-			      url        : $("#txtURL").val()
+			      url        : $("#strRequestUrl").val()
 			      ,type       : $("input[type=radio]:checked").attr("id")
-			      ,data       : $("#txtData").val()
+			      ,data       : $("#strRequestPayload").val()
 			      ,contentType: "application/json"
 		    });
 		    request.done(function(data, status, jqXHR){
-			      $("#txtStatus").text("");
-			      $("#txtReceived").text( JSON.stringify(data) );
+			      $("#resonseStatus").text("");
+            $("#responseRaw").text( JSON.stringify(data) );
+			      $("#responsePrettyPrinted").html( prettyPrint(data) );
 		    });;
 
 		    request.always(function(jqXHR, status){
 			      if (status == "success")
-				        $("#txtStatus").text(status);
+				        $("#responseStatus").text(status);
 			      else
-				        $("#txtStatus").text(jqXHR.status + " " + jqXHR.statusText);
+				        $("#responseStatus").text(jqXHR.status + " " + jqXHR.statusText);
 		    });;
 
 	  });

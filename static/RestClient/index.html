@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <script src="/js/jquery-2.2.3.min.js"></script>
 <script src="/js/rest_client.js"></script>
+<script src="/js/prettyprint.js"></script>
 <script type="text/javascript">
 </script>
 </head>
@@ -17,11 +18,11 @@
 	</header>
 	<section id="connection">
 		<hr/>
-		URL: </td><td><input type="text" name="txtURL" id="txtURL" size= "40" />
+		URL: </td><td><input type="text" name="strRequestUrl" id="strRequestUrl" size= "40" />
 	</section>
 	<section id="request">
 		<hr/>
-		<p>Data to send (payload):<br/><textarea id="txtData" cols="50" rows = "5"></textarea></p>
+		<p>Data to send (payload):<br/><textarea id="strRequestPayload" cols="50" rows = "5"></textarea></p>
 		<p>Method:
 		<input type="radio" name="chkMethod" id="GET" checked="checked" />GET&nbsp;
 		<input type="radio" name="chkMethod" id="POST" />POST&nbsp;
@@ -29,14 +30,16 @@
 		<input type="radio" name="chkMethod" id="DELETE" />DELETE&nbsp;
 		</p>
 		<hr/>
-		<p>Request: <span id="txtRequest"></span></p>
+		<p>Request: <span id="strRequest"></span></p>
 		<input type="button" id="btnEnviar" value="SEND"/>
 	</section>
 	<section id="response">
 		<hr/>
-		<p>Status: <span id="txtStatus"></span></p>
+		<p>Status: <span id="responseStatus"></span></p>
 		<p>Data received:</p><p>
-		<span id="txtReceived"></span></p>
+		<span id="responseRaw"></span></p>
+		<p>Data pretty printed:</p><p>
+		<span id="responsePrettyPrinted"></span></p>
 	</section>
 </body>
 </html>
