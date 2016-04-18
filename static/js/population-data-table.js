@@ -10,11 +10,11 @@ $(document).ready(function() {
         table = makeTable(jsonData);
         console.log(table[0].outerHTML);
         $("#population-data").html(table);
-		});;
+		});
 
 		request.always(function(jqXHR, textStatus) {
         console.log("request status: " + textStatus);
-		});;
+		});
 
 });
 

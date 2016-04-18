@@ -1,7 +1,6 @@
 var tools = require('./tools');
 var express = require('express');
 var router = express.Router();
-
 var films = loadInitialData();
 
 // --------------------------------------------------
