@@ -17,20 +17,37 @@
 		  <h1>Population REST Client</h1>
 	  </header>
 	  <div id="connection">
-		  <hr/>
-		  URL: <input type="text" name="txtRequestUrl" id="txtRequestUrl" size= "40" />
+      <div class="input-field">
+        <input id="txtRequestUrl" type="text" class="validate">
+        <label for="txtRequestUrl">URL</label>
+      </div>
 	  </div>
 	  <div id="request">
+      <div class="input-field col s6">
+        <textarea id="txtRequestPayload" class="materialize-textarea"></textarea>
+        <label for="txtRequestPayload">Data to send (payload)</label>
+      </div>
+		  Method:
+      <p>
+        <input name="chkMethod" type="radio" id="GET" checked="checked" />
+        <label for="GET">GET</label>
+      </p>
+      <p>
+        <input name="chkMethod" type="radio" id="POST" />
+        <label for="POST">POST</label>
+      </p>
+      <p>
+        <input name="chkMethod" type="radio" id="PUT"  />
+        <label for="PUT">PUT</label>
+      </p>
+      <p>
+        <input name="chkMethod" type="radio" id="DELETE"  />
+        <label for="DELETE">DELETE</label>
+      </p>
 		  <hr/>
-		  <p>Data to send (payload):<br/><textarea id="txtRequestPayload" cols="50" rows = "5"></textarea></p>
-		  <p>Method:
-		    <input type="radio" name="chkMethod" id="GET" checked="checked" />GET&nbsp;
-		    <input type="radio" name="chkMethod" id="POST" />POST&nbsp;
-		    <input type="radio" name="chkMethod" id="PUT" />PUT&nbsp;
-		    <input type="radio" name="chkMethod" id="DELETE" />DELETE&nbsp;
-		  </p>
-		  <hr/>
-		  <input type="button" id="btnSend" value="SEND"/>
+      <button class="btn waves-effect waves-light" type="button" name="action"  id="btnSend">Submit
+        <i class="material-icons right"></i>
+      </button>
 	  </div>
 	  <div id="response">
 		  <hr/>
