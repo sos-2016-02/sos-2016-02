@@ -7,12 +7,34 @@
 <meta charset="utf-8" />
 <script src="/js/jquery-2.2.3.min.js"></script>
 <script src="/js/olders-data-table.js"></script>
+
+<style>
+#generateQuery{
+	float:left;
+	margin-right: 20px;
+	padding: 10px;
+	border-style: solid;
+	border-width: 1px;
+}
+#responseQuery{
+	float:left;
+	padding: 10px;
+	overflow-y: scroll;
+	height: 600px;
+	width:45%;
+	border-style: solid;
+	border-width: 1px;
+	background: #F0F0F0;
+}
+</style>
+
 </head>
 
 <body>
 	<header>
 		<h1>JQuery REST Client</h1>
 	</header>
+	<section id="generateQuery">
 	<section id="api">
 		API:
 		<select id="selAPIname">
@@ -24,18 +46,22 @@
 		<select id="selAPIversion">
 		<option value="v1">1.0</option>
 		</select>
+		&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnLoadInitialData" value="Load Initial Data"/>
 	</section>
-	<section id="connection">
+	<section id="RESTparams">
 		<hr/>
 		<table>
-		<tr><td>Server:</td><td><input type="text" name="txtURL" id="txtServer" size= "30" /></td></tr>
-		<tr><td>URI:</td><td><input type="text" name="txtURL" id="txtURI" size= "30" /></td></tr>
-		<tr><td>apikey:</td><td><input type="text" name="txtURL" id="txtKey" size= "30" /></td></tr>
-		</table>
-	</section>
-	<section id="parameters">
-		<hr/>
-		<table>
+		<tr><td colspan="2">
+			<fieldset>
+				<legend>Server</legend>
+				<table>
+				<tr><td>Host:</td><td><input type="text" name="txtURL" id="txtServer" size= "30" /></td></tr>
+				<tr><td>URI:</td><td><input type="text" name="txtURL" id="txtURI" size= "30" /></td></tr>
+				<tr><td>apikey:</td><td><input type="text" name="txtURL" id="txtKey" size= "30" /></td></tr>
+				</table>
+			</fieldset>				
+			</td>
+		</tr>
 		<tr><td>
 			<fieldset>
 				<legend>Pages</legend>
@@ -68,7 +94,7 @@
 	</section>
 	<section id="request">
 		<hr/>
-		<p>Data to send (payload):<br/><textarea id="txtData" cols="40" rows = "5"></textarea></p>
+		<p>Data to send (payload):<br/><textarea id="txtData" cols="45" rows = "5"></textarea></p>
 		<p>Method:
 		<input type="radio" name="chkMethod" id="GET" checked="checked" />GET&nbsp;
 		<input type="radio" name="chkMethod" id="POST" />POST&nbsp;
@@ -79,9 +105,10 @@
 		<a id="lnkRequest"></a><br/><br/>
 		<input type="button" id="btnEnviar" value="SEND THIS REQUEST"/>
 	</section>
-	<section id="response">
-		<hr/>
-		<p>Status: <span id="txtStatus"></span></p>
+	</section>
+
+	<section id="responseQuery">
+		<p>Status: <span id="txtStatus"></span></p><hr/>
 		<p>Data received:</p><p>
 		<span id="txtReceived">
 			<table id="tblJSON"></table>			
