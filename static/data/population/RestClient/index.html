@@ -14,11 +14,11 @@
 	<header>
 		<h1>Population REST Client</h1>
 	</header>
-	<section id="connection">
+	<div id="connection">
 		<hr/>
-		URL: </td><td><input type="text" name="txtRequestUrl" id="txtRequestUrl" size= "40" />
-	</section>
-	<section id="request">
+		URL: <input type="text" name="txtRequestUrl" id="txtRequestUrl" size= "40" />
+	</div>
+	<div id="request">
 		<hr/>
 		<p>Data to send (payload):<br/><textarea id="txtRequestPayload" cols="50" rows = "5"></textarea></p>
 		<p>Method:
@@ -29,14 +29,14 @@
 		</p>
 		<hr/>
 		<input type="button" id="btnSend" value="SEND"/>
-	</section>
-	<section id="response">
+	</div>
+	<div id="response">
 		<hr/>
 		<p>Status: <span id="strResponseStatus"></span></p>
 		<p>Data received:</p><p>
 		<span id="strResponseRaw"></span></p>
 		<p>Data pretty printed:</p><p>
 		<span id="strResponsePrettyPrinted"></span></p>
-	</section>
+	</div>
 </body>
 </html>
