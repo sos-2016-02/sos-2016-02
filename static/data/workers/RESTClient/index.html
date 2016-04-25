@@ -5,17 +5,55 @@
 <head>
 <title>API REST</title>
 <meta charset="utf-8" />
-<link type ="text" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" media="screen,projection"/>
+<link type ="text/css" href="/css/bootstrap.min.css" rel="stylesheet" media="screen,projection"/>
+<link href="/css/bootstrap-theme.min.css" rel="stylesheet">
 <script src="/js/jquery-2.2.3.min.js"></script>
+<script type="text/javascript" src="/js/bootstrap.min.js"></script>
 <script src="/js/rest-client.js"></script>
 <script src="/js/prettyprint.js"></script>
 </head>
 
 <body>
 	<header>
-		<h1>Workers  REST Client</h1>
+		<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Workers REST Client</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Workers REST Client </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Url</a></li>
+            <li><a href="#data to send">Data to send</a></li>
+            
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Method <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">GET</a></li>
+                <li><a href="#">POST</a></li>
+                <li><a href="#">PUT</a></li>
+                <li><a href="#">DELETE</a></li>
+                <li role="separator" class="divider"></li>
+                <li class="dropdown-header">Enlace separado</li>
+                <li><a href="#">Status </a></li>
+                <li><a href="#">Data Pretty Printed</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+		
+		<h3>CONTENT WORKERS API REST CLIENT </h3>
 	
 	</header>
+
 	<section id="connection">
 		URL: </td><td><input type="text" name="txtRequestUrl" class="form-control" id="txtRequestUrl" size= "40" />
 	</section>
@@ -25,11 +63,11 @@
 		<p>Method:
 		
 		<select class="c-select">
-  			<option selected="">-------</option>
-  			<option value="1">GET</option>
-  			<option value="2">POST</option>
-  			<option value="3">PUT</option>
-  			<option value="4">DELETE</option>
+  			<option selected="1">-------</option>
+  			<option value="2">GET</option>
+  			<option value="3">POST</option>
+  			<option value="4">PUT</option>
+  			<option value="5">DELETE</option>
 		</select>
 		</p>
 
@@ -38,7 +76,11 @@
 	</section>
 	<section id="response">
 		<hr/>
-		<p>Status: <span id="strResponseStatus"></span></p>
+		<p>Status: <span id="strResponseStatus"></span>
+		<button type="button" class="btn btn-success">Success</button>
+		<button type="button" class="btn btn-warning">Warning</button>
+		<button type="button" class="btn btn-danger">Danger</button>
+		</p>
 			
 		<p>Data received:</p><p>
 		<span id="strResponseRaw"></span></p>
