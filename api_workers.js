@@ -6,15 +6,6 @@ var fs = require('fs');
 var router     = express.Router();
 router.use(bodyParser.json());
 var workersData = loadInitialData();
-/*var apiKey= apikey();
-function apikey(){
-    apikey = "sos";
-    if(!(apikey && apikey == "sos")){
-        res.sendStatus(403);
-    }else{
-        res.sendStatus(200);
-    }
-}*/
 
 function loadInitialData() {
     arr = [];
@@ -30,10 +21,10 @@ function loadInitialData() {
 }
 
 router.get('/loadInitialData', (req, res) => {
-	var apiKey = req.query.apikey;
+	/*var apiKey = req.query.apikey;
     if(!(apikey && apikey == "sos")){
         res.sendStatus(403);
-    }
+    }*/
     workersData = JSON.parse(fs.readFileSync('data/workers_initial_data.json', 'utf8'));
     res.sendStatus(200);
 });
@@ -46,10 +37,10 @@ router.get('/',(req, res) => {
 });
 
 router.post ('/' ,(req, res) => {
-	var apiKey = req.query.apikey;
+	/*var apiKey = req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
-	}
+	}*/
     var datan = req.body;
     var fieldIsMissing =
             datan.year == undefined ||
@@ -75,10 +66,10 @@ router.post ('/' ,(req, res) => {
 });
 
 router.delete('/',(req, res) => {
-	var apiKey =req.query.apikey;
+	/*var apiKey =req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
-	}
+	}*/
     workersData = [];
     res.sendStatus(200);
 });
