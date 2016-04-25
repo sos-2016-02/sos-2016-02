@@ -6,13 +6,24 @@
     <title>Population data</title>
     <meta charset="utf-8" />
     <script src="/js/jquery-2.2.3.min.js"></script>
+    <script src="/js/population/jquery.dataTables.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="/css/population/jquery.dataTables.min.css"/>
+
     <script src="/js/population-data-table.js"></script>
   </head>
 
   <body>
     <h1>Population data</h1>
-    <div id="population-data">
-    </div>
+    <table id="population-data-table">
+      <thead>
+        <tr>
+          <th>Year</th>
+          <th>Province</th>
+          <th>Age</th>
+          <th>Birthplace</th>
+          <th>Number</th>
+        </tr>
+      </thead>
+    </table>
   </body>
-
 </html>
