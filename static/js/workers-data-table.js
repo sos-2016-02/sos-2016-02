@@ -16,7 +16,7 @@ $(document).ready(function() {
 	request.done(function(data,status,jqXHR){
 		console.log(JSON.stringify(data));
 		table =makeTable(data);
-		//Quuiero mostrar todos los elemento de DOM
+		//Quiero mostrar todos los elemento de DOM
 		//is dumped to the console window
 		console.log(table[0].outerHTML);
 		$("#workers-data").html(table);

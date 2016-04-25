@@ -2,14 +2,84 @@
 <html>
 <head>
     <meta charset="UTF-8">
-	<title>Workers Data</title>
-	<!--min significa version comprimida-->
-	<script src="/js/jquery-2.2.3.min.js"></script>
-    <script src="/js/workers-data-table.js"></script>
+    <div class="jumbotron">
+        <h1> Workers Data </h1>
+      </div>
+<title>Workers Data Accordion</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script>
+  $(function() {
+    $( "#accordion" ).accordion();
+  });
+  </script>
 </head>
 <body>
-	<h1>Workers Data</h1>
-    <div id="workers-data"></div>
+ 
+<div id="accordion">
+  <h3> Province </h3>
+  <div>
+    <p>
+    Here we have got a few province from Spain 
+    </p>
+    <ul>
+      <li>Albacete</li>
+      <li>Asturias</li>
+      <li>Barcelona</li>
+      <li>Bizkaia</li>
+      <li>Burgos</li>
+      <li>Ciudad Real</li>
+      <li>Sevilla</li>
+    </ul>
+  </div>
+  <h3>Year</h3>
+  <div>
+    <p>
+    We can see different period of time 
+    </p>
+    <ul>
+      <li>2015</li>
+      <li>2014</li>
+      <li>2015</li>
+      <li>2013</li>
+      <li>2013</li>
+      <li>2012</li>
+      <li>2015</li>
+    </ul>
 
+  </div>
+  <h3>Industry</h3>
+  <div>
+    <p>
+    we have here the description about the industry that reflected in the statistics from the minister of Spain  
+    </p>
+    <ul>
+      <li>Agrigulture</li>
+      <li>Agrigulture</li>
+      <li>Building</li>
+      <li>Services</li>
+      <li>Agriculture</li>
+      <li>Factories Industries</li>
+      <li>Building</li>
+    </ul>
+  </div>
+  <h3>Value</h3>
+  <div>
+    <p>
+    This is the value according with the year provided by statistics from the minister of Spain
+    </p>
+    <ul>
+      <li>17.0</li>
+      <li>13.8</li>
+      <li>132.1</li>
+      <li>369.4</li>
+      <li>9.2</li>
+      <li>29.2</li>
+      <li>50.0</li>
+    </ul>
+  </div>
+</div>
 </body>
 </html>

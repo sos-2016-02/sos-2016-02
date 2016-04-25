@@ -1,4 +1,3 @@
-// ============================================================================ VARIABLES DEFINITION
 var tools      = require('./tools');
 var bodyParser = require('body-parser');
 var express    = require('express');
@@ -6,206 +5,173 @@ var express    = require('express');
 var fs = require('fs'); 
 var router     = express.Router();
 router.use(bodyParser.json());
-var workers = loadInitialData();
-
-//==============================================
+var workersData = loadInitialData();
+/*var apiKey= apikey();
+function apikey(){
+    apikey = "sos";
+    if(!(apikey && apikey == "sos")){
+        res.sendStatus(403);
+    }else{
+        res.sendStatus(200);
+    }
+}*/
 
 function loadInitialData() {
-	arr = [];
-	arr.push( { province: "Albacete", year : "2015" , industry : "Agriculture" , value : "17.0"});
-	arr.push( { province: "Asturias", year : "2014" , industry : "Agriculture" , value : "13.8"});
-	arr.push( { province: "Barcelona", year : "2015" , industry : "Building" , value : "132.1"});
-	arr.push( { province: "Bizkaia", year : "2013" , industry : "Services" , value : "369.4"});
-	arr.push( { province: "Burgos", year : "2013" , industry : "Agriculture" , value : "9.2"});
-	arr.push( { province: "Ciudad Real", year : "2012" , industry : "Factories Industries " , value : "29.2"});
-	arr.push( { province: "Sevilla", year : "2015" , industry : "Building" , value : "50.0"});
-	
-	return arr;
+    arr = [];
+    arr.push( { province: "Albacete", year : "2015" , industry : "Agriculture" , value : "17.0"});
+    arr.push( { province: "Asturias", year : "2014" , industry : "Agriculture" , value : "13.8"});
+    arr.push( { province: "Barcelona", year : "2015" , industry : "Building" , value : "132.1"});
+    arr.push( { province: "Bizkaia", year : "2013" , industry : "Services" , value : "369.4"});
+    arr.push( { province: "Burgos", year : "2013" , industry : "Agriculture" , value : "9.2"});
+    arr.push( { province: "Ciudad Real", year : "2012" , industry : "Factories Industries " , value : "29.2"});
+    arr.push( { province: "Sevilla", year : "2015" , industry : "Building" , value : "50.0"});
+    
+    return arr;
 }
 
-//=================================================
-
-// Cargo datos Iniiciales
-
-router.get('/loadInitialData', function(req,res){
-	workers = JSON.parse(fs.readFileSync('data/workers_initial_data.json', 'utf8'));
-	
-	res.sendSatus(200);
-});
-//==============Peticiones de la api=================
-
-//GET de todos los workers 
-
-router.get('/', (req, res) => {
-	var apikey = req.query.apikey;
-	if(!(apikey && apikey=="sos")){
-		res.sendStatus(403) // forbiden
-	}else{
-		
-		res.send(workers);
-	}
-
-    
+router.get('/loadInitialData', (req, res) => {
+	var apiKey = req.query.apikey;
+    if(!(apikey && apikey == "sos")){
+        res.sendStatus(403);
+    }
+    workersData = JSON.parse(fs.readFileSync('data/workers_initial_data.json', 'utf8'));
+    res.sendStatus(200);
 });
 
+router.get('/',(req, res) => {
+    var data = tools.getInterval(workersData,
+                                 req.query.offset,
+                                 req.query.limit);
+    res.send(data);
+});
 
-router.post('/', (req, res) => {
-	var apikey = req.query.apikey;
-	if(!(apikey && apikey=="sos")){
-		res.sendStatus(403) // forbiden
-		return //impedir que haga post 
+router.post ('/' ,(req, res) => {
+	var apiKey = req.query.apikey;
+	if(!(apikey && apikey == "sos")){
+		res.sendStatus(403);
 	}
-    var content = req.body;
-    workers.push(content);
+    var datan = req.body;
+    var fieldIsMissing =
+            datan.year == undefined ||
+            datan.industry == undefined ||
+            datan.value == undefined;
+
+    if (fieldIsMissing) {
+        res.sendStatus(400);
+        return;
+    }
+
+    var filteredByYear = tools.findAllByProperty(workersData,
+                                                     'year', datan.province);
+    // year and province are the primary key
+    var existingDatum = tools.findByProperty(filteredByYear, 'industry', datan.industry);
+    if (existingDatum != undefined) {
+        res.sendStatus(409); // already exist
+        return;
+    }
+
+    workersData.push(datan);
     res.sendStatus(201);
 });
 
-
-router.put('/', (req, res) => {
-    res.sendStatus(405);
-});
-
-
-router.delete('/', (req, res) => {
-	var apikey = req.query.apikey;
-	if(!(apikey && apikey=="sos")){
-		res.sendStatus(403) // forbiden
-	}else{
-		
-		res.send(workers);
+router.delete('/',(req, res) => {
+	var apiKey =req.query.apikey;
+	if(!(apikey && apikey == "sos")){
+		res.sendStatus(403);
 	}
-   workers = [];
-   res.sendStatus(200);
+    workersData = [];
+    res.sendStatus(200);
 });
 
+router.get('/:year', (req, res) => {
+	/*var apikey =req.query.apikey;
+	if(!(apikey && apikey == "sos")){
+		res.sendStatus(403);
+	}*/
+    var year = req.params.year;
+    var yearData = tools.findAllByProperty(workersData, 'year', year);
+    if (req.query.minWorkers  != undefined) {
+        yearData = yearData.filter((datan) => {
+            return datan['value'] >= req.query.minWorkers;
+        });
+    }
+    res.send(yearData);
+});
 
-//===================Rutas de nuestra API en DB=========================================================
+router.get('/:industry', (req, res) => {
+	/*var apiKey =req.query.apikey;
+	if(!(apikey && apikey == "sos")){
+		res.sendStatus(403);
+	}*/
+    var industry = req.params.industry;
+    var industryData = tools.findAllByProperty(workersData, 'industry', industry);
+    res.send(industryData);
+});
 
-// POST insertar nuevo recurso 
+router.get('/:year/:industry', (req, res) => {
+	/*var apiKey =req.query.apikey;
+	if(!(apikey && apikey == "sos")){
+		res.sendStatus(403);
+	}*/
+    var year = req.params.year;
+    var industry= req.params.industry;
+    var filteredByYear = tools.findAllByProperty(workersData, 'year', year);
+    //  year and industry are the primary key
+    var datan = tools.findByProperty(filteredByYear, 'industry', industry);
+    if (datan == undefined) {
+        res.sendStatus(404);
+    } else {
+        res.send(datan);
+    }
+});
 
-router.post('/:year/:industry', (req,res) => {
+router.post('/:year/:industry', function (req,res) {
 	res.sendStatus(405);
 });
 
-// GET para un identificador
-router.get('/:industry(\\D+/)', (req,res) => {
-	var apikey = req.query.apikey;
-	if(!(apikey && apikey=="sos")){
-		res.sendStatus(403) // forbiden
-	}else{
-		
-		res.send(workers);
-	}
-	var industryValue = req.params.industry;
-	var industryData = tools.findAllByProperty(workers,'industry',industry);
-	if(req.query.minIndustry !=undefined){
-		workers = workers.filter((content)=>{
-			return content ['number'] >= req.query.minIndustry;
-		});
-	}
-	res.send(workers);
-});
-	/*hacer un for recorre todo los datos 
-	si el dato.industry == industryValue lo meto en un array nuevo 
-	que he creado previamente vacio. 
-	Devuelvo despues del for el array con 
-	todos los recursos que cumplen la condicion.*/
 
-//GET busca recurso por año 
+router.put ('/:year/:industry', (req, res) => {
+	/*var apiKey =req.query.apikey;
+	if(!(apikey && apikey == "sos")){
+		res.sendStatus(403);
+	}*/
+    var year = req.params.year;
+    var industry = req.params.industry;
+    var filteredByYear = tools.findAllByProperty(workersData, 'year', year);
+    //  year and industry are the primary key
+    var datum = tools.findByProperty(filteredByYear, 'industry', industry);
+    if (datum == undefined) {
+        res.sendStatus(404);
+        return;
+    }
 
-router.get('/:year(\\d+)/',function(req,res){
-	var apikey = req.query.apikey;
-	if(!(apikey && apikey=="sos")){
-		res.sendStatus(403) // forbiden
-	}else{
-		
-		res.send(workers);
-	}
-	var year =req.params.year;
-	var content = tools.findAllByProperty(workers,'year',year);
-	res.send(content);
+    nuevoDato = req.body;
+    var clavePrimariaNoLaMisma =
+            datum.year != nuevoDato.year ||
+            datum.industry != nuevoDato.industry;
+    if (clavePrimariaNoLaMisma) {
+        res.sendStatus(400);
+        return;
+    }
+
+    tools.removeByTwoProperties(workersData,
+                                'year', year,
+                                'industry', industry);
+    workersData.push(nuevoDato);
+    res.sendStatus(200);
 });
 
-
-// GET busca por dos ecursos determinados 
-
-
-router.get('/:year/:industry', function(req,res){
-	var apikey = req.query.apikey;
-	if(!(apikey && apikey=="sos")){
-		res.sendStatus(403) // forbiden
-	}else{
-		
-		res.send(workers);
-	}
-	var year =req.params.year;
-	var industry = req.params.industry;
-	var findAllByYear = tools.findAllByProperty(workers,'year',year);
-	var content = tools.findByProperty(findAllByYear,'industry',industry);
-	if(content== undefined){
-		res.sendStatus(404);
-	}else{
-		res.send(content);
-	}
+router.delete('/:year/:industry', (req, res) => {
+	/*var apiKey = req.query.apikey;
+	if(!(apikey && apikey == "sos")){
+		res.sendStatus(403);
+	}*/
+    if (tools.removeByTwoProperties(workersData,
+                                    'year', req.params.year,
+                                    'industry', req.params.industry)) {
+        res.sendStatus(200);
+    } else {
+        res.sendStatus(404);
+    }
 });
-	
-
-//PUT actualiza un registro already exist by to id
-
-
-router.put('/:year/:industry', (req,res) => {
-	var industryValue = req.params.industry;
-	
-	if (tools.removeByTwoProperties(workers,'industry',req.params.industry,
-									'year',req.params.year)){
-		content = req.body;
-		workers.push(content);
-		res.sendStatus(200);
-	} else {
-		
-		res.sendStatus(404);
-	}
-	
-});
-
-//DELETE borramos un trabajador con un especifico id 
-
-
-
-router.delete('/:year/:industry', (req,res) => {
-	var apikey = req.query.apikey;
-	if(!(apikey && apikey=="sos")){
-		res.sendStatus(403) // forbiden
-	}else{
-		
-		res.send(workers);
-	}
-	var statusCode;
-	if (tools.removeByTwoProperties(workers,'year',req.params.year,
-									'industry',req.params.industry)) {
-		statusCode = 200;
-	} else {
-		statusCode = 404;
-	}
-	res.sendStatus(statusCode);
-});
-
-
-
-
-//=====================METODO DE PAGINACION ====================================
-
-router.get('/workers/:industry',function(req,res){
-	var industryValue =req.params.industry;
-	var limit = req.query.limit;
-	if(limit && offset){
-		workers.splice(0,offset);
-		workers.splice(limit,workers.length-limit);
-	}
-	res.sendStatus(200);
-	
-});
-
-//========================================================
-
 module.exports = router;
