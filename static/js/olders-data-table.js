@@ -37,6 +37,8 @@ $(document).ready(function(){
 	$("#selAPIversion").change(function(){
 		obtenerDireccion();
 	});
+	
+
 
 	function setDefaultValues() {
 		$('input[name=txtURL]').val("");
@@ -112,6 +114,9 @@ $(document).ready(function(){
 			//$("#txtReceived").text( JSON.stringify(data) );
 			var table = $.makeTable(data);
 			$(table).appendTo("#txtReceived");
+			$("#myTable")
+			.tablesorter({widthFixed: true, widgets: ['zebra']});
+			//.tablesorterPager({container: $("#pager")});
 		});;
 
 		request.always(function(jqXHR, status){
@@ -151,7 +156,7 @@ $(document).ready(function(){
 		});;
 	}
 
-	$.makeTable = function (dataJSON) {
+	$.makeTableORIGINAL = function (dataJSON) {
 		var table = $('<table border="1">');
 		var tblHeader = "<tr>";
 		for (var h in dataJSON[0]) tblHeader += "<th>" + h + "</th>";
@@ -167,5 +172,24 @@ $(document).ready(function(){
 		});
 		return ($(table));
 	};
+
+	$.makeTable = function (dataJSON) {
+		var table = $('<table id="myTable" class="tablesorter">');
+		var tblHead = '';
+		for (var h in dataJSON[0]) tblHead += "<th>" + h + "</th>";
+		var tblHeader = '<thead><tr>' + tblHead + "</tr></thead>";
+		$(tblHeader).appendTo(table);
+		$.each(dataJSON, function (index, value) {
+			var tblRow = "<tr>";
+			$.each(value, function (key, val) {
+				tblRow += "<td>" + val + "</td>";
+			});
+			tblRow += "</tr>";
+			$(table).append(tblRow);
+		});
+		return ($(table));
+	};
+
+
 
 });
