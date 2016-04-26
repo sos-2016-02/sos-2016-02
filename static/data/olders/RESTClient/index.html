@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+<title>API REST - Olders</title>
+<meta charset="utf-8" />
+<script src="/js/jquery-2.2.3.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/js/tablesorter/style.css" media="screen" />
+<script type="text/javascript" src="/js/tablesorter/jquery.tablesorter.js"></script>
+<script type="text/javascript" src="/js/tablesorter/jquery.tablesorter.pager.js"></script>
+
+<script src="/js/olders-data-table.js"></script>
+
+<style>
+#responseQuery{
+	float:left;
+	padding: 10px;
+	overflow-y: scroll;
+	height: 600px;
+	width:50%;
+	margin-right: 20px;
+	border-style: solid;
+	border-width: 1px;
+	background: #F0F0F0;
+}
+
+#generateQuery{
+	float:left;
+	padding: 10px;
+	border-style: solid;
+	border-width: 1px;
+}
+
+</style>
+
+</head>
+
+<body>
+	<header>
+		<h1>JQuery REST Client</h1>
+	</header>
+
+	<section id="responseQuery">
+		<p>Status: <span id="txtStatus"></span></p><hr/>
+		<p>Data received:</p>
+<!--
+		<div id="pager" class="pager">
+			<form>
+				<img src="/images/first.png" class="first"/>
+				<img src="/images/prev.png"  class="prev"/>
+				<img src="/images/next.png"  class="next"/>
+				<img src="/images/last.png"  class="last"/>
+				<select class="pagesize">
+					<option selected="selected" value="10">10</option>
+					<option value="20">20</option>
+					<option value="30">30</option>
+					<option value="40">40</option>
+				</select>
+			</form>
+		</div>
+-->		
+		<p><span id="txtReceived"></span></p>
+	</section>
+
+	<section id="generateQuery">
+		<section id="api">
+			API:
+			<select id="selAPIname">
+			<option value="workers">Workers</option>
+			<option value="olders" selected="selected">Olders</option>
+			<option value="population">Population</option>
+			</select>
+			Version:
+			<select id="selAPIversion">
+			<option value="v1">1.0</option>
+			</select>
+			&nbsp;&nbsp;&nbsp;&nbsp;<input type="button" id="btnLoadInitialData" value="Load Initial Data"/>
+		</section>
+		<section id="RESTparams">
+			<hr/>
+			<table>
+			<tr><td colspan="2">
+				<fieldset>
+					<legend>Server</legend>
+					<table>
+					<tr><td>Host:</td><td><input type="text" name="txtURL" id="txtServer" size= "30" /></td></tr>
+					<tr><td>URI:</td><td><input type="text" name="txtURL" id="txtURI" size= "30" /></td></tr>
+					<tr><td>apikey:</td><td><input type="text" name="txtURL" id="txtKey" size= "30" /></td></tr>
+					</table>
+				</fieldset>				
+				</td>
+			</tr>
+			<tr><td>
+				<fieldset>
+					<legend>Pages</legend>
+					<table>
+					<tr><td>Offset:</td><td><input type="text" name="txtParam" id="txtOffset" size= "5" /></td></tr>
+					<tr><td>Limit:</td><td><input type="text" name="txtParam" id="txtLimit" size= "5" /></td></tr>
+					</table>
+				</fieldset>
+			</td>
+			<td>
+				<fieldset>
+					<legend>Interval</legend>
+					<table>
+					<tr><td>From:</td><td><input type="text" name="txtParam" id="txtFrom" size= "5" /></td></tr>
+					<tr><td>to:</td><td><input type="text" name="txtParam" id="txtTo" size= "5" /></td></tr>
+					</table>
+				</fieldset>
+			</td></tr>
+			<tr><td colspan="2">
+				<fieldset>
+					<legend>Filter</legend>
+					<table>
+					<tr><td>Fields:</td><td><input type="text" name="txtParam" id="txtFields" size= "25" />&nbsp;<img id="imgInfoFileds" src="/images/info.png" title="province,men"/></td></tr>
+					<tr><td>Values:</td><td><input type="text" name="txtParam" id="txtValues" size= "25" />&nbsp;<img id="imgInfoValues" src="/images/info.png" title="year=2010&men=4827"/></td></tr>
+					</table>
+				</fieldset>
+			</td></tr>
+			</table>
+
+		</section>
+		<section id="request">
+			<hr/>
+			<p>Data to send (payload):<br/><textarea id="txtData" cols="45" rows = "5"></textarea></p>
+			<p>Method:
+			<input type="radio" name="chkMethod" id="GET" checked="checked" />GET&nbsp;
+			<input type="radio" name="chkMethod" id="POST" />POST&nbsp;
+			<input type="radio" name="chkMethod" id="PUT" />PUT&nbsp;
+			<input type="radio" name="chkMethod" id="DELETE" />DELETE&nbsp;
+			</p>
+			<hr/>
+			<a id="lnkRequest"></a><br/><br/>
+			<input type="button" id="btnEnviar" value="SEND THIS REQUEST"/>
+		</section>
+	</section>
+
+</body>
+</html>
