@@ -14,14 +14,14 @@ $(document).ready(function(){
 				$("#strResponseStatus").text("");
 				$("#strResponseRaw").text( JSON.stringify(data) );
 				$("#strResponsePrettyPrinted").html( prettyPrint(data) );
-			});;
+			});
 
 			request.always(function(jqXHR, status){
 				if (status == "success")
 					$("#strResponseStatus").text(status);
 				else
 					$("#strResponseStatus").text(jqXHR.status + " " + jqXHR.statusText);
-			});;
+			});
 
 		});
 });
