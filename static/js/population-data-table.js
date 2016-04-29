@@ -20,6 +20,7 @@ $(document).ready(function() {
     });
 
     $("#button-search").click(searchButtonListener);
+    $("#button-load-initial-data").click(loadInitialDataButtonListener);
     $("#datum-form").submit(datumFormListener);
     addActionsToTable();
 
@@ -61,6 +62,20 @@ function datumFormListener(event) {
         data: formJson,
         doneCallback: () => {dataTable.ajax.reload();},
         alwaysCallback: () => {$inputs.prop("disabled", false);}
+    });
+}
+
+function loadInitialDataButtonListener(event) {
+    event.preventDefault();
+    $(event.target).prop("disabled", true);
+
+    url = API_POPULATION_URL + "/loadInitialData?apikey=" + getApiKey();
+
+    performAjaxRequest({
+        url: url,
+        type: "get",
+        doneCallback: () => {dataTable.ajax.reload();},
+        alwaysCallback: () => {$(event.target).prop("disabled", false);}
     });
 }
 
