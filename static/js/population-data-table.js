@@ -1,3 +1,5 @@
+"use strict";
+
 var API_POPULATION_URL = "/api/v1/population";
 // TODO find in doc how to get a DataTable object from
 // an existing one
@@ -48,7 +50,7 @@ function datumFormListener(event) {
     event.preventDefault();
 
     var $form = $("#datum-form");
-    formJson = JSON.stringify($form.serializeObject());
+    var formJson = JSON.stringify($form.serializeObject());
 
     // Disable the inputs for the duration of the Ajax request.
         // Note: we disable elements AFTER the form data has been serialized.
@@ -69,7 +71,7 @@ function loadInitialDataButtonListener(event) {
     event.preventDefault();
     $(event.target).prop("disabled", true);
 
-    url = API_POPULATION_URL + "/loadInitialData?apikey=" + getApiKey();
+    var url = API_POPULATION_URL + "/loadInitialData?apikey=" + getApiKey();
 
     performAjaxRequest({
         url: url,
@@ -116,7 +118,7 @@ function addActionButtonsToEachRow(table) {
 }
 
 function addDeleteButton(row, rowIndex) {
-    buttonId = "delete-button-row-" + rowIndex;
+    var buttonId = "delete-button-row-" + rowIndex;
     var button = "<button id=" + buttonId + ">Delete</button>";
     row.innerHTML += "<td>" + button + "</td>";
 
@@ -124,10 +126,10 @@ function addDeleteButton(row, rowIndex) {
 }
 
 function deleteDatumListener(event) {
-    row = event.data;
+    var row = event.data;
     var year = row.cells[0].innerHTML;
     var province = row.cells[1].innerHTML;
-    url = API_POPULATION_URL + "/" + province + "/" + year + "?apikey=" + getApiKey();
+    var url = API_POPULATION_URL + "/" + province + "/" + year + "?apikey=" + getApiKey();
 
     $(event.target).prop("disabled", true);
 
