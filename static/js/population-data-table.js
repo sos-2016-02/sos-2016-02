@@ -18,13 +18,31 @@ $(document).ready(function() {
         ]
     });
 
-    $("#button-search").click(() => {
-        var searchQuery = $("#server-side-search-input").val();
-        var newDataUrl = "/api/v1/population/" + searchQuery +"?apikey=correct-key-1";
-        dataTable.ajax.url(newDataUrl).load();
-    });
+    $("#button-search").click(searchButtonListener);
+    $("#datum-form").submit(datumFormListener);
+    addActionsToTable();
 
-    $("#datum-form").submit((event) => {
+});
+
+
+function addActionsToTable() {
+    var table = document.getElementById("population-data-table");
+    addActionColumnToHeader(table);
+    $(table).on("draw.dt", function () {
+        addActionButtonsToEachRow(table);
+    } );
+}
+
+
+function searchButtonListener(event) {
+    event.preventDefault();
+    var searchQuery = $("#server-side-search-input").val();
+    var newDataUrl = "/api/v1/population/" + searchQuery +"?apikey=correct-key-1";
+    dataTable.ajax.url(newDataUrl).load();
+}
+
+
+function datumFormListener(event) {
         event.preventDefault();
 
         var $form = $("#datum-form");
@@ -58,16 +76,7 @@ $(document).ready(function() {
             // Reenable the inputs
             $inputs.prop("disabled", false);
         });
-    });
-
-
-    var table = document.getElementById("population-data-table");
-    addActionColumnToHeader(table);
-    $(table).on("draw.dt", function () {
-        addActionButtonsToEachRow(table);
-    } );
-});
-
+}
 
 function addActionColumnToHeader(table) {
     var header = table.tHead.rows[0];
