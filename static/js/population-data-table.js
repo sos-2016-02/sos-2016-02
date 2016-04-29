@@ -44,39 +44,44 @@ function searchButtonListener(event) {
 
 
 function datumFormListener(event) {
-        event.preventDefault();
+    event.preventDefault();
 
-        var $form = $("#datum-form");
-        formJson = JSON.stringify($form.serializeObject());
+    var $form = $("#datum-form");
+    formJson = JSON.stringify($form.serializeObject());
 
-        // Disable the inputs for the duration of the Ajax request.
+    // Disable the inputs for the duration of the Ajax request.
         // Note: we disable elements AFTER the form data has been serialized.
-        // Disabled form elements will not be serialized.
-        var $inputs = $form.find("input, button");
-        $inputs.prop("disabled", true);
+    // Disabled form elements will not be serialized.
+    var $inputs = $form.find("input, button");
+    $inputs.prop("disabled", true);
 
-        var request = $.ajax({
-            url: "/api/v1/population?apikey=correct-key-1",
-            type: "post",
-            data: formJson,
-					  contentType: "application/json"
-        });
+    performAjaxRequest({
+        url: "/api/v1/population?apikey=correct-key-1",
+        type: "post",
+        data: formJson,
+        doneCallback: () => {dataTable.ajax.reload();},
+        alwaysCallback: () => {$inputs.prop("disabled", false);}
+    });
+}
 
-        request.done(function (response, textStatus, jqXHR){
-            dataTable.ajax.reload();
-        });
+function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
+    var request = $.ajax({
+        url: url,
+        type: type,
+        data: data,
+				contentType: "application/json"
+    });
 
-        request.fail(function (jqXHR, textStatus, errorThrown){
-            console.error(
-                "The following error occurred: "+
-                    textStatus, errorThrown
-            );
-        });
+    request.done(doneCallback);
 
-        request.always(function () {
-            // Reenable the inputs
-            $inputs.prop("disabled", false);
-        });
+    request.fail(function (jqXHR, textStatus, errorThrown){
+        console.error(
+            "The following error occurred: "+
+                textStatus, errorThrown
+        );
+    });
+
+    request.always(alwaysCallback);
 }
 
 function addActionColumnToHeader(table) {
@@ -110,23 +115,13 @@ function deleteDatumListener(event) {
     url = API_POPULATION_URL + "/" + province + "/" + year + "?apikey=" + getApiKey();
 
     $(event.target).prop("disabled", true);
-    var request = $.ajax({
+
+    performAjaxRequest({
         url: url,
         type: "delete",
-				contentType: "application/json"
+        doneCallback: () => {dataTable.ajax.reload();},
+        alwaysCallback: () => {}
     });
-
-    request.done(function (response, textStatus, jqXHR){
-        dataTable.ajax.reload();
-    });
-
-    request.fail(function (jqXHR, textStatus, errorThrown){
-        console.error(
-            "The following error occurred: "+
-                textStatus, errorThrown
-        );
-    });
-
 }
 
 function getApiKey() {
