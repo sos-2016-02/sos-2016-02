@@ -5,6 +5,7 @@ var dataTable;
 
 $(document).ready(function() {
     dataTable = $("#population-data-table").DataTable({
+        "ordering": false,
         "ajax": {
             "url": "/api/v1/population?apikey=correct-key-1",
             "dataSrc": ""
