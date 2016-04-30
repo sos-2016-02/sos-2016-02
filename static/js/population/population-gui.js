@@ -1,6 +1,8 @@
 "use strict";
 
 var API_POPULATION_URL = "/api/v1/population";
+var ERROR_MESSAGE_WRONG_API_KEY = "The API key that you provided has been refused, check for any typo";
+
 // TODO find in doc how to get a DataTable object from
 // an existing one
 var dataTable;
@@ -26,7 +28,7 @@ $(document).ready(function() {
     // when an error occurs (wrong API key for example)
     $.fn.dataTable.ext.errMode = function (e) {
         if(e.jqXHR.status == 401) {
-            window.alert("The API key that you provided has been refused, check for any typo");
+            window.alert(ERROR_MESSAGE_WRONG_API_KEY);
         }
     };
 
@@ -123,6 +125,8 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
     request.fail(function (jqXHR, textStatus, errorThrown){
         if (jqXHR.status == 409) {
             window.alert("The datum that you are trying to add already exists(same province and year)");
+        } else if (jqXHR.status == 401) {
+            window.alert(ERROR_MESSAGE_WRONG_API_KEY);
         }
         console.error(
             "The following error occurred: "+
@@ -189,7 +193,7 @@ function deleteDatumListener(event) {
         url: url,
         type: "delete",
         doneCallback: () => {dataTable.ajax.reload();},
-        alwaysCallback: () => {}
+        alwaysCallback: () => {$(event.target).prop("disabled", false);}
     });
 }
 
