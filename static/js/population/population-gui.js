@@ -6,7 +6,7 @@ var ERROR_MESSAGE_WRONG_API_KEY = "The API key that you provided has been refuse
 // TODO find in doc how to get a DataTable object from
 // an existing one
 var dataTable;
-var paginationLimit = 5;
+var paginationLimit = 10;
 var paginationOffset = 0;
 
 var byId = function(id) {return document.getElementById(id);};
@@ -179,7 +179,7 @@ function addActionButtonsToEachRow(table) {
 
     for (var i = 0, row; row = tableBody.rows[i]; i++) {
         var actionButtonsAlreadyThere = row.cells[5] != undefined;
-        // happens with client side search which redraw the table but don't
+        // happens with client side search which redraws the table but don't
         // destroy the rows. In that case skip the rest of the function
         if (actionButtonsAlreadyThere) { return; }
 
