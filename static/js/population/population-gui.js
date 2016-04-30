@@ -178,7 +178,12 @@ function addActionButtonsToEachRow(table) {
     if (noData) return;
 
     for (var i = 0, row; row = tableBody.rows[i]; i++) {
-        row.innerHTML += '<td class="action-cell"></td>'; // add action column
+        var actionButtonsAlreadyThere = row.cells[5] != undefined;
+        // happens with client side search which redraw the table but don't
+        // destroy the rows. In that case skip the rest of the function
+        if (actionButtonsAlreadyThere) { return; }
+
+        row.innerHTML += '<td class="action-cell"></td>';  // add action column
         addEditButton(row, i);
         addDeleteButton(row, i);
     }
