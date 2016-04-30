@@ -31,8 +31,8 @@ $(document).ready(function() {
     // disable default alert box which has a cryptic message
     // when an error occurs (wrong API key for example)
     $.fn.dataTable.ext.errMode = function (e) {
-        dataTable.clear().draw(); // don't let data when it's not possible to load it
         if(e.jqXHR.status == 401) {
+            dataTable.clear().draw(); // don't let data when it's not possible to load it
             window.alert(ERROR_MESSAGE_WRONG_API_KEY);
         }
     };
@@ -151,10 +151,10 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
     request.done(doneCallback);
 
     request.fail(function (jqXHR, textStatus, errorThrown){
-        dataTable.clear().draw(); // don't let data when it's not possible to load it
         if (jqXHR.status == 409) {
             window.alert("The datum that you are trying to add already exists(same province and year)");
         } else if (jqXHR.status == 401) {
+            dataTable.clear().draw(); // don't let data when it's not possible to load it
             window.alert(ERROR_MESSAGE_WRONG_API_KEY);
         }
         console.error(
