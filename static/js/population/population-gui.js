@@ -53,7 +53,7 @@ function addActionsToTable() {
 function searchButtonListener(event) {
     event.preventDefault();
     var searchQuery = $("#server-side-search-input").val();
-    var newDataUrl = API_POPULATION_URL + searchQuery + "?apikey=" + getApiKey();
+    var newDataUrl = API_POPULATION_URL + "/" + searchQuery + "?apikey=" + getApiKey();
     dataTable.ajax.url(newDataUrl).load();
 }
 
