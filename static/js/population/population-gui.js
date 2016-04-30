@@ -6,14 +6,18 @@ var ERROR_MESSAGE_WRONG_API_KEY = "The API key that you provided has been refuse
 // TODO find in doc how to get a DataTable object from
 // an existing one
 var dataTable;
+var paginationLimit = 5;
+var paginationOffset = 0;
 
 var byId = function(id) {return document.getElementById(id);};
 
 $(document).ready(function() {
     dataTable = $("#population-data-table").DataTable({
         "ordering": false,
+        "paging": false,
+        "info": false,
         "ajax": {
-            "url": API_POPULATION_URL + "?apikey=" + getApiKey(),
+            "url": API_POPULATION_URL + getUrlParms(),
             "dataSrc": ""
         },
         "columns": [
@@ -37,7 +41,9 @@ $(document).ready(function() {
     $("#button-reload-data").click(reloadDataButtonListener);
     $("#datum-form").submit(datumFormListener);
     addActionsToTable();
-
+    $("#pagination-select").change(paginationSelectListener);
+    $("#pagination-button-previous").click(paginationPreviousButtonListener);
+    $("#pagination-button-next").click(paginationNextButtonListener);
 });
 
 
@@ -50,10 +56,11 @@ function addActionsToTable() {
 }
 
 
+// listeners ///////////////////////////////////////////////////////////////////
 function searchButtonListener(event) {
     event.preventDefault();
     var searchQuery = $("#server-side-search-input").val();
-    var newDataUrl = API_POPULATION_URL + "/" + searchQuery + "?apikey=" + getApiKey();
+    var newDataUrl = API_POPULATION_URL + "/" + searchQuery + getUrlParms();
     dataTable.ajax.url(newDataUrl).load();
 }
 
@@ -75,10 +82,10 @@ function datumFormListener(event) {
     if (editing) {
         var year = byId("year-input").value;
         var province = byId("province-input").value;
-        url = API_POPULATION_URL + "/" + province + "/" + year + "?apikey=" + getApiKey();
+        url = API_POPULATION_URL + "/" + province + "/" + year + getUrlParms();
         type = "put";
     } else {
-        url = API_POPULATION_URL + "?apikey=" + getApiKey();
+        url = API_POPULATION_URL + getUrlParms();
         type = "post";
     }
     performAjaxRequest({
@@ -95,7 +102,7 @@ function loadInitialDataButtonListener(event) {
     event.preventDefault();
     $(event.target).prop("disabled", true);
 
-    var url = API_POPULATION_URL + "/loadInitialData?apikey=" + getApiKey();
+    var url = API_POPULATION_URL + "/loadInitialData" + getUrlParms();
 
     performAjaxRequest({
         url: url,
@@ -105,13 +112,34 @@ function loadInitialDataButtonListener(event) {
     });
 }
 
-
 function reloadDataButtonListener(event) {
     dataTable.clear().draw();
-    var newUrl = API_POPULATION_URL + "?apikey=" + getApiKey();
+    var newUrl = API_POPULATION_URL + getUrlParms();
     dataTable.ajax.url(newUrl).load();
 }
 
+function paginationSelectListener(event) {
+    paginationLimit = parseInt(byId("pagination-select").value, 10);
+    var newUrl = API_POPULATION_URL + getUrlParms();
+    dataTable.ajax.url(newUrl).load();
+}
+
+function paginationPreviousButtonListener(event) {
+    paginationOffset -= paginationLimit;
+    if (paginationOffset < 0) paginationOffset = 0;
+    var newUrl = API_POPULATION_URL + getUrlParms();
+    dataTable.ajax.url(newUrl).load();
+    console.log(paginationOffset)
+}
+
+function paginationNextButtonListener(event) {
+    paginationOffset += paginationLimit;
+    var newUrl = API_POPULATION_URL + getUrlParms();
+    dataTable.ajax.url(newUrl).load();
+    console.log(paginationOffset)
+}
+
+// helpers /////////////////////////////////////////////////////////////////////
 function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
     var request = $.ajax({
         url: url,
@@ -185,7 +213,7 @@ function deleteDatumListener(event) {
     var row = event.data;
     var year = row.cells[0].innerHTML;
     var province = row.cells[1].innerHTML;
-    var url = API_POPULATION_URL + "/" + province + "/" + year + "?apikey=" + getApiKey();
+    var url = API_POPULATION_URL + "/" + province + "/" + year + getUrlParms();
 
     $(event.target).prop("disabled", true);
 
@@ -197,8 +225,12 @@ function deleteDatumListener(event) {
     });
 }
 
-function getApiKey() {
-    return byId("api-key-input").value;
+function getUrlParms() {
+    var params = "?apikey=" + byId("api-key-input").value +
+            "&limit=" + paginationLimit +
+            "&offset=" + paginationOffset;
+
+    return params;
 }
 
 // http://stackoverflow.com/a/1186309/3682839
