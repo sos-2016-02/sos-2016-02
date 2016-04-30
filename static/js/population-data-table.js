@@ -5,6 +5,8 @@ var API_POPULATION_URL = "/api/v1/population";
 // an existing one
 var dataTable;
 
+var byId = function(id) {return document.getElementById(id);};
+
 $(document).ready(function() {
     dataTable = $("#population-data-table").DataTable({
         "ordering": false,
@@ -53,18 +55,30 @@ function datumFormListener(event) {
     var formJson = JSON.stringify($form.serializeObject());
 
     // Disable the inputs for the duration of the Ajax request.
-        // Note: we disable elements AFTER the form data has been serialized.
+    // Note: we disable elements AFTER the form data has been serialized.
     // Disabled form elements will not be serialized.
     var $inputs = $form.find("input, button");
     $inputs.prop("disabled", true);
 
+    var url, type;
+    var editing = byId("datum-form-button").value == "Update";
+    if (editing) {
+        var year = byId("year-input").value;
+        var province = byId("province-input").value;
+        url = API_POPULATION_URL + "/" + province + "/" + year + "?apikey=" + getApiKey();
+        type = "put";
+    } else {
+        url = API_POPULATION_URL + "?apikey=" + getApiKey();
+        type = "post";
+    }
     performAjaxRequest({
-        url: "/api/v1/population?apikey=correct-key-1",
-        type: "post",
+        url: url,
+        type: type,
         data: formJson,
         doneCallback: () => {dataTable.ajax.reload();},
         alwaysCallback: () => {$inputs.prop("disabled", false);}
     });
+    if (editing) { byId("datum-form-button").value = "Create"; }
 }
 
 function loadInitialDataButtonListener(event) {
@@ -113,15 +127,35 @@ function addActionButtonsToEachRow(table) {
     if (noData) return;
 
     for (var i = 0, row; row = tableBody.rows[i]; i++) {
+        row.innerHTML += "<td></td>"; // add action column
+        addEditButton(row, i);
         addDeleteButton(row, i);
     }
 }
 
+function addEditButton(row, rowIndex) {
+    var buttonId = "edit-button-row-" + rowIndex;
+    $(row.cells[5]).append( "<button id=" + buttonId + ">Edit</button>");
+    $("#" + buttonId).click(row, editDatumListener);
+}
+
+function editDatumListener(event) {
+    var row = event.data;
+    fillDatumFormWithRowData(row);
+    byId("datum-form-button").value = "Update";
+}
+
+function fillDatumFormWithRowData(row) {
+    byId("year-input").value = row.cells[0].innerHTML;
+    byId("province-input").value = row.cells[1].innerHTML;
+    byId("age-input").value = row.cells[2].innerHTML;
+    byId("birthplace-input").value = row.cells[3].innerHTML;
+    byId("number-input").value = row.cells[4].innerHTML;
+}
+
 function addDeleteButton(row, rowIndex) {
     var buttonId = "delete-button-row-" + rowIndex;
-    var button = "<button id=" + buttonId + ">Delete</button>";
-    row.innerHTML += "<td>" + button + "</td>";
-
+    $(row.cells[5]).append( "<button id=" + buttonId + ">Delete</button>");
     $("#" + buttonId).click(row, deleteDatumListener);
 }
 
