@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+  <head>
+    <title>Olders data</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="/css/olders/style.css" />
+    <link rel="stylesheet" type="text/css" href="/js/tablesorter/style.css" media="screen" />
+    <script src="/js/jquery-2.2.3.min.js"></script>
+    <script src="/js/tablesorter/jquery.tablesorter.js"></script>
+    <script src="/js/olders/olders-gui.js"></script>
+  </head>
+
+  <body>
+    <h1>Olders data</h1>
+
+    <label for="txtApiKey">Api-Key:</label>&nbsp;&nbsp;
+    <input id="txtApiKey" name="txtApiKey" placeholder="keyRead / keyWrite" type="text" value="keyRead" />&nbsp;
+    <button id="btnLoadInitialData">Load Initial Data</button>
+    
+    <br/><br/>
+
+    <form id="frmData">
+      <table border="0">
+        <tr><td><label for="txtProvince">Province:</label></td>
+            <td><input id="txtProvince" name="txtProvince" type="text" /></td>
+        </tr>
+        <tr><td><label for="txtYear">Year:</label></td>
+            <td><input id="txtYear" name="txtYear" type="text" /></td>
+        </tr>
+        <tr><td><label for="txtMen">Men:</label></td>
+            <td><input id="txtMen" name="txtMen" type="text" /></td>
+        </tr>
+        <tr><td><label for="txtWomen">Women:</label></td>
+            <td><input id="txtWomMen" name="txtWomen" type="text" /></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="right">
+                <button id="btnCancel">Cancel</button>&nbsp;
+                <button id="btnSave">Save</button>&nbsp;
+            </td>
+        </tr>
+      </table>
+    </form>
+
+    <br/><br/>
+
+    <div id="divMessage"></div>
+
+    <table id="tblOlders" class="tablesorter">
+      <thead>
+        <tr>
+          <th>Province</th>
+          <th>Year</th>
+          <th>Men</th>
+          <th>Women</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="cursor:pointer" onclick="accessTo(<?= $reg->id_persona?>);">
+        <td>Sevilla</td><td>2011</td><td>123456</td><td>987654</td>
+        </tr>
+        <tr style="cursor:pointer" onclick="accessTo(<?= $reg->id_persona?>);">
+        <td>Sevilla</td><td>2010</td><td>234567</td><td>987654</td></tr>
+        <tr style="cursor:pointer" onclick="accessTo(<?= $reg->id_persona?>);">
+        <td>Sevilla</td><td>2011</td><td>345678</td><td>987654</td></tr>
+        <tr style="cursor:pointer" onclick="accessTo(<?= $reg->id_persona?>);">
+        <td>Sevilla</td><td>2010</td><td>456789</td><td>987654</td></tr>
+        <tr><td>Sevilla</td><td>2011</td><td>567890</td><td>987654</td></tr>
+        <tr><td>Sevilla</td><td>2010</td><td>678901</td><td>987654</td></tr>
+        <tr><td>Sevilla</td><td>2011</td><td>789012</td><td>987654</td></tr>
+      </tbody>
+    </table>
+
+    <br/><br/>
+
+    <button id="btnCreate">Create</button>&nbsp;
+    <button id="btnDelete">Delete</button>&nbsp;
+    <button id="btnUpdate">Update</button>&nbsp;
+    <label for="txtSearch">Search:</label>
+    <input id="txtSearch" name="txtSearch" placeholder="Type to search" type="text">
+    <input id="txtSearch" value="Search" type="submit" />
+
+  </body>
+</html>

@@ -1,12 +1,22 @@
+var vAPIname;
+var vAPIversion;
+var vConnection;
+
+var vServer = "http://192.168.1.200:3000";
+//var vServer = "https://sos-2016-02.herokuapp.com";
+
 $(document).ready(function(){
 
-	var vAPIname;
-	var vAPIversion;
-	var vConnection;
 
+
+
+	/*
 	setDefaultValues();
 	obtenerDireccion();
 	sendQuery();
+*/
+	$("#tblOlders").tablesorter({widthFixed: true, widgets: ['zebra']});
+
 
 	$("#btnLoadInitialData").click(function(){
 		LoadInitialData();
@@ -56,12 +66,7 @@ $(document).ready(function(){
 		$('#lnkRequest').text(vConnection);
 	}
 
-	function obtenerURLBase() {
-		vAPIname    = $("#selAPIname option:selected").val();
-		vAPIversion = $("#selAPIversion option:selected").val();
-		vURLBase    = $("#txtServer").val() + "/api/" + vAPIversion + "/" + vAPIname + "/" + $("#txtURI").val();
-		return vURLBase;		
-	}
+
 
 	function obtenerParametros(){
 		var vParam = "";
@@ -128,33 +133,7 @@ $(document).ready(function(){
 		});;
 	}
 
-	function LoadInitialData(){
-		$("#txtReceived").html( "" );
-		var vType     = $("input[type=radio]:checked").attr("id");
-		var vDataJSON = $("#txtData").val();
-		var vURL      = obtenerURLBase() + "loadInitialData?apikey=" + $("#txtKey").val();
 
-		var request = $.ajax({
-			 url        : vURL
-			,type       : "GET"
-			,data       : ""
-			,contentType: "application/json; charset=utf-8"
-			,cache      : false
-		});
-
-		request.done(function(data, status, jqXHR){
-			$("#txtStatus").text("TO PERFE");
-		});;
-
-		request.always(function(jqXHR, status){
-			if (status == "success"){
-				$("#txtStatus").text("Ok.");
-				$("#txtReceived").text("Loading Initial Data...   Ok!");
-			} else {
-				$("#txtStatus").text("ERROR " + jqXHR.status + " " + jqXHR.statusText);	
-			}
-		});;
-	}
 
 	$.makeTableORIGINAL = function (dataJSON) {
 		var table = $('<table border="1">');
@@ -193,3 +172,47 @@ $(document).ready(function(){
 
 
 });
+
+function obtenerURLBase() {
+	vAPIversion = "v1";
+	vAPIname    = "olders";
+	vURLBase    = vServer + "/api/" + vAPIversion + "/" + vAPIname + "/";
+	return vURLBase;		
+}
+
+function LoadInitialData(){
+	if ( $("#txtApiKey").val() == "") {
+		showMessage(1, "Debes indicar la Api-key.");
+		return;
+	}
+
+	var request = $.ajax({
+		 url        : obtenerURLBase() + "loadInitialData?apikey=" + $("#txtApiKey").val()
+		,type       : "GET"
+		,data       : ""
+		,contentType: "application/json; charset=utf-8"
+		,cache      : false
+	});
+
+	request.always(function(jqXHR, status){
+		if (status == "success"){
+			showMessage(0, "Initial Data loaded.");
+		} else {
+			showMessage(jqXHR.status, jqXHR.statusText);
+		}
+	});;
+}
+
+function showMessage(code, text){
+	var vClass;
+	var vType;
+	switch(code){
+		case 0:   vClass = "msgOK";    vType = "OK";    break;
+		case 1:
+		case 401: vClass = "msgERROR"; vType = "ERROR"; break;
+		case 2:   vClass = "msgINFO";  vType = "INFO";  break;
+	}
+	$('#divMessage').removeClass();
+	$('#divMessage').addClass(vClass);
+	$("#divMessage").text(vType + ": " + text);
+}
