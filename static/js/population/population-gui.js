@@ -121,6 +121,9 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
     request.done(doneCallback);
 
     request.fail(function (jqXHR, textStatus, errorThrown){
+        if (jqXHR.status == 409) {
+            window.alert("The datum that you are trying to add already exists(same province and year)");
+        }
         console.error(
             "The following error occurred: "+
                 textStatus, errorThrown
