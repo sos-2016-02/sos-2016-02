@@ -1,17 +1,23 @@
 "use strict";
 
 var API_POPULATION_URL = "/api/v1/population";
+var ERROR_MESSAGE_WRONG_API_KEY = "The API key that you provided has been refused, check for any typo";
+
 // TODO find in doc how to get a DataTable object from
 // an existing one
 var dataTable;
+var paginationLimit = 5;
+var paginationOffset = 0;
 
 var byId = function(id) {return document.getElementById(id);};
 
 $(document).ready(function() {
     dataTable = $("#population-data-table").DataTable({
         "ordering": false,
+        "paging": false,
+        "info": false,
         "ajax": {
-            "url": "/api/v1/population?apikey=correct-key-1",
+            "url": API_POPULATION_URL + getUrlParms(),
             "dataSrc": ""
         },
         "columns": [
@@ -22,12 +28,23 @@ $(document).ready(function() {
             { "data": "number" },
         ]
     });
+    // disable default alert box which has a cryptic message
+    // when an error occurs (wrong API key for example)
+    $.fn.dataTable.ext.errMode = function (e) {
+        dataTable.clear().draw(); // don't let data when it's not possible to load it
+        if(e.jqXHR.status == 401) {
+            window.alert(ERROR_MESSAGE_WRONG_API_KEY);
+        }
+    };
 
     $("#button-search").click(searchButtonListener);
     $("#button-load-initial-data").click(loadInitialDataButtonListener);
+    $("#button-reload-data").click(reloadDataButtonListener);
     $("#datum-form").submit(datumFormListener);
     addActionsToTable();
-
+    $("#pagination-select").change(paginationSelectListener);
+    $("#pagination-button-previous").click(paginationPreviousButtonListener);
+    $("#pagination-button-next").click(paginationNextButtonListener);
 });
 
 
@@ -40,10 +57,11 @@ function addActionsToTable() {
 }
 
 
+// listeners ///////////////////////////////////////////////////////////////////
 function searchButtonListener(event) {
     event.preventDefault();
     var searchQuery = $("#server-side-search-input").val();
-    var newDataUrl = "/api/v1/population/" + searchQuery +"?apikey=correct-key-1";
+    var newDataUrl = API_POPULATION_URL + "/" + searchQuery + getUrlParms();
     dataTable.ajax.url(newDataUrl).load();
 }
 
@@ -65,10 +83,10 @@ function datumFormListener(event) {
     if (editing) {
         var year = byId("year-input").value;
         var province = byId("province-input").value;
-        url = API_POPULATION_URL + "/" + province + "/" + year + "?apikey=" + getApiKey();
+        url = API_POPULATION_URL + "/" + province + "/" + year + getUrlParms();
         type = "put";
     } else {
-        url = API_POPULATION_URL + "?apikey=" + getApiKey();
+        url = API_POPULATION_URL + getUrlParms();
         type = "post";
     }
     performAjaxRequest({
@@ -85,7 +103,7 @@ function loadInitialDataButtonListener(event) {
     event.preventDefault();
     $(event.target).prop("disabled", true);
 
-    var url = API_POPULATION_URL + "/loadInitialData?apikey=" + getApiKey();
+    var url = API_POPULATION_URL + "/loadInitialData" + getUrlParms();
 
     performAjaxRequest({
         url: url,
@@ -93,6 +111,33 @@ function loadInitialDataButtonListener(event) {
         doneCallback: () => {dataTable.ajax.reload();},
         alwaysCallback: () => {$(event.target).prop("disabled", false);}
     });
+}
+
+function reloadDataButtonListener(event) {
+    refreshUrlAndReload();
+}
+
+function paginationSelectListener(event) {
+    paginationLimit = parseInt(byId("pagination-select").value, 10);
+    refreshUrlAndReload();
+}
+
+function paginationPreviousButtonListener(event) {
+    paginationOffset -= paginationLimit;
+    if (paginationOffset < 0) paginationOffset = 0;
+    refreshUrlAndReload();
+}
+
+function paginationNextButtonListener(event) {
+    paginationOffset += paginationLimit;
+    refreshUrlAndReload();
+}
+
+// helpers /////////////////////////////////////////////////////////////////////
+
+function refreshUrlAndReload() {
+    var newUrl = API_POPULATION_URL + getUrlParms();
+    dataTable.ajax.url(newUrl).load();
 }
 
 function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
@@ -106,6 +151,12 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
     request.done(doneCallback);
 
     request.fail(function (jqXHR, textStatus, errorThrown){
+        dataTable.clear().draw(); // don't let data when it's not possible to load it
+        if (jqXHR.status == 409) {
+            window.alert("The datum that you are trying to add already exists(same province and year)");
+        } else if (jqXHR.status == 401) {
+            window.alert(ERROR_MESSAGE_WRONG_API_KEY);
+        }
         console.error(
             "The following error occurred: "+
                 textStatus, errorThrown
@@ -127,7 +178,7 @@ function addActionButtonsToEachRow(table) {
     if (noData) return;
 
     for (var i = 0, row; row = tableBody.rows[i]; i++) {
-        row.innerHTML += "<td></td>"; // add action column
+        row.innerHTML += '<td class="action-cell"></td>'; // add action column
         addEditButton(row, i);
         addDeleteButton(row, i);
     }
@@ -163,7 +214,7 @@ function deleteDatumListener(event) {
     var row = event.data;
     var year = row.cells[0].innerHTML;
     var province = row.cells[1].innerHTML;
-    var url = API_POPULATION_URL + "/" + province + "/" + year + "?apikey=" + getApiKey();
+    var url = API_POPULATION_URL + "/" + province + "/" + year + getUrlParms();
 
     $(event.target).prop("disabled", true);
 
@@ -171,12 +222,16 @@ function deleteDatumListener(event) {
         url: url,
         type: "delete",
         doneCallback: () => {dataTable.ajax.reload();},
-        alwaysCallback: () => {}
+        alwaysCallback: () => {$(event.target).prop("disabled", false);}
     });
 }
 
-function getApiKey() {
-    return "correct-key-1";
+function getUrlParms() {
+    var params = "?apikey=" + byId("api-key-input").value +
+            "&limit=" + paginationLimit +
+            "&offset=" + paginationOffset;
+
+    return params;
 }
 
 // http://stackoverflow.com/a/1186309/3682839

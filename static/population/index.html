@@ -10,12 +10,17 @@
     <link type="text/css" rel="stylesheet" href="/css/population/jquery.dataTables.min.css"/>
 
     <script src="/js/population/population-gui.js"></script>
+    <link type="text/css" rel="stylesheet" href="/css/population/population-gui.css"/>
   </head>
 
   <body>
     <h1>Population data</h1>
 
     <button id="button-load-initial-data">Load initial Data</button>
+    <label for="api-key-input">API key</label>
+    <input id="api-key-input" type="text" value="correct-key-1" />
+    <button id="button-reload-data">Reload data</button>
+
     <form id="datum-form">
       <label for="year-input">Year</label>
       <input id="year-input" name="year" type="text" />
@@ -53,5 +58,15 @@
         </tr>
       </thead>
     </table>
+
+    Show
+    <select id="pagination-select">
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+    entries
+    <button id="pagination-button-previous">Previous</button>
+    <button id="pagination-button-next">Next</button>
   </body>
 </html>
