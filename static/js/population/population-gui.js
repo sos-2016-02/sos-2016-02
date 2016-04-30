@@ -22,9 +22,17 @@ $(document).ready(function() {
             { "data": "number" },
         ]
     });
+    // disable default alert box which has a cryptic message
+    // when an error occurs (wrong API key for example)
+    $.fn.dataTable.ext.errMode = function (e) {
+        if(e.jqXHR.status == 401) {
+            window.alert("The API key that you provided has been refused, check for any typo");
+        }
+    };
 
     $("#button-search").click(searchButtonListener);
     $("#button-load-initial-data").click(loadInitialDataButtonListener);
+    $("#button-reload-data").click(reloadDataButtonListener);
     $("#datum-form").submit(datumFormListener);
     addActionsToTable();
 
@@ -93,6 +101,13 @@ function loadInitialDataButtonListener(event) {
         doneCallback: () => {dataTable.ajax.reload();},
         alwaysCallback: () => {$(event.target).prop("disabled", false);}
     });
+}
+
+
+function reloadDataButtonListener(event) {
+    dataTable.clear().draw();
+    var newUrl = API_POPULATION_URL + "?apikey=" + getApiKey();
+    dataTable.ajax.url(newUrl).load();
 }
 
 function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
@@ -176,7 +191,7 @@ function deleteDatumListener(event) {
 }
 
 function getApiKey() {
-    return "correct-key-1";
+    return byId("api-key-input").value;
 }
 
 // http://stackoverflow.com/a/1186309/3682839
