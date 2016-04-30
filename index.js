@@ -35,10 +35,6 @@ app.listen(port, () => {
 	console.log('Web server is running and listening on port: ' +port);
 });
 
-app.get('/', (req,res) => {
-	res.send('<h1>Hello World from group 02</h1><a href="/about">about</a>');
-});
-
 app.get('/time', (req,res) => {
 	res.send(tools.getFecha());
 });
