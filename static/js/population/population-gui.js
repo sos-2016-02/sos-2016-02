@@ -149,7 +149,7 @@ function addActionButtonsToEachRow(table) {
     if (noData) return;
 
     for (var i = 0, row; row = tableBody.rows[i]; i++) {
-        row.innerHTML += "<td></td>"; // add action column
+        row.innerHTML += '<td class="action-cell"></td>'; // add action column
         addEditButton(row, i);
         addDeleteButton(row, i);
     }
