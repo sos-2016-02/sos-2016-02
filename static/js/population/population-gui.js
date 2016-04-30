@@ -11,7 +11,7 @@ $(document).ready(function() {
     dataTable = $("#population-data-table").DataTable({
         "ordering": false,
         "ajax": {
-            "url": "/api/v1/population?apikey=correct-key-1",
+            "url": API_POPULATION_URL + "?apikey=" + getApiKey(),
             "dataSrc": ""
         },
         "columns": [
@@ -43,7 +43,7 @@ function addActionsToTable() {
 function searchButtonListener(event) {
     event.preventDefault();
     var searchQuery = $("#server-side-search-input").val();
-    var newDataUrl = "/api/v1/population/" + searchQuery +"?apikey=correct-key-1";
+    var newDataUrl = API_POPULATION_URL + searchQuery + "?apikey=" + getApiKey();
     dataTable.ajax.url(newDataUrl).load();
 }
 
