@@ -6,7 +6,7 @@ var ERROR_MESSAGE_WRONG_API_KEY = "The API key that you provided has been refuse
 // TODO find in doc how to get a DataTable object from
 // an existing one
 var dataTable;
-var paginationLimit = 5;
+var paginationLimit = 10;
 var paginationOffset = 0;
 
 var byId = function(id) {return document.getElementById(id);};
@@ -31,8 +31,8 @@ $(document).ready(function() {
     // disable default alert box which has a cryptic message
     // when an error occurs (wrong API key for example)
     $.fn.dataTable.ext.errMode = function (e) {
-        dataTable.clear().draw(); // don't let data when it's not possible to load it
         if(e.jqXHR.status == 401) {
+            dataTable.clear().draw(); // don't let data when it's not possible to load it
             window.alert(ERROR_MESSAGE_WRONG_API_KEY);
         }
     };
@@ -151,10 +151,10 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
     request.done(doneCallback);
 
     request.fail(function (jqXHR, textStatus, errorThrown){
-        dataTable.clear().draw(); // don't let data when it's not possible to load it
         if (jqXHR.status == 409) {
             window.alert("The datum that you are trying to add already exists(same province and year)");
         } else if (jqXHR.status == 401) {
+            dataTable.clear().draw(); // don't let data when it's not possible to load it
             window.alert(ERROR_MESSAGE_WRONG_API_KEY);
         }
         console.error(
@@ -178,7 +178,12 @@ function addActionButtonsToEachRow(table) {
     if (noData) return;
 
     for (var i = 0, row; row = tableBody.rows[i]; i++) {
-        row.innerHTML += '<td class="action-cell"></td>'; // add action column
+        var actionButtonsAlreadyThere = row.cells[5] != undefined;
+        // happens with client side search which redraws the table but don't
+        // destroy the rows. In that case skip the rest of the function
+        if (actionButtonsAlreadyThere) { return; }
+
+        row.innerHTML += '<td class="action-cell"></td>';  // add action column
         addEditButton(row, i);
         addDeleteButton(row, i);
     }
