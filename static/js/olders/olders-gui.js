@@ -1,177 +1,64 @@
 var vAPIname;
 var vAPIversion;
 var vConnection;
+var vLimit   = 10;
+var vPageNum = 1;
 
 var vServer = "http://192.168.1.200:3000";
 //var vServer = "https://sos-2016-02.herokuapp.com";
 
-$(document).ready(function(){
-
-
-
-
-	/*
-	setDefaultValues();
-	obtenerDireccion();
-	sendQuery();
-*/
-	$("#tblOlders").tablesorter({widthFixed: true, widgets: ['zebra']});
-
+$(document).ready(function() {
 
 	$("#btnLoadInitialData").click(function(){
 		LoadInitialData();
 	});
 
-	$("#btnEnviar").click(function(){
-		sendQuery();
+	$("#btnDelete").click(function(){
+		deleteResource();
 	});
 
-	$("input[name=txtURL]").keyup(function(){
-		obtenerDireccion();
-	});
-
-	$("input[name=txtParam]").keyup(function(){
-		$("#txtURI").val("");
-		obtenerDireccion();
-	});
-
-	$("#txtURI").keyup(function(){
-		$('input[name=txtParam]').val("");
-		obtenerDireccion();
-	});
-
-	$("#selAPIname").change(function(){
-		obtenerDireccion();
-	});
-
-	$("#selAPIversion").change(function(){
-		obtenerDireccion();
+	$("#btnUpdate").click(function(){
+		updateResource();
 	});
 	
-
-
-	function setDefaultValues() {
-		$('input[name=txtURL]').val("");
-		// https://sos-2016-02.herokuapp.com
-		// http://localhost:3000
-		// http://192.168.1.200:3000
-		$('#txtServer').val("http://localhost:3000");
-		$('#txtURI').val("");
-		$('#txtKey').val("keyRead");
-	}
-
-	function obtenerDireccion() {
-		vConnection = obtenerURLBase() + obtenerParametros();
-		$('#lnkRequest').attr('href',vConnection);
-		$('#lnkRequest').text(vConnection);
-	}
-
-
-
-	function obtenerParametros(){
-		var vParam = "";
-		if ($("#apikey").val() != ""){
-			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
-			vParam = vParam + vChar + "apikey=" + $("#txtKey").val()
-		}
-		if ($("#txtOffset").val() != ""){
-			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
-			vParam = vParam + vChar + "offset=" + $("#txtOffset").val()
-		}
-		if ($("#txtLimit").val() != ""){
-			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
-			vParam = vParam + vChar + "limit=" + $("#txtLimit").val()
-		}
-		if ($("#txtFrom").val() != ""){
-			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
-			vParam = vParam + vChar + "from=" + $("#txtFrom").val()
-		}
-		if ($("#txtTo").val() != ""){
-			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
-			vParam = vParam + vChar + "to=" + $("#txtTo").val()
-		}
-		if ($("#txtFields").val() != ""){
-			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
-			vParam = vParam + vChar + "fields=" + $("#txtFields").val()
-		}
-		if ($("#txtValues").val() != ""){
-			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
-			vParam = vParam + vChar + $("#txtValues").val()
-		}
-		return vParam;
-	}
-
-	function sendQuery(){
-		$("#txtReceived").html( "" );
-		var vType     = $("input[type=radio]:checked").attr("id");
-		var vDataJSON = $("#txtData").val();
-
-		var request = $.ajax({
-			 url        : vConnection
-			,type       : vType
-			,data       : vDataJSON
-			,contentType: "application/json; charset=utf-8"
-			,cache      : false
-		});
-
-		request.done(function(data, status, jqXHR){
-			$("#txtStatus").text("");
-			//$("#txtReceived").text( JSON.stringify(data) );
-			var table = $.makeTable(data);
-			$(table).appendTo("#txtReceived");
-			$("#myTable")
-			.tablesorter({widthFixed: true, widgets: ['zebra']})
-			.tablesorterPager({container: $("#pager")});
-		});;
-
-		request.always(function(jqXHR, status){
-			if (status == "success"){
-				$("#txtStatus").text("Ok.");
-			} else {
-				$("#txtStatus").text("ERROR " + jqXHR.status + " " + jqXHR.statusText);	
-			}
-		});;
-	}
-
-
-
-	$.makeTableORIGINAL = function (dataJSON) {
-		var table = $('<table border="1">');
-		var tblHeader = "<tr>";
-		for (var h in dataJSON[0]) tblHeader += "<th>" + h + "</th>";
-		tblHeader += "</tr>";
-		$(tblHeader).appendTo(table);
-		$.each(dataJSON, function (index, value) {
-			var tblRow = "<tr>";
-			$.each(value, function (key, val) {
-				tblRow += "<td>" + val + "</td>";
-			});
-			tblRow += "</tr>";
-			$(table).append(tblRow);
-		});
-		return ($(table));
-	};
-
-	$.makeTable = function (dataJSON) {
-		var table = $('<table id="myTable" class="tablesorter">');
-		var tblHead = '';
-		for (var h in dataJSON[0]) tblHead += "<th>" + h + "</th>";
-		var tblHeader = '<thead><tr>' + tblHead + "</tr></thead>";
-		$(tblHeader).appendTo(table);
-		$.each(dataJSON, function (index, value) {
-			var tblRow = "<tr>";
-			$.each(value, function (key, val) {
-				tblRow += "<td>" + val + "</td>";
-			});
-			tblRow += "</tr>";
-			$(table).append(tblRow);
-		});
-		return ($(table));
-	};
-
-
-
+	LoadInitialData();
 });
+
+function getResourceId() {
+	return $('input[name=tblId]:checked').attr('value');
+}
+
+function createTableData(objArray) {
+ 
+    //var array = objArray;
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str   = '<table id="tblData" class="tablesorter">';
+ 
+    // table <head>
+    str += '<thead><tr><th>&nbsp;</th>';
+    for (var index in array[0]) {
+        str += '<th>' + index + '</th>';
+    }
+    str += '</tr></thead>';
+ 
+    // table <body>
+    str += '<tbody>';
+    for (var i=0; i < array.length; i++) {
+        str += '<tr>';
+		// Identificador de cada fila: province/year
+		str += '<td width="10"><input type="radio" name="tblId" ';
+		if (i==0) str += 'checked="checked"';
+		str += ' value="' + array[i]['province'] + "/" + array[i]['year'] + '"/></td>';
+        
+        for (var index in array[i]) {
+            str += '<td>' + array[i][index] + '</td>';
+        }
+        str += '</tr>';
+    }
+    str += '</tbody>'
+    str += '</table>';
+    return str;
+}
 
 function obtenerURLBase() {
 	vAPIversion = "v1";
@@ -180,33 +67,10 @@ function obtenerURLBase() {
 	return vURLBase;		
 }
 
-function LoadInitialData(){
-	if ( $("#txtApiKey").val() == "") {
-		showMessage(1, "Debes indicar la Api-key.");
-		return;
-	}
-
-	var request = $.ajax({
-		 url        : obtenerURLBase() + "loadInitialData?apikey=" + $("#txtApiKey").val()
-		,type       : "GET"
-		,data       : ""
-		,contentType: "application/json; charset=utf-8"
-		,cache      : false
-	});
-
-	request.always(function(jqXHR, status){
-		if (status == "success"){
-			showMessage(0, "Initial Data loaded.");
-		} else {
-			showMessage(jqXHR.status, jqXHR.statusText);
-		}
-	});;
-}
-
-function showMessage(code, text){
+function showMessage(pCode, pText) {
 	var vClass;
 	var vType;
-	switch(code){
+	switch(pCode){
 		case 0:   vClass = "msgOK";    vType = "OK";    break;
 		case 1:
 		case 401: vClass = "msgERROR"; vType = "ERROR"; break;
@@ -214,5 +78,116 @@ function showMessage(code, text){
 	}
 	$('#divMessage').removeClass();
 	$('#divMessage').addClass(vClass);
-	$("#divMessage").text(vType + ": " + text);
+	$("#divMessage").text(vType + ": " + pText);
+}
+
+function LoadInitialData() {
+	readTableData("");
+	showMessage(0, "Initial Data Loaded.");
+}
+
+function deleteResource() {
+	setData("DELETE", getResourceId(), "");
+	readTableData("");
+}
+
+function updateResource() {
+	getData("GET", getResourceId());
+}
+
+function setData(pType, pQuery, pDataJSON) {
+
+	var vApiKey = getApiKey("WRITE");
+	if (vApiKey == "") return;
+
+	var request = $.ajax({
+		 url        : obtenerURLBase() + pQuery + vApiKey
+		,type       : pType
+		,data       : pDataJSON
+		,contentType: "application/json; charset=utf-8"
+		,cache      : false
+	});
+
+	request.always(function(jqXHR, status){
+		if (status == "success"){
+			showMessage(0, "");
+		}else{
+			showMessage(jqXHR.status, jqXHR.statusText);
+		}
+	});
+}
+
+function getData(pType, pQuery) {
+
+	var vApiKey = "?apikey=keyRead";
+
+	var request = $.ajax({
+		 url        : obtenerURLBase() + pQuery + vApiKey
+		,type       : "GET"
+		,data       : ""
+		,contentType: "application/json; charset=utf-8"
+		,cache      : false
+	});
+
+	request.done(function(data, status, jqXHR){
+		showEditTable(data);
+	});
+
+}
+
+function showEditTable(pData) {
+ 	$("#txtProvince").val(pData[0]['province']);
+ 	$("#txtYear").val(pData[0]['year']);
+ 	$("#txtMen").val(pData[0]['men']);
+ 	$("#txtWomen").val(pData[0]['women']);
+
+
+}
+
+function readTableData(pQuery) {
+
+	var vApiKey = "?apikey=keyRead";
+
+	// paginación
+	vOffset = vPageNum * 10 - 10;
+	vPages  = "&offset=" + vOffset + "&limit=" + vLimit;
+	
+	var request = $.ajax({
+		 url        : obtenerURLBase() + pQuery + vApiKey + vPages
+		,type       : "GET"
+		,data       : ""
+		,contentType: "application/json; charset=utf-8"
+		,cache      : false
+	});
+
+	request.done(function(data, status, jqXHR){
+		$("#divTable").html(createTableData(data));
+		$("#tblData").tablesorter({widthFixed: true, widgets: ['zebra']});
+	});
+
+}
+
+function getApiKey(pApiKey) {
+
+	var vApiKey = "";
+
+	if (pApiKey == "READ") {
+		vApiKey = $("#txtApiKeyRead").val();
+		if ( vApiKey == "") {
+			showMessage(1, "Debes indicar la Api-Key READ.");
+		}
+	}
+	
+	if (pApiKey == "WRITE") {
+		vApiKey = $("#txtApiKeyWrite").val();
+		if ( vApiKey == "") {
+			showMessage(1, "Debes indicar la Api-Key WRITE.");
+		}
+	}
+
+	if (vApiKey != ""){
+		vApiKey = "?apikey=" + vApiKey;
+	}
+	
+	return vApiKey;
 }

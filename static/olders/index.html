@@ -15,9 +15,15 @@
   <body>
     <h1>Olders data</h1>
 
-    <label for="txtApiKey">Api-Key:</label>&nbsp;&nbsp;
-    <input id="txtApiKey" name="txtApiKey" placeholder="keyRead / keyWrite" type="text" value="keyRead" />&nbsp;
-    <button id="btnLoadInitialData">Load Initial Data</button>
+    <table>
+      <tr><td><label for="txtApiKeyRead">Api-Key Read:</label></td>
+          <td><input id="txtApiKeyRead" name="txtApiKeyRead" placeholder="keyRead" type="text" value="keyRead" /></td>
+      </tr>
+      <tr><td><label for="txtApiKeyWrite">Api-Key Write:</label></td>
+          <td><input id="txtApiKeyWrite" name="txtApiKeyWrite" placeholder="keyWrite" type="text" value="keyWrite" /></td>
+      </tr>
+      <tr><td colspan="2"><button style="width:100%" id="btnLoadInitialData">Load Initial Data</button></td></tr>
+    </table>
     
     <br/><br/>
 
@@ -33,7 +39,7 @@
             <td><input id="txtMen" name="txtMen" type="text" /></td>
         </tr>
         <tr><td><label for="txtWomen">Women:</label></td>
-            <td><input id="txtWomMen" name="txtWomen" type="text" /></td>
+            <td><input id="txtWomen" name="txtWomen" type="text" /></td>
         </tr>
         <tr>
             <td colspan="2" align="right">
@@ -48,30 +54,7 @@
 
     <div id="divMessage"></div>
 
-    <table id="tblOlders" class="tablesorter">
-      <thead>
-        <tr>
-          <th>Province</th>
-          <th>Year</th>
-          <th>Men</th>
-          <th>Women</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="cursor:pointer" onclick="accessTo(<?= $reg->id_persona?>);">
-        <td>Sevilla</td><td>2011</td><td>123456</td><td>987654</td>
-        </tr>
-        <tr style="cursor:pointer" onclick="accessTo(<?= $reg->id_persona?>);">
-        <td>Sevilla</td><td>2010</td><td>234567</td><td>987654</td></tr>
-        <tr style="cursor:pointer" onclick="accessTo(<?= $reg->id_persona?>);">
-        <td>Sevilla</td><td>2011</td><td>345678</td><td>987654</td></tr>
-        <tr style="cursor:pointer" onclick="accessTo(<?= $reg->id_persona?>);">
-        <td>Sevilla</td><td>2010</td><td>456789</td><td>987654</td></tr>
-        <tr><td>Sevilla</td><td>2011</td><td>567890</td><td>987654</td></tr>
-        <tr><td>Sevilla</td><td>2010</td><td>678901</td><td>987654</td></tr>
-        <tr><td>Sevilla</td><td>2011</td><td>789012</td><td>987654</td></tr>
-      </tbody>
-    </table>
+    <div id="divTable"></div>
 
     <br/><br/>
 
