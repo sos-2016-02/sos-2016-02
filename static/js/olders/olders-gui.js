@@ -1,105 +1,111 @@
 var vAPIname;
 var vAPIversion;
 var vConnection;
-var vLimit   = 10;
+var vLimit   = 11;
 var vPageNum = 1;
-
-var vServer = "http://192.168.1.200:3000";
-
+var vServer  = "http://localhost:3000";
+//var vServer  = "http://192.168.1.200:3000";
 //var vServer = "https://sos-2016-02.herokuapp.com";
 
 $(document).ready(function() {
-
-	$("#btnLoadInitialData").click(function(){
-		LoadInitialData();
-	});
-
-	$("#btnDelete").click(function(){
-		deleteResource();
-	});
-
-	$("#btnUpdate").click(function(){
-		updateResource();
-	});
 	
-	LoadInitialData();
+	getAllData("");
+
+	$('#divFormulario').hide();
+
+	$("#btnLoadInitialData").click(function(){ LoadInitialData(); });
+	$("#btnDelete").click(function(){ deleteResource();	});
+	$("#btnUpdate").click(function(){ updateResource();	});
+	$("#btnCreate").click(function(){ createResource();	});
+	$("#btnCancel").click(function(){ editCancel();     });
+	$("#btnSave").click(function()  { editSave();       });
+	$("#imgFisrt").click(function() { pageFisrt();      });
+	$("#imgPrev").click(function()  { pagePrev();       });
+	$("#imgNext").click(function()  { pageNext();       });
+	$("#imgLast").click(function()  { pageLast();       });
+
 });
 
-function getResourceId() {
-	return $('input[name=tblId]:checked').attr('value');
+function pageFisrt() {
+	vPageNum = 1;
+	getAllData("");	
 }
-
-function createTableData(objArray) {
- 
-    //var array = objArray;
-    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
-    var str   = '<table id="tblData" class="tablesorter">';
- 
-    // table <head>
-    str += '<thead><tr><th>&nbsp;</th>';
-    for (var index in array[0]) {
-        str += '<th>' + index + '</th>';
-    }
-    str += '</tr></thead>';
- 
-    // table <body>
-    str += '<tbody>';
-    for (var i=0; i < array.length; i++) {
-        str += '<tr>';
-		// Identificador de cada fila: province/year
-		str += '<td width="10"><input type="radio" name="tblId" ';
-		if (i==0) str += 'checked="checked"';
-		str += ' value="' + array[i]['province'] + "/" + array[i]['year'] + '"/></td>';
-        
-        for (var index in array[i]) {
-            str += '<td>' + array[i][index] + '</td>';
-        }
-        str += '</tr>';
-    }
-    str += '</tbody>'
-    str += '</table>';
-    return str;
+function pagePrev() {
+	vPageNum = (vPageNum > 1) ? vPageNum -= 1 : 1;
+	getAllData("");	
 }
-
-function obtenerURLBase() {
-	vAPIversion = "v1";
-	vAPIname    = "olders";
-	vURLBase    = vServer + "/api/" + vAPIversion + "/" + vAPIname + "/";
-	return vURLBase;		
+function pageNext() {
+	vPageNum = (vPageNum < 10) ? vPageNum += 1 : 10;
+	getAllData("");	
 }
-
-function showMessage(pCode, pText) {
-	var vClass;
-	var vType;
-	switch(pCode){
-		case 0:   vClass = "msgOK";    vType = "OK";    break;
-		case 1:
-		case 401: vClass = "msgERROR"; vType = "ERROR"; break;
-		case 2:   vClass = "msgINFO";  vType = "INFO";  break;
-	}
-	$('#divMessage').removeClass();
-	$('#divMessage').addClass(vClass);
-	$("#divMessage").text(vType + ": " + pText);
+function pageLast() {
+	vPageNum = 11;
+	getAllData("");	
 }
 
 function LoadInitialData() {
-	readTableData("");
-	showMessage(0, "Initial Data Loaded.");
+	getAllData("loadInitialData");
+	showMessage(999, "Initial Data Loaded.");
+	pageFisrt();
 }
 
 function deleteResource() {
 	setData("DELETE", getResourceId(), "");
-	readTableData("");
+	getAllData("");
 }
 
 function updateResource() {
-	getData("GET", getResourceId());
+	getOneResource("GET", getResourceId());
+	$('#divManagerCtr').css('display', "none");
+	$('#divFormulario').css('display', "block");
+	$('#txtProvince').prop('disabled', true);
+	$('#txtYear').prop('disabled', true);
+	$('#btnSave').prop('value', "UPDATE");
+	$('#btnSave').html("Update");
+}
+
+function createResource() {
+	$('#divManagerCtr').css('display', "none");
+	$('#divFormulario').css('display', "block");
+	$('#txtProvince').prop('disabled', false);
+	$('#txtYear').prop('disabled', false);
+	$('#txtProvince').prop('value', "");
+	$('#txtYear').prop('value', "");
+	$('#txtMen').prop('value', "");
+	$('#txtWomen').prop('value', "");
+	$('#btnSave').prop('value', "CREATE");
+	$('#btnSave').html("Create");
+}
+
+function editCancel() {
+	$('#divManagerCtr').css('display', "block");
+	$('#divFormulario').css('display', "none");
+	showMessage(0, "");
+}
+
+function editSave() {
+	if ($('#btnSave').val() == "UPDATE") {
+		setData("PUT", getResourceId(), getFieldsJSON());
+	}
+	if ($('#btnSave').val() == "CREATE") {
+		setData("POST", "", getFieldsJSON());
+	}
+	$('#divManagerCtr').css('display', "block");
+	$('#divFormulario').css('display', "none");
+	getAllData("");
 }
 
 function setData(pType, pQuery, pDataJSON) {
 
-	var vApiKey = getApiKey("WRITE");
-	if (vApiKey == "") return;
+	var vApiKey = $("#txtApiKeyWrite").val();
+	if ( vApiKey == "") {
+		showMessage(999, "Please, write the Api-Key.");
+		return;
+	} else {
+		vApiKey = "?apikey=" + vApiKey;
+	}
+	
+	var x = obtenerURLBase() + pQuery + vApiKey;
 
 	var request = $.ajax({
 		 url        : obtenerURLBase() + pQuery + vApiKey
@@ -109,16 +115,18 @@ function setData(pType, pQuery, pDataJSON) {
 		,cache      : false
 	});
 
+	request.done(function(data, status, jqXHR){
+		showMessage(jqXHR.status, status);
+	});		
+
 	request.always(function(jqXHR, status){
-		if (status == "success"){
-			showMessage(0, "");
-		}else{
+		if (status != "success"){
 			showMessage(jqXHR.status, jqXHR.statusText);
 		}
 	});
 }
 
-function getData(pType, pQuery) {
+function getOneResource(pType, pQuery) {
 
 	var vApiKey = "?apikey=keyRead";
 
@@ -131,28 +139,23 @@ function getData(pType, pQuery) {
 	});
 
 	request.done(function(data, status, jqXHR){
-		showEditTable(data);
+	 	$("#txtProvince").val(data[0]['province']);
+	 	$("#txtYear").val(data[0]['year']);
+	 	$("#txtMen").val(data[0]['men']);
+	 	$("#txtWomen").val(data[0]['women']);
 	});
 
 }
 
-function showEditTable(pData) {
- 	$("#txtProvince").val(pData[0]['province']);
- 	$("#txtYear").val(pData[0]['year']);
- 	$("#txtMen").val(pData[0]['men']);
- 	$("#txtWomen").val(pData[0]['women']);
-
-
-}
-
-function readTableData(pQuery) {
+function getAllData(pQuery) {
 
 	var vApiKey = "?apikey=keyRead";
 
 	// paginación
+	$("#pageNum").html("&nbsp;&nbsp;" + vPageNum + "&nbsp;&nbsp;");
 	vOffset = vPageNum * 10 - 10;
 	vPages  = "&offset=" + vOffset + "&limit=" + vLimit;
-	
+
 	var request = $.ajax({
 		 url        : obtenerURLBase() + pQuery + vApiKey + vPages
 		,type       : "GET"
@@ -166,29 +169,4 @@ function readTableData(pQuery) {
 		$("#tblData").tablesorter({widthFixed: true, widgets: ['zebra']});
 	});
 
-}
-
-function getApiKey(pApiKey) {
-
-	var vApiKey = "";
-
-	if (pApiKey == "READ") {
-		vApiKey = $("#txtApiKeyRead").val();
-		if ( vApiKey == "") {
-			showMessage(1, "Debes indicar la Api-Key READ.");
-		}
-	}
-	
-	if (pApiKey == "WRITE") {
-		vApiKey = $("#txtApiKeyWrite").val();
-		if ( vApiKey == "") {
-			showMessage(1, "Debes indicar la Api-Key WRITE.");
-		}
-	}
-
-	if (vApiKey != ""){
-		vApiKey = "?apikey=" + vApiKey;
-	}
-	
-	return vApiKey;
 }

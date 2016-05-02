@@ -134,3 +134,29 @@ function isBetween(obj, propertyName, minValue, maxValue) {
 exports.checkApiKey = function(request, keyValue) {
     return (request.query.apikey && request.query.apikey == keyValue);
 };
+
+//Ordenar un array de datos JSON
+exports.sortJsonArrayByProperty = function(objArray, prop, direction){
+    /*
+    sortJsonArrayByProperty(results, 'attributes.OBJECTID');
+    sortJsonArrayByProperty(results, 'attributes.OBJECTID', -1);
+    */
+    if (arguments.length<2) throw new Error("sortJsonArrayByProp requiere 2 argumentos");
+    var direct = arguments.length>2 ? arguments[2] : 1; //Por defecto, ascendentemente
+
+    if (objArray && objArray.constructor === Array){
+        var propPath = (prop.constructor === Array) ? prop : prop.split(".");
+        objArray.sort(function(a,b){
+            for (var p in propPath){
+                if (a[propPath[p]] && b[propPath[p]]){
+                    a = a[propPath[p]];
+                    b = b[propPath[p]];
+                }
+            }
+            // convierte cadenas numérica en enteros (integers)
+            a = a.match(/^\d+$/) ? +a : a;
+            b = b.match(/^\d+$/) ? +b : b;
+            return ( (a < b) ? -1*direct : ((a > b) ? 1*direct : 0) );
+        });
+    }
+}

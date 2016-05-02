@@ -10,60 +10,58 @@
     <script src="/js/jquery-2.2.3.min.js"></script>
     <script src="/js/tablesorter/jquery.tablesorter.js"></script>
     <script src="/js/olders/olders-gui.js"></script>
+    <script src="/js/olders/utils.js"></script>
   </head>
 
   <body>
-    <h1>Olders data</h1>
+    <div class="divPage">
+      <h1>Olders data</h1>
 
-    <table>
-      <tr><td><label for="txtApiKeyRead">Api-Key Read:</label></td>
-          <td><input id="txtApiKeyRead" name="txtApiKeyRead" placeholder="keyRead" type="text" value="keyRead" /></td>
-      </tr>
-      <tr><td><label for="txtApiKeyWrite">Api-Key Write:</label></td>
-          <td><input id="txtApiKeyWrite" name="txtApiKeyWrite" placeholder="keyWrite" type="text" value="keyWrite" /></td>
-      </tr>
-      <tr><td colspan="2"><button style="width:100%" id="btnLoadInitialData">Load Initial Data</button></td></tr>
-    </table>
-    
-    <br/>
+      <div id="divManagerCtr">
+        <label for="txtApiKeyWrite">Api-Key:</label>&nbsp;
+        <input id="txtApiKeyWrite" name="txtApiKeyWrite" placeholder="keyWrite" type="text" value="keyWrite" />&nbsp;&nbsp;
+        <button id="btnLoadInitialData">Load Initial Data</button>
+        <hr/>
+        <button id="btnCreate">Create</button>&nbsp;
+        <button id="btnDelete">Delete</button>&nbsp;
+        <button id="btnUpdate">Update</button>&nbsp;
+        <label for="txtSearch">Search:</label>
+        <input id="txtSearch" name="txtSearch" placeholder="Type to search" type="text">
+        <input id="txtSearch" value="Search" type="submit" />&nbsp;&nbsp;&nbsp;&nbsp;
+        <img class="pageToGo" id="imgFisrt" src="/images/first.png" title="Fisrt"/>
+        <img class="pageToGo" id="imgPrev"  src="/images/prev.png"  title="Previous"/>
+        <span id="pageNum"></span>
+        <img class="pageToGo" id="imgNext"  src="/images/next.png"  title="Next"/>
+        <img class="pageToGo" id="imgLast"  src="/images/last.png"  title="Last"/>
 
-    <form id="frmData">
-      <table border="0">
-        <tr><td><label for="txtProvince">Province:</label></td>
-            <td><input id="txtProvince" name="txtProvince" type="text" /></td>
-        </tr>
-        <tr><td><label for="txtYear">Year:</label></td>
-            <td><input id="txtYear" name="txtYear" type="text" /></td>
-        </tr>
-        <tr><td><label for="txtMen">Men:</label></td>
-            <td><input id="txtMen" name="txtMen" type="text" /></td>
-        </tr>
-        <tr><td><label for="txtWomen">Women:</label></td>
-            <td><input id="txtWomen" name="txtWomen" type="text" /></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
-                <button id="btnCancel">Cancel</button>&nbsp;
-                <button id="btnSave">Save</button>&nbsp;
-            </td>
-        </tr>
-      </table>
-    </form>
+        <div id="divTable"></div>
 
-    <br/><br/>
+        <div id="divMessage"></div>
+      </div>
 
-    <div id="divMessage"></div>
+      <div id="divFormulario" class="divForm">
+        <table border="0">
+          <tr><td><label id="lblProvince" for="txtProvince">Province:</label></td>
+              <td><input id="txtProvince" name="txtProvince" type="text" /></td>
+          </tr>
+          <tr><td><label id="lblYear" for="txtYear">Year:</label></td>
+              <td><input id="txtYear" name="txtYear" type="text" /></td>
+          </tr>
+          <tr><td><label for="txtMen">Men:</label></td>
+              <td><input id="txtMen" name="txtMen" type="text" /></td>
+          </tr>
+          <tr><td><label for="txtWomen">Women:</label></td>
+              <td><input id="txtWomen" name="txtWomen" type="text" /></td>
+          </tr>
+          <tr>
+              <td colspan="2" align="right">
+                  <button id="btnCancel" >Cancel</button>&nbsp;
+                  <button id="btnSave">Save</button>&nbsp;
+              </td>
+          </tr>
+        </table>
+      </div>
 
-    <div id="divTable"></div>
-
-    <br/><br/>
-
-    <button id="btnCreate">Create</button>&nbsp;
-    <button id="btnDelete">Delete</button>&nbsp;
-    <button id="btnUpdate">Update</button>&nbsp;
-    <label for="txtSearch">Search:</label>
-    <input id="txtSearch" name="txtSearch" placeholder="Type to search" type="text">
-    <input id="txtSearch" value="Search" type="submit" />
-
+    </div>
   </body>
 </html>

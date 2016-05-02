@@ -1,11 +1,48 @@
+h1{
+	background-color: #c6c6c6;
+}
+.msgNone{
+	background-color:white;
+	color:white;
+}
+
 .msgOK{
-	color:blue;
+	background-color:green;
+	color:white;
 }
 
 .msgERROR{
-	color:red;
+	background-color:red;
+	color:white;
 }
 
 .msgINFO{
-	color:yellow;
+	background-color:yellow;
+	color:black;
+}
+
+.pageToGo{
+	cursor: pointer;
+	width: 17px;
+	vertical-align: middle;
+}
+
+.divPage{
+	position: absolute;
+	top: 50%; /* Buscamos el centro horizontal (relativo) del navegador */
+	left: 50%; /* Buscamos el centro vertical (relativo) del navegador */
+	width: 620px; /* Definimos el ancho del objeto a centrar */
+	height: 400px; /* Definimos el alto del objeto a centrar */
+	margin-top: -400px; /* Restamos la mitad de la altura del objeto con un margin-top */
+	margin-left: -310px; /* Restamos la mitad de la anchura del objeto con un margin-left */
+}
+
+.divForm{
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	width: 620px;
+	height: 400px;
+	margin-top: -120px;
+	margin-left: -310px;
 }
