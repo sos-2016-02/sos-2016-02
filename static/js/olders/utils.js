@@ -10,9 +10,16 @@ function createTableData(objArray) {
  
     // table <head>
     str += '<thead><tr><th>&nbsp;</th>';
+    /*
     for (var index in array[0]) {
         str += '<th>' + index + '</th>';
     }
+    */
+    str += '<th>' + 'province' + '</th>';
+    str += '<th>' + 'year' + '</th>';
+    str += '<th>' + 'men' + '</th>';
+    str += '<th>' + 'women' + '</th>';
+
     str += '</tr></thead>';
  
     // table <body>
@@ -54,6 +61,7 @@ function showMessage(pCode, pText) {
         case 200:
         case 201: vClass = "msgOK";    vType = "OK: ";    break;
         case 401:
+        case 404:
         case 409: vClass = "msgERROR"; vType = "ERROR: "; break;
 		case 999: vClass = "msgINFO";  vType = "INFO: ";  break;
 	}

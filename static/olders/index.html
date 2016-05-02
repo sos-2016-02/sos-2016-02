@@ -18,16 +18,20 @@
       <h1>Olders data</h1>
 
       <div id="divManagerCtr">
-        <label for="txtApiKeyWrite">Api-Key:</label>&nbsp;
-        <input id="txtApiKeyWrite" name="txtApiKeyWrite" placeholder="keyWrite" type="text" value="keyWrite" />&nbsp;&nbsp;
-        <button id="btnLoadInitialData">Load Initial Data</button>
-        <hr/>
+        <div class="divApiKey">
+          <br/>
+          <label for="txtApiKeyWrite">&nbsp;&nbsp;Api-Key:</label>&nbsp;
+          <input id="txtApiKeyWrite" name="txtApiKeyWrite" placeholder="keyWrite" type="text" value="keyWrite" />&nbsp;&nbsp;
+          <button id="btnLoadInitialData">Load Initial Data</button>
+          <br/><br/><hr/>
+        </div>
+        <br/>
         <button id="btnCreate">Create</button>&nbsp;
         <button id="btnDelete">Delete</button>&nbsp;
         <button id="btnUpdate">Update</button>&nbsp;
-        <label for="txtSearch">Search:</label>
+        <label for="txtSearch">Province:</label>
         <input id="txtSearch" name="txtSearch" placeholder="Type to search" type="text">
-        <input id="txtSearch" value="Search" type="submit" />&nbsp;&nbsp;&nbsp;&nbsp;
+        <button id="btnSearch">Search</button>&nbsp;&nbsp;&nbsp;&nbsp;
         <img class="pageToGo" id="imgFisrt" src="/images/first.png" title="Fisrt"/>
         <img class="pageToGo" id="imgPrev"  src="/images/prev.png"  title="Previous"/>
         <span id="pageNum"></span>
@@ -39,7 +43,7 @@
         <div id="divMessage"></div>
       </div>
 
-      <div id="divFormulario" class="divForm">
+      <div id="divFormulario" class="divFormulario">
         <table border="0">
           <tr><td><label id="lblProvince" for="txtProvince">Province:</label></td>
               <td><input id="txtProvince" name="txtProvince" type="text" /></td>

@@ -1,6 +1,9 @@
 h1{
 	background-color: #c6c6c6;
+	margin-bottom: 0px;
+	padding-left: 10px;
 }
+
 .msgNone{
 	background-color:white;
 	color:white;
@@ -28,6 +31,8 @@ h1{
 }
 
 .divPage{
+	font-family: Arial;
+	font-size: small;
 	position: absolute;
 	top: 50%; /* Buscamos el centro horizontal (relativo) del navegador */
 	left: 50%; /* Buscamos el centro vertical (relativo) del navegador */
@@ -37,7 +42,10 @@ h1{
 	margin-left: -310px; /* Restamos la mitad de la anchura del objeto con un margin-left */
 }
 
-.divForm{
+.divApiKey{
+	background-color: #ececec;
+}
+.divFormulario{
 	position: absolute;
 	top: 50%;
 	left: 50%;
