@@ -5,10 +5,10 @@ var express    = require('express');
 var fs = require('fs'); 
 var router     = express.Router();
 router.use(bodyParser.json());
-var workersData = loadInitialData();
+var workersData =[];
 
 
-function loadInitialData() {
+/*function loadInitialData() {
     arr = [];
     arr.push( { province: "Albacete", year : "2015" , industry : "Agriculture" , value : "17.0"});
     arr.push( { province: "Asturias", year : "2014" , industry : "Agriculture" , value : "13.8"});
@@ -19,15 +19,23 @@ function loadInitialData() {
     arr.push( { province: "Sevilla", year : "2015" , industry : "Building" , value : "50.0"});
     
     return arr;
-}
+}*/
 
 router.get('/loadInitialData', (req, res) => {
-	/*var apiKey = req.query.apikey;
-    if(!(apikey && apikey == "sos")){
+	var apiKey = req.query.apikey;
+    if(!(apiKey == "sos")){
         res.sendStatus(403);
-    }*/
-    workersData = JSON.parse(fs.readFileSync('data/workers_initial_data.json', 'utf8'));
-    res.sendStatus(200);
+   
+        
+    }else{
+        res.sendStatus(200);
+        workersData = JSON.parse(fs.readFileSync('data/workers_initial_data.json', 'utf8'));
+
+    }
+    console.log("show me "+apiKey);
+    
+    
+    
 });
 
 router.get('/',(req, res) => {

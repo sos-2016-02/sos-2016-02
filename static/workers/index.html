@@ -7,18 +7,17 @@
     <meta charset="utf-8" />
     <script src="/js/jquery-2.2.3.min.js"></script>
     <link type ="text/css" href="/css/workers/bootstrap.min.css" rel="stylesheet" media="screen,projection"/>
-    <script src="/js/workers/workers-data-table.js"></script>
-    <!--<link type="text/css" rel="stylesheet" href="/css/workers/jquery.dataTables.min.css"/>
+    <link type ="text/css" href="/css/workers/bootstrap-theme.min.css" rel="stylesheet" media="screen,projection"/>
+    <!--<script src="/js/workers/workers-data-table.js"></script>-->
     <script src="/js/workers/workers-gui.js"></script>
-    <script src="/js/workers/jquery.dataTables.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap-table.css"/>-->
+    <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap-table.css" media ="screen,projection"/>
     
   </head>
 
   <body>
     <h1>Workers Data</h1>
 
-    <button id="button-load-initial-data">Cargar datos iniciales</button>
+    <button id="btnLoadInitialData">Cargar datos iniciales</button>
     <label for="api-key-input">API key</label>
     <input id="api-key-input" type="text" value="sos" />
     <button id="button-reload-data">Cargar Datos</button>
@@ -46,10 +45,11 @@
       <input id="server-side-search-input" type="text">
       <input type="submit" id="button-search" value="SEND"/>
     </form>
-
+    <div id="workers-data"></div>
   <section id="connection">
-    
-    <table class = "workers-data-table" class ="display">
+    <div id="workers-data">
+    </div>
+    <!--<table class = "table" class ="display">
     <div class="table">
      <h1></h1>
       </div>
@@ -135,7 +135,7 @@
         </div>
       </div>
       </table>
-    </td>
+    </td>-->
   </section>
       Show
     <select id="pagination-select">

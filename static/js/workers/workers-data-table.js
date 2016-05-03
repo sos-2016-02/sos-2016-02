@@ -15,10 +15,10 @@ $(document).ready(function() {
 		
 	});
 
-	$("#btnLoadInitialData").click(function(){
+	/*$("#btnLoadInitialData").click(function(){
 		loadInitialData();
 
-	});
+	});*/   
 
 	
 	request.done(function(data,status,jqXHR){
@@ -27,7 +27,7 @@ $(document).ready(function() {
 		//Quiero mostrar todos los elemento de DOM
 		//is dumped to the console window
 		console.log(table[0].outerHTML);
-		$("#workers-data-table").html(table);
+		$("#workers-data").html(table);
 
 	});
 
@@ -41,7 +41,7 @@ $(document).ready(function() {
 	//});
 });
 function makeTable(data){
-	var table = $('<table border="1">');
+	var table = $('<table class = "table">');
 		var tblHeader = "<tr>";
 		for (var h in data[0]) {
         tblHeader += "<th>" + h + "</th>";
@@ -59,4 +59,6 @@ function makeTable(data){
 		$(table).append($("</table>"));
 		return ($(table));
 };
+
+
 

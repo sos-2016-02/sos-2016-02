@@ -2,17 +2,18 @@
 
 var API_WORKERS_URL = "/api/v1/workers";
 var ERROR_WRONG_API_KEY = "The API key that you provided has been refused, check for any typo";
+var table;
 
 // TODO find in doc how to get a DataTable object from
 // an existing one
-var dataTable;
+/*/*
 var paginationLimit = 10;
 var paginationOffset = 0;
 
 var byId = function(id) {return document.getElementById(id);};
 
-$(document).ready(function() {
-    dataTable = $("#workers-data-table").DataTable({
+/*$(document).ready(function() {
+    Table = $("#workers-data")({
         "ordering": false,
         "paging": false,
         "info": false,
@@ -27,12 +28,30 @@ $(document).ready(function() {
             { "data": "value" },
             
         ]
-    });
+    });*/
+/*/*$(document).ready(function() {
+	var request  = $.ajax({
+		url  :"/api/v1/workers"
+		,type :"GET"
+		 /*,data : ""/*'{"province": "Alabacete","year": "2015","industry": "Agriculture","value":"17.0"}'
+			   '{"province": "Asturias","year": "2014","industry": "Agriculture","value":"13.8"}'
+			   '{"province": "Barcelona","year": "2015","industry": "Building","value":"132.1"}'
+			   '{"province": "Bizkaia","year": "2013","industry": "Services","value":"369.4"}'
+			   '{"province": "Burgos","year": "2013","industry": "Agriculture","value":"9.2"}'
+			   '{"province": "Ciudad Real","year": "2012","industry": "Factories Industries","value":"29.2"}'
+			   {"province": "Sevilla","year": "2015","industry": "Building","value":"50.0"}',
+	
+		,contentType: "aplication/json"
+
+		
+	});
+
+
     // disable default alert box which has a cryptic message
     // when an error occurs (wrong API key for example)
-    $.fn.dataTable.ext.errMode = function (res) {
+    /*$.fn.Bootst.ext.errMode = function (res) {
         if(res.jqXHR.status == 401) {
-            dataTable.clear().draw(); // don't let data when it's not possible to load it
+            Table.clear().draw(); // don't let data when it's not possible to load it
             window.alert(ERROR_MESSAGE_WRONG_API_KEY);
         }
     };
@@ -49,7 +68,7 @@ $(document).ready(function() {
 
 
 function addActionsToTable() {
-    var table = document.getElementById("workers-data-table");
+    var table = document.getElementById("workers-data");
     //addActionColumnToHeader(table);
     $(table).on("draw.dt", function () {
         addActionButtonsToEachRow(table);
@@ -62,7 +81,7 @@ function searchButtonListener(event) {
     event.preventDefault();
     var searchQuery = $("#server-side-search-input").val();
     var newDataUrl = API_WORKERS_URL + "/" + searchQuery + getUrlParms();
-    dataTable.ajax.url(newDataUrl).load();
+    Table.ajax.url(newDataUrl).load();
 }
 
 
@@ -93,7 +112,7 @@ function datumFormListener(event) {
         url: url,
         type: type,
         data: formJson,
-        doneCallback: () => {dataTable.ajax.reload();},
+        doneCallback: () => {Table.ajax.reload();},
         alwaysCallback: () => {$inputs.prop("disabled", false);}
     });
     if (editing) { byId("datum-form-button").value = "Create"; }
@@ -108,7 +127,7 @@ function loadInitialDataButtonListener(event) {
     performAjaxRequest({
         url: url,
         type: "get",
-        doneCallback: () => {dataTable.ajax.reload();},
+        doneCallback: () => {.ajax.reload();},
         alwaysCallback: () => {$(event.target).prop("disabled", false);}
     });
 }
@@ -137,7 +156,7 @@ function paginationNextButtonListener(event) {
 
 function refreshUrlAndReload() {
     var newUrl = API_WORKERS_URL + getUrlParms();
-    dataTable.ajax.url(newUrl).load();
+    Table.ajax.url(newUrl).load();
 }
 
 function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
@@ -154,7 +173,7 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
         if (jqXHR.status == 409) {
             window.alert("The datum that you are trying to add already exists(same province and year)");
         } else if (jqXHR.status == 401) {
-            bootstrapTable.clear().draw(); // don't let data when it's not possible to load it
+            Table.clear().draw(); // don't let data when it's not possible to load it
             window.alert(ERROR_MESSAGE_WRONG_API_KEY);
         }
         console.error(
@@ -169,7 +188,7 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
 /*function addActionColumnToHeader(table) {
     var header = table.tHead.row[0];
     header.innerHTML += "<th>Actions</th>";
-}*/
+}
 
 function addActionButtonsToEachRow(table) {
     var tableBody = table.tBodies[0];
@@ -226,7 +245,7 @@ function deleteDatumListener(event) {
     performAjaxRequest({
         url: url,
         type: "delete",
-        doneCallback: () => {dataTable.ajax.reload();},
+        doneCallback: () => {Table.ajax.reload();},
         alwaysCallback: () => {$(event.target).prop("disabled", false);}
     });
 }
@@ -255,3 +274,106 @@ $.fn.serializeObject = function() {
     });
     return o;
 };
+*/
+
+//=============================data table js====================
+
+
+$(document).ready(function() {
+	//llamadas que estoy haciendo a mi jquery or javascritp
+	var request  = $.ajax({
+		url  :"/api/v1/workers"
+		,type :"GET"
+		,contentType: "aplication/json"
+
+		
+	});
+
+	$("#btnLoadInitialData").click(function(){
+		loadInitialData();
+
+	});  
+
+	
+
+	request.done(function(data,status,jqXHR){
+		console.log(JSON.stringify(data));
+		table = makeTable(data);
+		//Quiero mostrar todos los elemento de DOM
+		//is dumped to the console window
+		console.log(table[0].outerHTML);
+		$("#workers-data").html(table);
+
+	});
+
+	request.always(function(jqXHR, status){
+		console.log("Let me know the status:" + status);
+	});
+
+	//console.log("Jquery Ready");
+	//$("#workers-data").click(function(){
+
+	//});
+});
+function makeTable(data){
+	var table = $('<table class = "table">');
+		var tblHeader = "<tr>";
+		for (var h in data[0]) {
+        tblHeader += "<th>" + h + "</th>";
+    }
+		tblHeader += "</tr>";
+		$(tblHeader).appendTo(table);
+		$.each(data, (index, value) => {
+			  var tblRow = "<tr>";
+			  $.each(value, (key, val) => {
+				    tblRow += "<td>" + val + "</td>";
+			  });
+			  tblRow += "</tr>";
+			  $(table).append(tblRow);
+		});
+		$(table).append($("</table>"));
+		return ($(table));
+};
+
+function loadInitialData() {
+    var url = API_WORKERS_URL +  "/loadInitialData" + "?apikey=sos"// + getUrlParms();
+    console.log("Muestra datos iniciales" +url);
+
+    performAjaxRequest({
+        url: url,
+        type: "get",
+        doneCallback: () => {},
+        alwaysCallback: () => {}
+    });
+}
+
+function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
+    var request = $.ajax({
+        url: url,
+        type: type,
+        data: data,
+		contentType: "application/json"
+    });
+
+    request.done(doneCallback);
+
+    request.fail(function (jqXHR, textStatus, errorThrown){
+        if (jqXHR.status == 409) {
+            window.alert("The datum that you are trying to add already exists(same province and year)");
+        } else if (jqXHR.status == 401) {
+            //Table.clear().draw(); // don't let data when it's not possible to load it
+            //es parte del entorno "palabra reservada "
+            window.alert(ERROR_MESSAGE_WRONG_API_KEY);
+        }
+        console.error(
+            "The following error occurred: "+
+                textStatus, errorThrown
+        );
+    });
+
+    request.always(alwaysCallback);
+}
+
+
+
+
