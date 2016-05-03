@@ -7,6 +7,12 @@ var vPageNum = 1;
 //var vServer  = "http://192.168.1.200:3000";
 var vServer = "https://sos-2016-02.herokuapp.com";
 
+var findAllByProperty = function(objectsArray, property, value) {
+    return objectsArray.filter((obj) => {
+        return obj[property] == value;
+    });
+};
+
 $(document).ready(function() {
 	
 	getAllData("");
@@ -17,6 +23,7 @@ $(document).ready(function() {
 	$("#btnDelete").click(function(){ deleteResource();	});
 	$("#btnUpdate").click(function(){ updateResource();	});
 	$("#btnCreate").click(function(){ createResource();	});
+	$("#btnSearch").click(function(){ searchResource();	});
 	$("#btnCancel").click(function(){ editCancel();     });
 	$("#btnSave").click(function()  { editSave();       });
 	$("#imgFisrt").click(function() { pageFisrt();      });
@@ -47,6 +54,11 @@ function LoadInitialData() {
 	getAllData("loadInitialData");
 	showMessage(999, "Initial Data Loaded.");
 	pageFisrt();
+}
+
+function searchResource() {
+	showMessage(0, "");
+	getAllData($("#txtSearch").val());
 }
 
 function deleteResource() {
@@ -167,6 +179,13 @@ function getAllData(pQuery) {
 	request.done(function(data, status, jqXHR){
 		$("#divTable").html(createTableData(data));
 		$("#tblData").tablesorter({widthFixed: true, widgets: ['zebra']});
+	});
+
+	request.always(function(jqXHR, status){
+		if (status != "success"){
+			showMessage(jqXHR.status, jqXHR.statusText);
+		}
+
 	});
 
 }
