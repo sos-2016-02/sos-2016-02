@@ -7,6 +7,7 @@ var router     = express.Router();
 router.use(bodyParser.json());
 var workersData = loadInitialData();
 
+
 function loadInitialData() {
     arr = [];
     arr.push( { province: "Albacete", year : "2015" , industry : "Agriculture" , value : "17.0"});
@@ -36,6 +37,7 @@ router.get('/',(req, res) => {
     res.send(data);
 });
 
+
 router.post ('/' ,(req, res) => {
 	/*var apiKey = req.query.apikey;
 	if(!(apikey && apikey == "sos")){
@@ -53,7 +55,7 @@ router.post ('/' ,(req, res) => {
     }
 
     var filteredByYear = tools.findAllByProperty(workersData,
-                                                     'year', datan.province);
+                                                     'year', datan.year);
     // year and province are the primary key
     var existingDatum = tools.findByProperty(filteredByYear, 'industry', datan.industry);
     if (existingDatum != undefined) {
