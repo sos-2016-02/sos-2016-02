@@ -27,18 +27,34 @@
           <br/><br/><hr/>
         </div>
         <br/>
-        <button id="btnCreate">Create</button>&nbsp;
-        <button id="btnDelete">Delete</button>&nbsp;
-        <button id="btnUpdate">Update</button>&nbsp;
-        <label for="txtSearch">Province:</label>
-        <input id="txtSearch" name="txtSearch" placeholder="Type to search" type="text">
-        <button id="btnSearch">Search</button>&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="divApiKey">
+        <table width="100%" style="border-collapse:collapse">
+          <tr style="background-color: #c6c6c6;font-size: large;"><td>&nbsp;Action</td><td colspan="2">Filter</td></tr>
+          <tr class="light"><td rowspan="2">
+              &nbsp;<button id="btnCreate">Create</button>
+              &nbsp;<button id="btnDelete">Delete</button>
+              &nbsp;<button id="btnUpdate">Update</button>
+              </td>
+              <td>Province:</td>
+              <td><input id="txtProvinceName" name="txtProvinceName" placeholder="Type a province name" type="text" size="18">
+              </td>
+          </tr>
+          <tr class="light">
+              <td>Year:</td>
+              <td><label for="txtYearFrom">from:&nbsp;&nbsp;</label>
+                  <input id="txtYearFrom" name="txtYearFrom" placeholder="YYYY" type="text" size="2">
+                <label for="txtYearTo">to:</label>
+                  <input id="txtYearTo" name="txtYearTo" placeholder="YYYY" type="text" size="2"><button id="btnFilter" style="margin-left: 30px;">Apply filter</button>
+                </td>
+              </tr>
+        </table><hr/></div>
+        <div align="center">
         <img class="pageToGo" id="imgFisrt" src="/images/first.png" title="Fisrt"/>
         <img class="pageToGo" id="imgPrev"  src="/images/prev.png"  title="Previous"/>
         <span id="pageNum"></span>
         <img class="pageToGo" id="imgNext"  src="/images/next.png"  title="Next"/>
         <img class="pageToGo" id="imgLast"  src="/images/last.png"  title="Last"/>
-
+        </div>
         <div id="divTable"></div>
 
         <div id="divMessage"></div>

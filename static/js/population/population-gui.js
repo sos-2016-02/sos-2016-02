@@ -17,7 +17,7 @@ $(document).ready(function() {
         "paging": false,
         "info": false,
         "ajax": {
-            "url": API_POPULATION_URL + getUrlParms(),
+            "url": API_POPULATION_URL + makeUrlParams(),
             "dataSrc": ""
         },
         "columns": [
@@ -60,8 +60,13 @@ function addActionsToTable() {
 // listeners ///////////////////////////////////////////////////////////////////
 function searchButtonListener(event) {
     event.preventDefault();
-    var searchQuery = $("#server-side-search-input").val();
-    var newDataUrl = API_POPULATION_URL + "/" + searchQuery + getUrlParms();
+    var yearOrCityQuery = $("#search-year-or-city-input").val();
+    var minPopulationQuery = $("#search-min-population-input").val();
+    var minPopulationUrlParams = "&minPopulation=" + minPopulationQuery;
+    var newDataUrl =
+            API_POPULATION_URL + "/" +
+            yearOrCityQuery +
+            makeUrlParams(minPopulationUrlParams);
     dataTable.ajax.url(newDataUrl).load();
 }
 
@@ -83,10 +88,10 @@ function datumFormListener(event) {
     if (editing) {
         var year = byId("year-input").value;
         var province = byId("province-input").value;
-        url = API_POPULATION_URL + "/" + province + "/" + year + getUrlParms();
+        url = API_POPULATION_URL + "/" + province + "/" + year + makeUrlParams();
         type = "put";
     } else {
-        url = API_POPULATION_URL + getUrlParms();
+        url = API_POPULATION_URL + makeUrlParams();
         type = "post";
     }
     performAjaxRequest({
@@ -103,7 +108,7 @@ function loadInitialDataButtonListener(event) {
     event.preventDefault();
     $(event.target).prop("disabled", true);
 
-    var url = API_POPULATION_URL + "/loadInitialData" + getUrlParms();
+    var url = API_POPULATION_URL + "/loadInitialData" + makeUrlParams();
 
     performAjaxRequest({
         url: url,
@@ -136,7 +141,7 @@ function paginationNextButtonListener(event) {
 // helpers /////////////////////////////////////////////////////////////////////
 
 function refreshUrlAndReload() {
-    var newUrl = API_POPULATION_URL + getUrlParms();
+    var newUrl = API_POPULATION_URL + makeUrlParams();
     dataTable.ajax.url(newUrl).load();
 }
 
@@ -219,7 +224,7 @@ function deleteDatumListener(event) {
     var row = event.data;
     var year = row.cells[0].innerHTML;
     var province = row.cells[1].innerHTML;
-    var url = API_POPULATION_URL + "/" + province + "/" + year + getUrlParms();
+    var url = API_POPULATION_URL + "/" + province + "/" + year + makeUrlParams();
 
     $(event.target).prop("disabled", true);
 
@@ -231,10 +236,11 @@ function deleteDatumListener(event) {
     });
 }
 
-function getUrlParms() {
+function makeUrlParams(additionalParams = "") {
     var params = "?apikey=" + byId("api-key-input").value +
             "&limit=" + paginationLimit +
-            "&offset=" + paginationOffset;
+            "&offset=" + paginationOffset+
+            additionalParams;
 
     return params;
 }
