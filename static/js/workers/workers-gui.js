@@ -12,7 +12,6 @@ var paginationOffset = 0;
 var byId = function(id) {return document.getElementById(id);};
 
 $(document).ready(function() {
-    
     dataTable = $("#workers-data-table").DataTable({
         "ordering": false,
         "paging": false,
@@ -146,7 +145,7 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
         url: url,
         type: type,
         data: data,
-        contentType: "application/json"
+		contentType: "application/json"
     });
 
     request.done(doneCallback);
@@ -233,7 +232,7 @@ function deleteDatumListener(event) {
 }
 
 function getUrlParms() {
-    var params = "?apikey=" + byId("api-key-input") +
+    var params = "?apikey=" + byId("api-key-input").value +
             "&limit=" + paginationLimit +
             "&offset=" + paginationOffset;
 
