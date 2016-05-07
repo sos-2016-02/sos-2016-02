@@ -32,7 +32,6 @@ router.get('/loadInitialData', (req, res) => {
         workersData = JSON.parse(fs.readFileSync('data/workers_initial_data.json', 'utf8'));
 
     }
-    console.log("show me "+apiKey);
     
     
     

@@ -293,6 +293,7 @@ $(document).ready(function() {
 		loadInitialData();
 
 	});  
+	$("#button-search").click(searchButtonListener);
 
 	
 
@@ -335,10 +336,10 @@ function makeTable(data){
 		return ($(table));
 };
 
+
 function loadInitialData() {
     var url = API_WORKERS_URL +  "/loadInitialData" + "?apikey=sos"// + getUrlParms();
-    console.log("Muestra datos iniciales" +url);
-
+    
     performAjaxRequest({
         url: url,
         type: "get",
@@ -373,6 +374,13 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
 
     request.always(alwaysCallback);
 }
+function searchButtonListener(event) {
+    //event.preventDefault();
+    var searchQuery = $("#server-side-search-input").val();
+    var newDataUrl = API_WORKERS_URL + "/" + searchQuery + getUrlParms();
+   // Table.ajax.url(newDataUrl).load();
+}
+
 
 
 
