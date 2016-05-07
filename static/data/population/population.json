@@ -1,6 +1,6 @@
 [
   {
-     "year": 2015, "province": "Sevilla", "age": "15-19", "birthplace": "South America", "number": "1132"
+     "year": 2015, "province": "Sevilla", "age": "15-19", "birthplace": "South America", "number": 1132
   },
   {
      "year": 2015, "province": "Málaga", "age": "20-24", "birthplace": "EU without spain", "number": 1800
@@ -19,5 +19,8 @@
   },
   {
      "year": 2015, "province": "Guadalajara", "age": "15-19", "birthplace": "South America", "number": 1501
+  },
+  {
+     "year": 2015, "province": "Balears, Illes", "age": "15-19", "birthplace": "South America", "number": 1600
   }
 ]
