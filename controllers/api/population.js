@@ -78,7 +78,10 @@ exports.getDataByProvince = (req, res) => {
             return datum['number'] >= req.query.minPopulation;
         });
     }
-    res.send(provinceData);
+    var paginatedData = tools.getInterval(provinceData,
+                                 req.query.offset,
+                                 req.query.limit);
+    res.send(paginatedData);
 };
 
 exports.getDataByYear = (req, res) => {
