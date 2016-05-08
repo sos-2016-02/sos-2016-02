@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+  <head>
+    <title>Population visualization</title>
+    <meta charset="utf-8" />
+    <script src="/js/population/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/js/population/topojson.v1.min.js"></script>
+    <script src="/js/population/queue.v1.min.js"></script>
+    <style>
+      .tooltip {
+      position: absolute;
+      text-align: center;
+      width: 95px;
+      height: 12px;
+      padding: 8px;
+      margin-top: -20px;
+      font: 10px sans-serif;
+      background: #ddd;
+      pointer-events: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Population visualization: Simple choropleth of 2015 data</h1>
+    <script src="/js/population/visualization.js"></script>
+  </body>
+</html>
