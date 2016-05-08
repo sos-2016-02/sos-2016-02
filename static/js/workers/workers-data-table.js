@@ -2,14 +2,7 @@ $(document).ready(function() {
 	var request  = $.ajax({
 		url  :"/api/v1/workers"
 		,type :"GET"
-		 /*,data : ""/*'{"province": "Alabacete","year": "2015","industry": "Agriculture","value":"17.0"}'
-			   '{"province": "Asturias","year": "2014","industry": "Agriculture","value":"13.8"}'
-			   '{"province": "Barcelona","year": "2015","industry": "Building","value":"132.1"}'
-			   '{"province": "Bizkaia","year": "2013","industry": "Services","value":"369.4"}'
-			   '{"province": "Burgos","year": "2013","industry": "Agriculture","value":"9.2"}'
-			   '{"province": "Ciudad Real","year": "2012","industry": "Factories Industries","value":"29.2"}'
-			   {"province": "Sevilla","year": "2015","industry": "Building","value":"50.0"}',
-*/		
+		 
 		,contentType: "aplication/json"
 
 		
@@ -27,7 +20,7 @@ $(document).ready(function() {
 		//Quiero mostrar todos los elemento de DOM
 		//is dumped to the console window
 		console.log(table[0].outerHTML);
-		$("#workers-data-table").html(table);
+		$("#workers-data").html(table);
 
 	});
 
@@ -41,7 +34,7 @@ $(document).ready(function() {
 	//});
 });
 function makeTable(data){
-	var table = $('<table border="1">');
+	var table = $('<table class = "table">');
 		var tblHeader = "<tr>";
 		for (var h in data[0]) {
         tblHeader += "<th>" + h + "</th>";
@@ -59,4 +52,3 @@ function makeTable(data){
 		$(table).append($("</table>"));
 		return ($(table));
 };
-

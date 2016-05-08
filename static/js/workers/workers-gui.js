@@ -2,142 +2,268 @@
 
 var API_WORKERS_URL = "/api/v1/workers";
 var ERROR_WRONG_API_KEY = "The API key that you provided has been refused, check for any typo";
-
-// TODO find in doc how to get a DataTable object from
-// an existing one
-var dataTable;
-var paginationLimit = 10;
-var paginationOffset = 0;
+var table;
+var vLimit   = 11;
+var vPageNum = 1;
 
 var byId = function(id) {return document.getElementById(id);};
 
 $(document).ready(function() {
-    dataTable = $("#workers-data-table").DataTable({
-        "ordering": false,
-        "paging": false,
-        "info": false,
-        "ajax": {
-            "url": API_WORKERS_URL + getUrlParms(),
-            "dataSrc": ""
-        },
-        "columns": [
-            { "data": "province" },
-            { "data": "year" },
-            { "data": "industry" },
-            { "data": "value" },
-            
-        ]
-    });
-    // disable default alert box which has a cryptic message
-    // when an error occurs (wrong API key for example)
-    $.fn.dataTable.ext.errMode = function (res) {
-        if(res.jqXHR.status == 401) {
-            dataTable.clear().draw(); // don't let data when it's not possible to load it
-            window.alert(ERROR_MESSAGE_WRONG_API_KEY);
-        }
-    };
+    var request  = $.ajax({
+        url  :"/api/v1/workers"
+        ,type :"GET"
+         
+        ,contentType: "aplication/json"
 
-    $("#button-search").click(searchButtonListener);
-    $("#button-load-initial-data").click(loadInitialDataButtonListener);
-    $("#button-reload-data").click(reloadDataButtonListener);
-    $("#datum-form").submit(datumFormListener);
-    addActionsToTable();
-    $("#pagination-select").change(paginationSelectListener);
-    $("#pagination-button-previous").click(paginationPreviousButtonListener);
-    $("#pagination-button-next").click(paginationNextButtonListener);
+        
+    });
+
+    $("#btnLoadInitialData").click(function(){
+        loadInitialData();
+
+    });  
+
+    $("#btnDelete").click(function(){ 
+        deleteRecurso(); 
+    });
+    $("#btnUpdate").click(function(){ 
+        updateRecurso(); 
+    });
+    $("#btnCreate").click(function(){ 
+        createRecurso(); 
+    });
+    $("#btnSearch").click(function(){ 
+        searchRecurso(); 
+    });
+    //$("#btnCancel").click(function(){ editCancel();     });
+    $("#btnSave").click(function()  { 
+        editSave();       
+    });
+    $("#imgFisrt").click(function() { 
+        fisrtPage();      
+    });
+    $("#imgPrev").click(function()  {
+     PreviousPage();   
+    });
+    $("#imgNext").click(function()  { NextPage();       });
+    $("#imgLast").click(function()  { LastPage();       });
+
+    
+
+    request.done(function(data,status,jqXHR){
+        console.log(JSON.stringify(data));
+        table = makeTable(data);
+        //Quiero mostrar todos los elemento de DOM
+        //is dumped to the console window
+        console.log(table[0].outerHTML);
+        $("#workers-data").html(table);
+
+    });
+
+    request.always(function(jqXHR, status){
+        console.log("Let me know the status:" + status);
+    });
+
+    //console.log("Jquery Ready");
+    //$("#workers-data").click(function(){
+
+    //});
 });
 
 
-function addActionsToTable() {
-    var table = document.getElementById("workers-data-table");
-    //addActionColumnToHeader(table);
-    $(table).on("draw.dt", function () {
-        addActionButtonsToEachRow(table);
-    } );
+//==========================FUNCTION======================
+
+function fisrtPage() {
+    vPageNum = 1;
+    getAllData(""); 
+}
+function pagePrev() {
+    vPageNum = (vPageNum > 1) ? vPageNum -= 1 : 1;
+    getAllData(""); 
+}
+function pageNext() {
+    vPageNum = (vPageNum < 10) ? vPageNum += 1 : 10;
+    getAllData(""); 
+}
+function pageLast() {
+    vPageNum = 11;
+    getAllData(""); 
 }
 
-
-// listeners ///////////////////////////////////////////////////////////////////
-function searchButtonListener(event) {
-    event.preventDefault();
-    var searchQuery = $("#server-side-search-input").val();
-    var newDataUrl = API_WORKERS_URL + "/" + searchQuery + getUrlParms();
-    dataTable.ajax.url(newDataUrl).load();
+function LoadInitialData() {
+    getAllData("loadInitialData");
+    showMessage(999, "Initial Data Loaded.");
+    pageFisrt();
 }
 
+function searchResource() {
+    showMessage(0, "");
+    getAllData($("#txtSearch").val());
+}
 
-function datumFormListener(event) {
-    event.preventDefault();
+function deleteResource() {
+    setData("DELETE", getResourceId(), "");
+    getAllData("");
+}
 
-    var $form = $("#datum-form");
-    var formJson = JSON.stringify($form.serializeObject());
+function updateResource() {
+    getOneResource("GET", getResourceId());
+    $('#divManagerCtr').css('display', "none");
+    $('#divFormulario').css('display', "block");
+    $('#txtProvince').prop('disabled', true);
+    $('#txtYear').prop('disabled', true);
+    $('#btnSave').prop('value', "UPDATE");
+    $('#btnSave').html("Update");
+}
 
-    // Disable the inputs for the duration of the Ajax request.
-    // Note: we disable elements AFTER the form data has been serialized.
-    // Disabled form elements will not be serialized.
-    var $inputs = $form.find("input, button");
-    $inputs.prop("disabled", true);
+function createResource() {
+    $('#divManagerCtr').css('display', "none");
+    $('#divFormulario').css('display', "block");
+    $('#txtProvince').prop('disabled', false);
+    $('#txtYear').prop('disabled', false);
+    $('#txtProvince').prop('value', "");
+    $('#txtYear').prop('value', "");
+    $('#txtMen').prop('value', "");
+    $('#txtWomen').prop('value', "");
+    $('#btnSave').prop('value', "CREATE");
+    $('#btnSave').html("Create");
+}
 
-    var url, type;
-    var editing = byId("datum-form-button").value == "Update";
-    if (editing) {
-        var year = byId("year-input").value;
-        var industry = byId("industry-input").value;
-        url = API_WORKERS_URL + "/" + year + "/" + industry + getUrlParms();
-        type = "put";
-    } else {
-        url = API_WORKERS_URL + getUrlParms();
-        type = "post";
+function editCancel() {
+    $('#divManagerCtr').css('display', "block");
+    $('#divFormulario').css('display', "none");
+    showMessage(0, "");
+}
+
+function editSave() {
+    if ($('#btnSave').val() == "UPDATE") {
+        setData("PUT", getResourceId(), getFieldsJSON());
     }
-    performAjaxRequest({
-        url: url,
-        type: type,
-        data: formJson,
-        doneCallback: () => {dataTable.ajax.reload();},
-        alwaysCallback: () => {$inputs.prop("disabled", false);}
-    });
-    if (editing) { byId("datum-form-button").value = "Create"; }
+    if ($('#btnSave').val() == "CREATE") {
+        setData("POST", "", getFieldsJSON());
+    }
+    $('#divManagerCtr').css('display', "block");
+    $('#divFormulario').css('display', "none");
+    getAllData("");
 }
 
-function loadInitialDataButtonListener(event) {
-    event.preventDefault();
-    $(event.target).prop("disabled", true);
+function setData(pType, pQuery, pDataJSON) {
 
-    var url = API_WORKERS_URL + "/loadInitialData" + getUrlParms();
+    var vApiKey = $("#txtApiKeyWrite").val();
+    if ( vApiKey == "") {
+        showMessage(999, "Please, write the Api-Key.");
+        return;
+    } else {
+        vApiKey = "?apikey=" + vApiKey;
+    }
+    
+    var x = obtenerURLBase() + pQuery + vApiKey;
 
+    var request = $.ajax({
+         url        : obtenerURLBase() + pQuery + vApiKey
+        ,type       : pType
+        ,data       : pDataJSON
+        ,contentType: "application/json; charset=utf-8"
+        ,cache      : false
+    });
+
+    request.done(function(data, status, jqXHR){
+        showMessage(jqXHR.status, status);
+    });     
+
+    request.always(function(jqXHR, status){
+        if (status != "success"){
+            showMessage(jqXHR.status, jqXHR.statusText);
+        }
+    });
+}
+
+function getOneResource(pType, pQuery) {
+
+    var vApiKey = "?apikey=keyRead";
+
+    var request = $.ajax({
+         url        : obtenerURLBase() + pQuery + vApiKey
+        ,type       : "GET"
+        ,data       : ""
+        ,contentType: "application/json; charset=utf-8"
+        ,cache      : false
+    });
+
+    request.done(function(data, status, jqXHR){
+        $("#txtProvince").val(data[0]['province']);
+        $("#txtYear").val(data[0]['year']);
+        $("#txtMen").val(data[0]['men']);
+        $("#txtWomen").val(data[0]['women']);
+    });
+
+}
+
+function getAllData(pQuery) {
+
+    var vApiKey = "?apikey=keyRead";
+
+    // paginación
+    $("#pageNum").html("&nbsp;&nbsp;" + vPageNum + "&nbsp;&nbsp;");
+    vOffset = vPageNum * 10 - 10;
+    vPages  = "&offset=" + vOffset + "&limit=" + vLimit;
+
+    var request = $.ajax({
+         url        : obtenerURLBase() + pQuery + vApiKey + vPages
+        ,type       : "GET"
+        ,data       : ""
+        ,contentType: "application/json; charset=utf-8"
+        ,cache      : false
+    });
+
+    request.done(function(data, status, jqXHR){
+        $("#divTable").html(createTableData(data));
+        $("#tblData").tablesorter({widthFixed: true, widgets: ['zebra']});
+    });
+
+    request.always(function(jqXHR, status){
+        if (status != "success"){
+            showMessage(jqXHR.status, jqXHR.statusText);
+        }
+
+    });
+
+}
+
+function makeTable(data){
+    var table = $('<table class = "table">');
+        var tblHeader = "<tr>";
+        for (var h in data[0]) {
+        tblHeader += "<th>" + h + "</th>";
+    }
+        tblHeader += "</tr>";
+        $(tblHeader).appendTo(table);
+        $.each(data, (index, value) => {
+              var tblRow = "<tr>";
+              $.each(value, (key, val) => {
+                    tblRow += "<td>" + val + "</td>";
+              });
+              tblRow += "</tr>";
+              $(table).append(tblRow);
+        });
+        $(table).append($("</table>"));
+        return ($(table));
+};
+
+
+
+
+function loadInitialData() {
+    
+    var url = API_WORKERS_URL +  "/loadInitialData" + "?apikey=sos";
+    
     performAjaxRequest({
         url: url,
         type: "get",
-        doneCallback: () => {dataTable.ajax.reload();},
-        alwaysCallback: () => {$(event.target).prop("disabled", false);}
+        doneCallback: () => {},
+        alwaysCallback: () => {}
+    
     });
-}
-
-function reloadDataButtonListener(event) {
-    refreshUrlAndReload();
-}
-
-function paginationSelectListener(event) {
-    paginationLimit = parseInt(byId("pagination-select").value, 10);
-    refreshUrlAndReload();
-}
-
-function paginationPreviousButtonListener(event) {
-    paginationOffset -= paginationLimit;
-    if (paginationOffset < 0) paginationOffset = 0;
-    refreshUrlAndReload();
-}
-
-function paginationNextButtonListener(event) {
-    paginationOffset += paginationLimit;
-    refreshUrlAndReload();
-}
-
-// helpers /////////////////////////////////////////////////////////////////////
-
-function refreshUrlAndReload() {
-    var newUrl = API_WORKERS_URL + getUrlParms();
-    dataTable.ajax.url(newUrl).load();
 }
 
 function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
@@ -145,7 +271,7 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
         url: url,
         type: type,
         data: data,
-		contentType: "application/json"
+        contentType: "application/json"
     });
 
     request.done(doneCallback);
@@ -154,7 +280,6 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
         if (jqXHR.status == 409) {
             window.alert("The datum that you are trying to add already exists(same province and year)");
         } else if (jqXHR.status == 401) {
-            bootstrapTable.clear().draw(); // don't let data when it's not possible to load it
             window.alert(ERROR_MESSAGE_WRONG_API_KEY);
         }
         console.error(
@@ -165,93 +290,3 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
 
     request.always(alwaysCallback);
 }
-
-/*function addActionColumnToHeader(table) {
-    var header = table.tHead.row[0];
-    header.innerHTML += "<th>Actions</th>";
-}*/
-
-function addActionButtonsToEachRow(table) {
-    var tableBody = table.tBodies[0];
-
-    var noData = tableBody.rows[0].cells[0].className == "dataTables_empty";
-    if (noData) return;
-
-    for (var i = 0, row; row = tableBody.rows[i]; i++) {
-        var actionButtonsAlreadyThere = row.cells[5] != undefined;
-        // happens with client side search which redraws the table but don't
-        // destroy the rows. In that case skip the rest of the function
-        if (actionButtonsAlreadyThere) { return; }
-
-        row.innerHTML += '<td class="action-cell"></td>';  // add action column
-        addEditButton(row, i);
-        addDeleteButton(row, i);
-    }
-}
-
-function addEditButton(row, rowIndex) {
-    var buttonId = "edit-button-row-" + rowIndex;
-    $(row.cells[5]).append( "<button id=" + buttonId + ">Edit</button>");
-    $("#" + buttonId).click(row, editDatumListener);
-}
-
-function editDatumListener(event) {
-    var row = event.data;
-    fillDatumFormWithRowData(row);
-    byId("datum-form-button").value = "Update";
-}
-
-function fillDatumFormWithRowData(row) {
-    byId("province-input").value = row.cells[0].innerHTML;
-    byId("year-input").value = row.cells[1].innerHTML;
-    byId("industry-input").value = row.cells[2].innerHTML;
-    byId("value-input").value = row.cells[3].innerHTML;
-    
-}
-
-function addDeleteButton(row, rowIndex) {
-    var buttonId = "delete-button-row-" + rowIndex;
-    $(row.cells[5]).append( "<button id=" + buttonId + ">Delete</button>");
-    $("#" + buttonId).click(row, deleteDatumListener);
-}
-
-function deleteDatumListener(event) {
-    var row = event.data;
-    var year = row.cells[0].innerHTML;
-    var industry= row.cells[1].innerHTML;
-    var url = API_WORKERS_URL + "/" + year + "/" + industry + getUrlParms();
-
-    $(event.target).prop("disabled", true);
-
-    performAjaxRequest({
-        url: url,
-        type: "delete",
-        doneCallback: () => {dataTable.ajax.reload();},
-        alwaysCallback: () => {$(event.target).prop("disabled", false);}
-    });
-}
-
-function getUrlParms() {
-    var params = "?apikey=" + byId("api-key-input").value +
-            "&limit=" + paginationLimit +
-            "&offset=" + paginationOffset;
-
-    return params;
-}
-
-// http://stackoverflow.com/a/1186309/3682839
-$.fn.serializeObject = function() {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};

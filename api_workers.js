@@ -8,6 +8,7 @@ router.use(bodyParser.json());
 var workersData = loadInitialData();
 
 
+
 function loadInitialData() {
     arr = [];
     arr.push( { province: "Albacete", year : "2015" , industry : "Agriculture" , value : "17.0"});
@@ -21,11 +22,11 @@ function loadInitialData() {
     return arr;
 }
 
-router.get('/loadInitialData', (req, res) => {
-	/*var apiKey = req.query.apikey;
+router.get((req, res) => {
+	var apikey = req.query.apikey;
     if(!(apikey && apikey == "sos")){
         res.sendStatus(403);
-    }*/
+    }
     workersData = JSON.parse(fs.readFileSync('data/workers_initial_data.json', 'utf8'));
     res.sendStatus(200);
 });
@@ -39,10 +40,10 @@ router.get('/',(req, res) => {
 
 
 router.post ('/' ,(req, res) => {
-	/*var apiKey = req.query.apikey;
+	var apikey = req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
-	}*/
+	}
     var datan = req.body;
     var fieldIsMissing =
             datan.year == undefined ||
@@ -68,19 +69,19 @@ router.post ('/' ,(req, res) => {
 });
 
 router.delete('/',(req, res) => {
-	/*var apiKey =req.query.apikey;
+	var apikey =req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
-	}*/
+	}
     workersData = [];
     res.sendStatus(200);
 });
 
 router.get('/:year', (req, res) => {
-	/*var apikey =req.query.apikey;
+	var apikey =req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
-	}*/
+	}
     var year = req.params.year;
     var yearData = tools.findAllByProperty(workersData, 'year', year);
     if (req.query.minWorkers  != undefined) {
@@ -92,20 +93,20 @@ router.get('/:year', (req, res) => {
 });
 
 router.get('/:industry', (req, res) => {
-	/*var apiKey =req.query.apikey;
+	var apikey =req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
-	}*/
+	}
     var industry = req.params.industry;
     var industryData = tools.findAllByProperty(workersData, 'industry', industry);
     res.send(industryData);
 });
 
 router.get('/:year/:industry', (req, res) => {
-	/*var apiKey =req.query.apikey;
+	var apikey =req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
-	}*/
+	}
     var year = req.params.year;
     var industry= req.params.industry;
     var filteredByYear = tools.findAllByProperty(workersData, 'year', year);
@@ -124,10 +125,10 @@ router.post('/:year/:industry', function (req,res) {
 
 
 router.put ('/:year/:industry', (req, res) => {
-	/*var apiKey =req.query.apikey;
+	var apikey =req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
-	}*/
+	}
     var year = req.params.year;
     var industry = req.params.industry;
     var filteredByYear = tools.findAllByProperty(workersData, 'year', year);
@@ -155,10 +156,10 @@ router.put ('/:year/:industry', (req, res) => {
 });
 
 router.delete('/:year/:industry', (req, res) => {
-	/*var apiKey = req.query.apikey;
+	var apikey = req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
-	}*/
+	}
     if (tools.removeByTwoProperties(workersData,
                                     'year', req.params.year,
                                     'industry', req.params.industry)) {

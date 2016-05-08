@@ -3,25 +3,25 @@
 <html lang="en">
 
   <head>
-    <title>Workers Data</title>
+    <title> Workers  Data</title>
     <meta charset="utf-8" />
     <script src="/js/jquery-2.2.3.min.js"></script>
-    <link type ="text/css" href="/css/workers/bootstrap.min.css" rel="stylesheet" media="screen,projection"/>
-    <script src="/js/workers/workers-data-table.js"></script>
-    <!--<link type="text/css" rel="stylesheet" href="/css/workers/jquery.dataTables.min.css"/>
-    <script src="/js/workers/workers-gui.js"></script>
-    <script src="/js/workers/jquery.dataTables.min.js"></script>
-    <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap-table.css"/>-->
     
+    <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap-theme.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap-table.css"/>
+    <script src="/js/workers/workers-gui1.js"></script>
+    <!--<link type="text/css" rel="stylesheet" href="/css/workers/workers-gui.css"/>-->
   </head>
+
 
   <body>
     <h1>Workers Data</h1>
 
-    <button id="button-load-initial-data">Cargar datos iniciales</button>
+    <button id="btnload-initial-data">Load Initial Data</button>
     <label for="api-key-input">API key</label>
     <input id="api-key-input" type="text" value="sos" />
-    <button id="button-reload-data">Cargar Datos</button>
+    <button id="btn-reload-data">Reload data</button>
 
     <form id="datum-form">
       <label for="province-input">Province</label>
@@ -31,120 +31,41 @@
       <input id="year-input" name="year" type="text" />
 
       <label for="industry-input">Industry</label>
-      <input id="industry-input" name="insdustry" type="text" />
+      <input id="industry-input" name="industry" type="text" />
 
       <label for="value-input">Value</label>
       <input id="value-input" name="value" type="text" />
-      <input id="datum-form-button" type="submit" value="Crear" />
+      <input id="datum-form-button" type="submit" value="Create" />
 
-      
     </form>
 
 
-    <form id="server-side-search-form">
-      <label for="server-side-search-input">Search</label>
-      <input id="server-side-search-input" type="text">
+    <form id="search-form">
+      Search:
+      <label for="search-year-or-industry-input">Year or Industry</label>
+      <input id="search-year-or-industry-input" type="text">
       <input type="submit" id="button-search" value="SEND"/>
     </form>
 
-  <section id="connection">
-    
-    <table class = "workers-data-table" class ="display">
-    <div class="table">
-     <h1></h1>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Province</th>
-                <th>Year</th>
-                <th>Industry</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Albacete</td>
-                <td>2015</td>
-                <td>Agriculture</td>
-                <td>17.0</td>
-                <td><button id="button-reload-data">Editar</button>
-                <button id="button-reload-data">Borrar</button></td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Asturias</td>
-                <td>2014</td>
-                <td>Agriculture</td>
-                <td>13.8</td>
-                <td><button id="button-reload-data">Editar</button>
-                <button id="button-reload-data">Borrar</button></td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Barcelona</td>
-                <td>2015</td>
-                <td>Building</td>
-                <td>132.1</td>
-                <td><button id="button-reload-data">Editar</button>
-                <button id="button-reload-data">Borrar</button></td>
-              </tr>
-              <tr>
-                <td>4</td>
-                <td>Bizkaia</td>
-                <td>2013</td>
-                <td>Services</td>
-                <td>369.4</td>
-                <td><button id="button-reload-data">Editar</button>
-                <button id="button-reload-data">Borrar</button></td>
-              </tr>
-              <tr>
-                <td>5</td>
-                <td>Burgos</td>
-                <td>2013</td>
-                <td>Agriculture</td>
-                <td>9.2</td>
-                <td><button id="button-reload-data">Editar</button>
-                <button id="button-reload-data">Borrar</button></td>
-              </tr>
-              <tr>
-                <td>6</td>
-                <td>Ciudad Real </td>
-                <td>2012</td>
-                <td>Factories Industries</td>
-                <td>29.2</td>
-                <td><button id="button-reload-data">Editar</button>
-                <button id="button-reload-data">Borrar</button></td>
-              </tr>
-              <tr>
-                <td>7</td>
-                <td>Sevilla</td>
-                <td>2015</td>
-                <td>Building</td>
-                <td>50.0</td>
-                <td><button id="button-reload-data">Editar</button>
-                <button id="button-reload-data">Borrar</button></td>
-              </tr>
+    <table id="workers-data" class="table">
+      <thead>
+        <tr>
+          <th>Province</th>
+          <th>Year</th>
+          <th>Industry</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+    </table>
 
-            </tbody>
-          </table>
-        </div>
-      </div>
-      </table>
-    </td>
-  </section>
-      Show
-    <select id="pagination-select">
+    Show
+    <select id="select page">
+      <option value="5">5</option>
       <option value="10">10</option>
-      <option value="15" selected>15</option>
       <option value="20">20</option>
     </select>
     entries
-    <button id="pagination-button-previous">Previa</button>
-    <button id="pagination-button-next">Siguiente</button>
+    <button id="btnprevious">PreviousPage</button>
+    <button id="btnnext">NextPage</button>
   </body>
 </html>
