@@ -108,7 +108,7 @@ function loadInitialDataButtonListener(event) {
     event.preventDefault();
     $(event.target).prop("disabled", true);
 
-    var url = API_POPULATION_URL + "/loadInitialData" + makeUrlParams();
+    var url = API_POPULATION_URL + "/loadInitialData?apikey=" + byId("api-key-input").value;
 
     performAjaxRequest({
         url: url,
