@@ -52,6 +52,8 @@ exports.postNewDatum = (req, res) => {
         return;
     }
 
+    // number is received as a string a must by persisted as an int
+    datum['number'] = parseInt(datum['number'], 10);
     populationData.push(datum);
     res.sendStatus(201);
 };
