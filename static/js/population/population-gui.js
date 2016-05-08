@@ -118,14 +118,8 @@ function loadInitialDataButtonListener(event) {
     });
 }
 
-function reloadDataButtonListener(event) {
-    refreshUrlAndReload();
-}
-
-function paginationSelectListener(event) {
-    paginationLimit = parseInt(byId("pagination-select").value, 10);
-    refreshUrlAndReload();
-}
+var reloadDataButtonListener = refreshUrlAndReload;
+var paginationSelectListener = refreshUrlAndReload;
 
 function paginationPreviousButtonListener(event) {
     paginationOffset -= paginationLimit;
@@ -237,6 +231,7 @@ function deleteDatumListener(event) {
 }
 
 function makeUrlParams(additionalParams = "") {
+    paginationLimit = parseInt(byId("pagination-select").value, 10);
     var params = "?apikey=" + byId("api-key-input").value +
             "&limit=" + paginationLimit +
             "&offset=" + paginationOffset+
