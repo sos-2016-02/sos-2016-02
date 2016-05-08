@@ -1,13 +1,12 @@
 var vAPIversion = "v1";
 var vAPIname    = "olders";
-var vServer     = "http://192.168.1.200:3000";
+//var vServer     = "http://192.168.1.200:3000";
+//var vServer     = "http://localhost:3000";
+var vServer     = "https://sos-2016-02.herokuapp.com";
+
 var vApiKeyRead = "keyRead";
 var vLimit      = 10;
 var vPageNum    = 1;
-
-//var vServer = "http://localhost:3000";
-//var vServer = "https://sos-2016-02.herokuapp.com";
-
 
 $(document).ready(function() {
 	
