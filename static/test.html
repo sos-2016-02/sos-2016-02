@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+  <head>
+    <title>Olders data</title>
+    <meta charset="utf-8" />
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  </head>
+  
+  <script>
+
+  function realiza() {
+
+    var request = $.ajax({
+     url        : $("#txtTEST").val()
+    ,type       : "GET"
+    ,data       : ""
+    ,contentType: "application/json; charset=utf-8"
+    ,cache      : false
+    );
+
+    request.done(function(data, status, jqXHR){
+      console.log(data);
+    });
+
+    request.always(function(jqXHR, status){
+      if (status = "success"){
+        $("#divMensaje").html(status);
+      }else{
+        $("#divMensaje").html(jqXHR.status + " " + jqXHR.statusText);
+      }
+
+    });
+}
+  </script>
+  <body>
+  <input type="text" id="txtTEST" /><button id="btnSEND" onclick="realiza()">SEND</button>
+  <br/>
+  <div id="divMensaje"></div>
+  </body>
+</html>

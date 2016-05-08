@@ -1,35 +1,34 @@
-var vAPIname;
-var vAPIversion;
-var vConnection;
-var vLimit   = 11;
-var vPageNum = 1;
-//var vServer  = "http://localhost:3000";
-//var vServer  = "http://192.168.1.200:3000";
-var vServer = "https://sos-2016-02.herokuapp.com";
+var vAPIversion = "v1";
+var vAPIname    = "olders";
+var vServer     = "http://192.168.1.200:3000";
+var vApiKeyRead = "keyRead";
+var vLimit      = 10;
+var vPageNum    = 1;
 
-var findAllByProperty = function(objectsArray, property, value) {
-    return objectsArray.filter((obj) => {
-        return obj[property] == value;
-    });
-};
+//var vServer = "http://localhost:3000";
+//var vServer = "https://sos-2016-02.herokuapp.com";
+
 
 $(document).ready(function() {
 	
 	getAllData("");
 
 	$('#divFormulario').hide();
+	$('#txtYearFrom').prop('disabled', true);
+	$('#txtYearTo').prop('disabled', true);
 
 	$("#btnLoadInitialData").click(function(){ LoadInitialData(); });
-	$("#btnDelete").click(function(){ deleteResource();	});
-	$("#btnUpdate").click(function(){ updateResource();	});
-	$("#btnCreate").click(function(){ createResource();	});
-	$("#btnSearch").click(function(){ searchResource();	});
-	$("#btnCancel").click(function(){ editCancel();     });
-	$("#btnSave").click(function()  { editSave();       });
-	$("#imgFisrt").click(function() { pageFisrt();      });
-	$("#imgPrev").click(function()  { pagePrev();       });
-	$("#imgNext").click(function()  { pageNext();       });
-	$("#imgLast").click(function()  { pageLast();       });
+	$("#btnDelete").click(function()         { deleteResource();  });
+	$("#btnUpdate").click(function()         { updateResource();  });
+	$("#btnCreate").click(function()         { createResource();  });
+	$("#btnFilter").click(function()         { filterResource();  });
+	$("#btnCancel").click(function()         { editCancel();      });
+	$("#btnSave").click(function()           { editSave();        });
+	$("#imgFisrt").click(function()          { pageFisrt();       });
+	$("#imgPrev").click(function()           { pagePrev();        });
+	$("#imgNext").click(function()           { pageNext();        });
+	$("#imgLast").click(function()           { pageLast();        });
+	$("#txtProvinceName").keyup(function()   { writingProvince(); });
 
 });
 
@@ -56,13 +55,23 @@ function LoadInitialData() {
 	pageFisrt();
 }
 
-function searchResource() {
+function filterResource() {
 	showMessage(0, "");
-	getAllData($("#txtSearch").val());
+	vPageNum = 1;
+	getAllData("");
+}
+
+function writingProvince() {
+	var vTextInside = ($("#txtProvinceName").val()=="");
+	$('#txtYearFrom').prop('disabled', vTextInside);
+	$('#txtYearTo').prop('disabled', vTextInside);
 }
 
 function deleteResource() {
-	setData("DELETE", getResourceId(), "");
+	//setData("DELETE", getResourceId(), "");
+	$.each(getResourcesCheked(), function(index, value){
+		setData("DELETE", value, "");
+	});
 	getAllData("");
 }
 
@@ -97,10 +106,24 @@ function editCancel() {
 
 function editSave() {
 	if ($('#btnSave').val() == "UPDATE") {
-		setData("PUT", getResourceId(), getFieldsJSON());
+		//setData("PUT", getResourceId(), getFieldsJSON());
+		var obj = new Object();
+		var vJSONdata;
+		$.each(getResourcesCheked(), function(index, value){
+			obj.province = value.substr(0,value.indexOf("/")); // hasta el caracter de la barra
+			obj.year     = value.substr(value.indexOf("/")+1); // a partir del caracter de la barra
+			obj.men      = $('#txtMen').val();
+        	obj.women    = $('#txtWomen').val()
+			vJSONdata    = JSON.stringify(obj);
+			setData("PUT", value, vJSONdata);
+		});
 	}
 	if ($('#btnSave').val() == "CREATE") {
-		setData("POST", "", getFieldsJSON());
+		if ($("#txtProvince").val()=="" || $("#txtYear").val()==""){
+			showMessage(999, "Required fields: Province, Year.");
+		} else {
+			setData("POST", "", getFieldsJSON());
+		}
 	}
 	$('#divManagerCtr').css('display', "block");
 	$('#divFormulario').css('display', "none");
@@ -139,9 +162,8 @@ function setData(pType, pQuery, pDataJSON) {
 }
 
 function getOneResource(pType, pQuery) {
-
-	var vApiKey = "?apikey=keyRead";
-
+	var vApiKey = "?apikey=" + vApiKeyRead;
+	
 	var request = $.ajax({
 		 url        : obtenerURLBase() + pQuery + vApiKey
 		,type       : "GET"
@@ -151,8 +173,13 @@ function getOneResource(pType, pQuery) {
 	});
 
 	request.done(function(data, status, jqXHR){
-	 	$("#txtProvince").val(data[0]['province']);
-	 	$("#txtYear").val(data[0]['year']);
+		if ( getResourcesCheked().length>1 ){
+			$('#txtProvince').val("");
+			$('#txtYear').val("");
+		} else {
+	 		$("#txtProvince").val(data[0]['province']);
+	 		$("#txtYear").val(data[0]['year']);
+	 	}
 	 	$("#txtMen").val(data[0]['men']);
 	 	$("#txtWomen").val(data[0]['women']);
 	});
@@ -161,15 +188,30 @@ function getOneResource(pType, pQuery) {
 
 function getAllData(pQuery) {
 
-	var vApiKey = "?apikey=keyRead";
+	var vApiKey = "?apikey=" + vApiKeyRead;
+	var vFilter = $('#txtProvinceName').val();
+	var vRange  = "";
 
-	// paginación
+	// Rango
+	if( vFilter != "" ) {
+		if( $('#txtYearFrom').val() != "" ) {
+			vRange += "&from=" + $('#txtYearFrom').val();
+		}
+		if( $('#txtYearTo').val() != "" ) {
+			vRange += "&to=" + $('#txtYearTo').val();
+		}
+	}
+
+	// Paginación
 	$("#pageNum").html("&nbsp;&nbsp;" + vPageNum + "&nbsp;&nbsp;");
 	vOffset = vPageNum * 10 - 10;
 	vPages  = "&offset=" + vOffset + "&limit=" + vLimit;
 
+
+	var vURL = obtenerURLBase() + pQuery + vFilter + vApiKey + vRange + vPages
+;
 	var request = $.ajax({
-		 url        : obtenerURLBase() + pQuery + vApiKey + vPages
+		 url        : vURL
 		,type       : "GET"
 		,data       : ""
 		,contentType: "application/json; charset=utf-8"
