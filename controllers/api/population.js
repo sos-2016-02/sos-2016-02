@@ -31,13 +31,6 @@ exports.loadInitialData = (req, res) => {
     res.sendStatus(200);
 };
 
-exports.getPopulationData = (req, res) => {
-    var data = tools.getInterval(populationData,
-                                 req.query.offset,
-                                 req.query.limit);
-    res.send(data);
-};
-
 exports.postNewDatum = (req, res) => {
     var datum = req.body;
     var fieldIsMissing =
@@ -67,6 +60,15 @@ exports.deleteAllData = (req, res) => {
     populationData = [];
     res.sendStatus(200);
 };
+
+
+exports.getPopulationData = (req, res) => {
+    var data = tools.getInterval(populationData,
+                                 req.query.offset,
+                                 req.query.limit);
+    res.send(data);
+};
+
 
 exports.getDataByProvince = (req, res) => {
     var province = req.params.province;

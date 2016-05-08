@@ -19,7 +19,7 @@ var svg = d3.select("body").append("svg")
         .attr("height", HEIGHT);
 queue()
     .defer(d3.json, "/data/population/spain_with_provinces.topojson.json")
-    .defer(d3.json, "/data/population/population.json")
+    .defer(d3.json, "/api/v1/population/2015?apikey=correct-key-1")
     .await(ready);
 
 function ready(error, es, population) {
