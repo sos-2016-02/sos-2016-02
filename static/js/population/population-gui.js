@@ -60,14 +60,7 @@ function addActionsToTable() {
 // listeners ///////////////////////////////////////////////////////////////////
 function searchButtonListener(event) {
     event.preventDefault();
-    var yearOrCityQuery = $("#search-year-or-city-input").val();
-    var minPopulationQuery = $("#search-min-population-input").val();
-    var minPopulationUrlParams = "&minPopulation=" + minPopulationQuery;
-    var newDataUrl =
-            API_POPULATION_URL + "/" +
-            yearOrCityQuery +
-            makeUrlParams(minPopulationUrlParams);
-    dataTable.ajax.url(newDataUrl).load();
+    refreshUrlAndReload();
 }
 
 
@@ -232,12 +225,22 @@ function deleteDatumListener(event) {
 
 function makeUrlParams(additionalParams = "") {
     paginationLimit = parseInt(byId("pagination-select").value, 10);
-    var params = "?apikey=" + byId("api-key-input").value +
+    var yearOrCityQuery = $("#search-year-or-city-input").val();
+    var params =
+            "/" + yearOrCityQuery +
+            "?apikey=" + byId("api-key-input").value +
             "&limit=" + paginationLimit +
-            "&offset=" + paginationOffset+
+            "&offset=" + paginationOffset +
+            makeMinPopulationUrlParams() +
             additionalParams;
 
     return params;
+}
+
+function makeMinPopulationUrlParams() {
+    var minPopulationQuery = $("#search-min-population-input").val();
+    if(minPopulationQuery === "") return "";
+    return "&minPopulation=" + minPopulationQuery;
 }
 
 // http://stackoverflow.com/a/1186309/3682839
