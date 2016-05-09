@@ -22,7 +22,7 @@ function loadInitialData() {
     return arr;
 }
 
-router.get((req, res) => {
+router.get("/loadInitialData",(req, res) => {
 	var apikey = req.query.apikey;
     if(!(apikey && apikey == "sos")){
         res.sendStatus(403);

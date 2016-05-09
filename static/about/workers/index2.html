@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+  <head>
+    <title>WORKERS DATA</title>
+    <meta charset="utf-8" />
+    <script src="/js/jquery-2.2.3.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap-theme.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap.min.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap-table.css"/>
+    <script src="/js/workers/workers-gui2.js"></script>
+    <script src="/js/workers/workers-utils.js"></script>
+    
+  </head>
+
+  <body>
+    <div class="divPage">
+    
+      <h1>WORKERS DATA </h1>
+
+      <div id="divManagerCtr">
+        <div class="divApiKey">
+          <br/>
+          <label for="txtApiKeyWrite">&nbsp;&nbsp;Api-Key:</label>&nbsp;
+          <input id="txtApiKeyWrite" name="txtApiKeyWrite" placeholder="sos" type="text" value="sos" />&nbsp;&nbsp;
+          <button id="btnLoadInitialData">Load Initial Data</button>
+          <br/><br/><hr/>
+        </div>
+        <br/>
+        <div class="divApiKey">
+        <table width="100%" style="border-collapse:collapse">
+          <tr style="background-color: #c6c6c6;font-size: large;"><td>&nbsp;Action</td><td colspan="2">Filter</td></tr>
+          <tr class="light"><td rowspan="2">
+              &nbsp;<button id="btnCreate">Create</button>
+              &nbsp;<button id="btnDelete">Delete</button>
+              &nbsp;<button id="btnUpdate">Update</button>
+              </td>
+              <td>Province:</td>
+              <td><input id="txtProvinceName" name="txtProvinceName" placeholder="Type a province name" type="text" size="18">
+              </td>
+          </tr>
+          <tr class="light">
+              <td>Year:</td>
+              <td><label for="txtYearFrom">from:&nbsp;&nbsp;</label>
+                  <input id="txtYearFrom" name="txtYearFrom" placeholder="YYYY" type="text" size="2">
+                <label for="txtYearTo">to:</label>
+                  <input id="txtYearTo" name="txtYearTo" placeholder="YYYY" type="text" size="2"><button id="btnFilter" style="margin-left: 30px;">Apply filter</button>
+                </td>
+              </tr>
+        </table><hr/></div>
+        <div align="center">
+        <img class="pageToGo" id="imgFisrt" src="/images/first.png" title="Fisrt"/>
+        <img class="pageToGo" id="imgPrev"  src="/images/prev.png"  title="Previous"/>
+        <span id="pageNum"></span>
+        <img class="pageToGo" id="imgNext"  src="/images/next.png"  title="Next"/>
+        <img class="pageToGo" id="imgLast"  src="/images/last.png"  title="Last"/>
+        </div>
+        <div id="divTable"></div>
+
+        <div id="divMessage"></div>
+      </div>
+
+      <div id="divFormulario" class="divFormulario">
+        <table border="0">
+          <tr><td><label id="lblProvince" for="txtProvince">Province:</label></td>
+              <td><input id="txtProvince" name="txtProvince" type="text" /></td>
+          </tr>
+          <tr><td><label id="lblYear" for="txtYear">Year:</label></td>
+              <td><input id="txtYear" name="txtYear" type="text" /></td>
+          </tr>
+          <tr><td><label for="txtIndustry">Industry:</label></td>
+              <td><input id="txtIndustry" name="txtIndustry" type="text" /></td>
+          </tr>
+          <tr><td><label for="txtValue">Value:</label></td>
+              <td><input id="txtIndustry" name="txtWomen" type="text" /></td>
+          </tr>
+          <tr>
+              <td colspan="2" align="right">
+                  <button id="btnCancel" >Cancel</button>&nbsp;
+                  <button id="btnSave">Save</button>&nbsp;
+              </td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+  </body>
+</html>

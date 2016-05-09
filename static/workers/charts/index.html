@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+    
+      google.charts.load('current', {'packages':['geochart']});
+      google.charts.setOnLoadCallback(drawRegionsMap);
+      google.charts.setOnLoadCallback(drawRegionsMap2);
+      function drawRegionsMap() {
+        var data_0_14 = google.visualization.arrayToDataTable([
+          ['Province', 'Popularity'],
+          ['Almeria', 200],
+          ['Barcelona', 300],
+          ['Burgos', 400],
+          ['Cadiz', 500],
+          ['Granada', 600],
+          ['Sevilla', 700]
+        ]);
+        var options = {colorAxis: {colors: ['#80FF70', '#5CAB52', '#264622']},
+          backgroundColor: '#81d4fa',
+          datalessRegionColor: '#E6E6AA',
+          defaultColor: '#f5f5f5'};
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
+        chart.draw(data_0_14, options);
+      }
+function drawRegionsMap2() {
+        var data_15_64 = google.visualization.arrayToDataTable([
+          ['Sevilla', 'Popularity'],
+          ['Almeria', 200],
+          ['Barcelona', 300],
+          ['Burgos', 400],
+          ['Cadiz', 500],
+          ['Granada', 600],
+          ['Sevilla', 700]
+        ]);
+        var options = {colorAxis: {colors: ['#FFC7C7', '#FF2B2B', '#970000']},
+          backgroundColor: '#81d4fa',
+          datalessRegionColor: '#E6E6AA',
+          defaultColor: '#f5f5f5'};
+        var chart = new google.visualization.GeoChart(document.getElementById('regions_div2'));
+        chart.draw(data_15_64, options);
+      }
+    </script>
+  </head>
+  <body>
+  	<strong>Employed population percentage</strong><br><br><div id="regions_div" style="width: 400px; height: 225px;">Hola</div>
+<br><br><br><br>
+    <strong>Unemployed population percentage</strong><br><br><div id="regions_div2" style="width: 400px; height: 225px;">Adios</div>
+  </body>
+</html>
