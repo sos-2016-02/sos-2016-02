@@ -2,6 +2,14 @@ function getResourceId() {
 	return $('input[name=tblId]:checked').attr('value');
 }
 
+function getResourcesCheked() {
+    var vValues = new Array();
+    $('input[name="tblId"]:checked').each(function() {
+        vValues.push($(this).val());
+    });
+    return vValues;
+}
+
 function createTableData(objArray) {
  
     //var array = objArray;
@@ -27,8 +35,8 @@ function createTableData(objArray) {
     for (var i=0; i < array.length; i++) {
         str += '<tr>';
 		// Identificador de cada fila: province/year
-		str += '<td width="10"><input type="radio" name="tblId" ';
-		if (i==0) str += 'checked="checked"';
+		str += '<td width="10"><input type="checkbox" name="tblId" ';
+		//if (i==0) str += 'checked="checked"';
 		str += ' value="' + array[i]['province'] + "/" + array[i]['year'] + '"/></td>';
         str += '<td>' + array[i]['province'] + '</td>';
         str += '<td>' + array[i]['year'] + '</td>';
@@ -47,8 +55,6 @@ function createTableData(objArray) {
 }
 
 function obtenerURLBase() {
-	vAPIversion = "v1";
-	vAPIname    = "olders";
 	vURLBase    = vServer + "/api/" + vAPIversion + "/" + vAPIname + "/";
 	return vURLBase;		
 }
@@ -76,6 +82,6 @@ function getFieldsJSON() {
         obj.year     = $('#txtYear').val();
         obj.men      = $('#txtMen').val();
         obj.women    = $('#txtWomen').val();
-   var jsonString = JSON.stringify(obj);
-   return jsonString;
+    var jsonString = JSON.stringify(obj);
+    return jsonString;
 }

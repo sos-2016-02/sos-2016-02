@@ -42,7 +42,7 @@ h1{
 	margin-left: -310px; /* Restamos la mitad de la anchura del objeto con un margin-left */
 }
 
-.divApiKey{
+.divApiKey, .light{
 	background-color: #ececec;
 }
 .divFormulario{

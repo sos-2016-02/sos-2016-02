@@ -60,14 +60,7 @@ function addActionsToTable() {
 // listeners ///////////////////////////////////////////////////////////////////
 function searchButtonListener(event) {
     event.preventDefault();
-    var yearOrCityQuery = $("#search-year-or-city-input").val();
-    var minPopulationQuery = $("#search-min-population-input").val();
-    var minPopulationUrlParams = "&minPopulation=" + minPopulationQuery;
-    var newDataUrl =
-            API_POPULATION_URL + "/" +
-            yearOrCityQuery +
-            makeUrlParams(minPopulationUrlParams);
-    dataTable.ajax.url(newDataUrl).load();
+    refreshUrlAndReload();
 }
 
 
@@ -108,7 +101,7 @@ function loadInitialDataButtonListener(event) {
     event.preventDefault();
     $(event.target).prop("disabled", true);
 
-    var url = API_POPULATION_URL + "/loadInitialData" + makeUrlParams();
+    var url = API_POPULATION_URL + "/loadInitialData?apikey=" + byId("api-key-input").value;
 
     performAjaxRequest({
         url: url,
@@ -118,14 +111,8 @@ function loadInitialDataButtonListener(event) {
     });
 }
 
-function reloadDataButtonListener(event) {
-    refreshUrlAndReload();
-}
-
-function paginationSelectListener(event) {
-    paginationLimit = parseInt(byId("pagination-select").value, 10);
-    refreshUrlAndReload();
-}
+var reloadDataButtonListener = refreshUrlAndReload;
+var paginationSelectListener = refreshUrlAndReload;
 
 function paginationPreviousButtonListener(event) {
     paginationOffset -= paginationLimit;
@@ -237,12 +224,23 @@ function deleteDatumListener(event) {
 }
 
 function makeUrlParams(additionalParams = "") {
-    var params = "?apikey=" + byId("api-key-input").value +
+    paginationLimit = parseInt(byId("pagination-select").value, 10);
+    var yearOrCityQuery = $("#search-year-or-city-input").val();
+    var params =
+            "/" + yearOrCityQuery +
+            "?apikey=" + byId("api-key-input").value +
             "&limit=" + paginationLimit +
-            "&offset=" + paginationOffset+
+            "&offset=" + paginationOffset +
+            makeMinPopulationUrlParams() +
             additionalParams;
 
     return params;
+}
+
+function makeMinPopulationUrlParams() {
+    var minPopulationQuery = $("#search-min-population-input").val();
+    if(minPopulationQuery === "") return "";
+    return "&minPopulation=" + minPopulationQuery;
 }
 
 // http://stackoverflow.com/a/1186309/3682839

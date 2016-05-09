@@ -31,13 +31,6 @@ exports.loadInitialData = (req, res) => {
     res.sendStatus(200);
 };
 
-exports.getPopulationData = (req, res) => {
-    var data = tools.getInterval(populationData,
-                                 req.query.offset,
-                                 req.query.limit);
-    res.send(data);
-};
-
 exports.postNewDatum = (req, res) => {
     var datum = req.body;
     var fieldIsMissing =
@@ -59,6 +52,8 @@ exports.postNewDatum = (req, res) => {
         return;
     }
 
+    // number is received as a string a must by persisted as an int
+    datum['number'] = parseInt(datum['number'], 10);
     populationData.push(datum);
     res.sendStatus(201);
 };
@@ -68,6 +63,15 @@ exports.deleteAllData = (req, res) => {
     res.sendStatus(200);
 };
 
+
+exports.getPopulationData = (req, res) => {
+    var data = tools.getInterval(populationData,
+                                 req.query.offset,
+                                 req.query.limit);
+    res.send(data);
+};
+
+
 exports.getDataByProvince = (req, res) => {
     var province = req.params.province;
     var provinceData = tools.findAllByProperty(populationData, 'province', province);
@@ -76,7 +80,10 @@ exports.getDataByProvince = (req, res) => {
             return datum['number'] >= req.query.minPopulation;
         });
     }
-    res.send(provinceData);
+    var paginatedData = tools.getInterval(provinceData,
+                                 req.query.offset,
+                                 req.query.limit);
+    res.send(paginatedData);
 };
 
 exports.getDataByYear = (req, res) => {
