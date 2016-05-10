@@ -1,375 +1,453 @@
-
 <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Resources</title>
+        <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/default/easyui.css">
+        <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/icon.css">
+        <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/themes/color.css">
+        <link rel="stylesheet" type="text/css" href="http://www.jeasyui.com/easyui/demo/demo.css">
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
+        <script type="text/javascript" src="http://www.jeasyui.com/easyui/jquery.easyui.min.js"></script>
 
-<html lang="en">
-
-  <head>
-        <title>Workers Data </title>
-        <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-
-        <!-- Librerías Bootstrap: Estilos externos del sitio web -->
-        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap-table.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap-theme.css"/>
-        <link type="text/css" rel="stylesheet" href="/css/workers/bootstrap.min.css"/>
-       <script src="/js/workers/workers-gui2.js"></script>
-        <script type="text/javascript">
-
-
-        $(document).ready(function() {
-  //llamadas que estoy haciendo a mi jquery or javascritp
-  var operation = "C"; //"C"=Crear
-  var selected_index = -1; // Indice de el elemento seleccionado en la lista
-  var workers = sessionStorage.getItem("workers-data"); //Retornar los datos almacenados
-    workers = JSON.parse(workers ); //Convertir String a Object
- var dobles_comillas = String.fromCharCode(34);
-  if (workers  === null) // Si no hay datos, inicializar un array vacio
-      workers  = [];
-
-          function Mostrar() {
-        var request = $.ajax({
-                    url: "/api/v1/workers?apikey="+$("#api-key-input").val(),
-                    type: "GET",
-                    data: "",
-                    dataType: "JSON",
-                    contentType: "application/json"
-                    });
-        request.done(function(data,status,jqXHR){
-    console.log(JSON.stringify(data));
-    var table = makeTable(data);
-    //Quiero mostrar todos los elemento de DOM
-    //is dumped to the console window
-    console.log(table[0].outerHTML);
-    $("#workers-data").html(table);
-
-  });
-
-       request.always(function(jqXHR) {
-        console.log( "Status:"+jqXHR.status);
-       });
-        return true;
-      }
-
-
-
-
-  function loadInitialData() {
-    var request = $.ajax({
-                url: "/api/v1/workers/loadInitialData?apikey="+$("#api-key-input").val(),
-                type: "GET",
-                data: "",
-                dataType: "JSON",
-                contentType: "application/json"
-                });
-    request.done(function(data,status,jqXHR){
-    console.log(JSON.stringify(data));
-    var table = makeTable(data);
-    //Quiero mostrar todos los elemento de DOM
-    //is dumped to the console window
-    console.log(table[0].outerHTML);
-    $("#workers-data").html(table);
-
-  });
-
-   request.always(function(jqXHR) {
-    console.log( "Status:"+jqXHR.status);
-   });
-   if($("#api-key-input").val()!="sos"){
-     alert("Error contraseña");
-  } else{
-    alert("Datos reseteados");
-  }
-    Mostrar();
-    return true;
-  }//======================================================================
-
-function Create() {
-    var status;
-    var p=$("#province-input").val();
-    var y=$("#year-input").val();
-    var i=$("#industry-input").val();
-    var v=$("#value-input").val();
-    var request = $.ajax({
-                url: "/api/v1/workers?apikey="+$("#api-key-input").val(),
-                type: "POST",
-                data: "{"+dobles_comillas+"province"+dobles_comillas+":"+dobles_comillas+c+dobles_comillas+","+dobles_comillas+"year"+dobles_comillas+":"+y+","+dobles_comillas+"industry"+dobles_comillas+":"+i+","+dobles_comillas+"value"+dobles_comillas+":"+v+"}",
-                dataType: "JSON",
-                contentType: "application/json"
-                });
-    request.done(function(data,status,jqXHR){
-    console.log(JSON.stringify(data));
-    var table = makeTable(data);
-    //Quiero mostrar todos los elemento de DOM
-    //is dumped to the console window
-    console.log(table[0].outerHTML);
-    $("#workers-data").html(table);
-
-  });
-
-  request.always(function(jqXHR,status) {
-     status=jqXHR.status;
-     if($("#api-key-input").val()!="sos")
-     alert("Error contraseña");
-     if(status == 409)
-     alert("Elemento repetido");
-     else
-     alert("Los datos han sido almacenados");
-    console.log( "Status:"+jqXHR.status);
-   });
-    Mostrar();
-    return true;
-  }
-
-  function Edit() {
-    var p=$("#province-input").val();
-    var y=$("#year-input").val();
-    var i=$("#industry-input").val();
-    var v=$("#value-input").val();
-    var request = $.ajax({
-                url: "/api/v1/workers/"+y+"/"+i+"?apikey="+$("#api-key-input").val(),
-                type: "PUT",
-                data: "{"+dobles_comillas+"province"+dobles_comillas+":"+dobles_comillas+p+dobles_comillas+","+dobles_comillas+"year"+dobles_comillas+":"+y+","+dobles_comillas+"industry"+dobles_comillas+":"+i+","+dobles_comillas+"value"+dobles_comillas+":"+v+"}",
-                dataType: "JSON",
-                contentType: "application/json"
-                });
-    request.done(function(data,status,jqXHR){
-    console.log(JSON.stringify(data));
-    var table = makeTable(data);
-    //Quiero mostrar todos los elemento de DOM
-    //is dumped to the console window
-    console.log(table[0].outerHTML);
-    $("#workers-data").html(table);
-
-  });
-   request.always(function(jqXHR) {
-    console.log( "Status:"+jqXHR.status);
-   });
-   if($("#api-key-input").val()!="sos"){
-     alert("Error contraseña");
-   }else{
-    alert("Los datos han sido editados");
-  }//Mensaje de alerta
-    Mostrar();
-    return true;
-  }
-
-
-    function Delete() {
-    var p=$("#province-input").val();
-    var y=$("#year-input").val();
-    var i=$("#industry-input").val();
-    var v=$("#value-input").val();
-    var request = $.ajax({
-                url: "/api/v1/workers/"+y+"/"+i+"?apikey="+$("#api-key-input").val(),
-                type: "DELETE",
-                data: "{"+dobles_comillas+"province"+dobles_comillas+":"+dobles_comillas+p+dobles_comillas+","+dobles_comillas+"year"+dobles_comillas+":"+y+","+dobles_comillas+"industry"+dobles_comillas+":"+i+","+dobles_comillas+"value"+dobles_comillas+":"+v+"}",
-                dataType: "JSON",
-                contentType: "application/json"
-                });
-     request.done(function(data,status,jqXHR){
-    console.log(JSON.stringify(data));
-    var table = makeTable(data);
-    //Quiero mostrar todos los elemento de DOM
-    //is dumped to the console window
-    console.log(table[0].outerHTML);
-    $("#workers-data").html(table);
-
-  });
-   request.always(function(jqXHR) {
-    console.log( "Status:"+jqXHR.status);
-   });
-   if($("#api-key-input").val()!="sos"){
-     alert("Error contraseña");
-   }else{
-    alert("El dato ha sido eliminado");
-  } //Mensaje de alerta
-    Mostrar();
-    return true;
-  }
-
-    function Search() {
-    var y=$("#year-input").val();
-    var i=$("#industry-input").val();
-    var request = $.ajax({
-                url: "/api/v1/workers/"+y+"/"+i+"?apikey="+$("#api-key-input").val(),
-                type: "GET",
-                data: "",
-                dataType: "JSON",
-                contentType: "application/json"
-                });
-     request.done(function(data,status,jqXHR){
-    console.log(JSON.stringify(data));
-    var table = makeTable(data);
-    //Quiero mostrar todos los elemento de DOM
-    //is dumped to the console window
-    console.log(table[0].outerHTML);
-    $("#workers-data").html(table);
-
-  });
-   request.always(function(jqXHR) {
-    console.log( "Status:"+jqXHR.status);
-   });
-   if($("#api-key-input").val()!="sos"){
-     alert("Error contraseña");
-  } else{
-    alert("Busqueda realizada");
-  }
-    return true;
-  }
-   function List() {
-    $("#workers-data").html("");
-    $("#workers-data").html(
-            "<thead>" +
-            "<tr>" +
-            "<th>Province</th>" +
-            "<th>Year</th>" +
-            "<th>Industry</th>" +
-            "<th>Value</th>" +
-            "<th>Actions</th>" +
-            "</tr>" +
-            "</thead>" +
-            "<tbody>" +
-            "</tbody>"
-            ); //Agregar la tabla a la estructura HTML
-        for (var i in workers ) {
-            var per = workers[i];
-        $("#workers tbody").append("<tr>" +
-                "<td>" + per.province + "</td>" +
-                "<td>" + per.year + "</td>" +
-                "<td>" + per.industry + "</td>" +
-                "<td>" + per.value + "</td>" +
-                "<td><img src='edit.png' alt='Edit" + i + "' class='btnEdit'/>&nbsp &nbsp<img src='delete.png' alt='Delete" + i + "' class='btnDelete'/>&nbsp &nbsp<img src='lupa.png' alt='Search" + i + "' class='btnSearch'/>&nbsp &nbsp<img src='Carga.png' alt='Carga" + i + "' class='btnCarga'/></td>" +
-                "</tr>"
-                );
-    } //Recorrer y agregar los items a la tabla HTML
-  }
-  $("#frmWorkers").bind("submit", function () {
-    if (operation === "C")
-        return Create();
-    if (operation === "E")
-        return Edit();
-    if(operation=== "D")
-        return Delete();
-    if(operation=== "S")
-        return Search();
-    else
-      return Carga();
-  }); //Función para decidir si se encuentra añadiendo o editando un item
-  List();
-  $(".btnCarga").bind("click", function () {
-    operation="L";
-    $("#province-input").attr("readonly", "readonly");
-    $("#year-input").attr("readonly", "readonly");
-    $("#industry-input").attr("readonly", "readonly");
-    $("#value-input").attr("readonly", "readonly");
-    });
-  $(".btnSearch").bind("click", function () {
-    operation = "S";
-    $("#year-input").attr("readonly", "readonly");
-    $("#industry-input").attr("readonly", "readonly");
-  });
-  $(".btnEdit").bind("click", function () {
-    operation = "E"; //"E" = Editar
-    //Obtener el identificador del item a ser editado
-    selected_index = parseInt($(this).attr("alt").replace("Edit", ""));
-    // Convertir de JSON al formato adecuando para editarlos datos
-    var per = workers[selected_index];
-    $("#province-input").val(per.province);
-    $("#year-input").val(per.year);
-    $("#industry-input").val(per.industry);
-    $("#value-input").val(per.value);
-    $("#year-input").focus();
-  });
-  $(".btnDelete").bind("click", function () {
-    operation = "D";
-    //Obtener el identificador del item a ser eliminado
-    selected_index = parseInt($(this).attr("alt").replace("Delete", ""));
-    var per = workers[selected_index];
-    $("#province-input").val(per.province);
-    $("#year-input").val(per.year);
-    $("#ndustry-input").val(per.industry);
-    $("#txtMale").val(per.male);
-    $("#province-input").attr("readonly", "readonly");
-    $("#year-input").attr("readonly", "readonly");
-    $("#industry-input").attr("readonly", "readonly");
-    $("#value-input").attr("readonly", "readonly");
-    $("#api-key-input").focus();
-});
-});
-
-        </script>
-        
-  </head>
-
-  <body>
-    <h1>Workers Data</h1>
-    <div class="container">
-            <table id="workers-data" class="table"></table>
-        </div>
-
-
-
-    <button id="btnLoadInitialData">Load initial Data</button>
-    <label for="api-key-input">API key</label>
-    <input id="api-key-input" type="text" value="sos" />
-    <button id="button-reload-data">Reload data</button>
-
-    <form id="datum-form">
-      <label for="province-input">Province</label>
-      <input id="province-input" name="province" type="text" />
-
-      <label for="year-input">Year</label>
-      <input id="year-input" name="year" type="text" />
-
-      <label for="industry-input">Industry</label>
-      <input id="industry-input" name="industry" type="text" />
-
-      <label for="value-input">Value</label>
-      <input id="value-input" name="value" type="text" />
-
-      <input id="datum-form-button" type="submit" value="Create" />
-      <input id="editdatum" type="submit" value="Edit" />
-      <input id="deletedatum" type="submit" value="Delete" />
-
-    </form>
+<script type="text/javascript">
+function click_checkbox_year_search()
+{
+    if(document.getElementById("checkbox_year_search").checked)
+{
+    document.getElementById("year_search").disabled = false;
+}
+else
+{
+    document.getElementById("year_search").disabled = true;
+    document.getElementById("year_search").value = "";
+}
+}
+function click_checkbox_industry_search()
+{
     
-    <form id="server-side-search-form">
-      Server side search:
-      <label for="search-year-or-industry-input">Year or Industry</label>
-      <input id="search-year-or-industry-input" type="text">
-      <input type="submit" id="button-search" value="SEND"/>
-    </form>
+    if(document.getElementById("checkbox_industry_search").checked)
+{
+    document.getElementById("industry_search").disabled = false;
+}
+else
+{
+    document.getElementById("industry_search").disabled = true;
+    document.getElementById("industry_search").value = "";
+}
+}
+function search_resources(){
+    $('#win_search').window('close');
+    var url = "/api/v1/workers";
+    if(document.getElementById("checkbox_year_search").checked == true)
+    {
+        url = url + "/"+document.getElementById("year_search").value;
+    }
+    if(document.getElementById("checkbox_industry_search").checked == true)
+    {
+        url = url + "/"+document.getElementById("industry_search").value;
+    }
+    url = url + "?apikey=sos&limit=10&offset=0";
+    var request = $.ajax({
+                url : url,
+                type : "GET"
+            });
+                request.done((data,status) =>{
+                    $('#workers-data').datagrid('loadData',data);
+                    $('#workers-data').datagrid('getData');
+                });
+                request.always((jqXHR, status) =>{
+                    var statusCode = jqXHR.status;
+                    if (statusCode == 404)
+                    {
+                        alert("No se ha encontrado ningun recurso con los valores proporcionados.");
+                    }
+                });
+}
+//============================================================================================================
 
-    <table id="workers-data" class="table">
-      <thead>
-        <tr>
-          <th>Province</th>
-          <th>Year</th>
-          <th>Industry</th>
-          <th>Value</th>
-          
-        </tr>
-      </thead>
-    </table>
-    <div class="text-center">
-<div>
-  <label>Show: </label><select id="limit" onchange="paginacion()">
-  </br>
-  <option value="5">5</option>
-  <option value="10">10</option>
-  <option value="15">15</option>
-  </select>
+function modifica_recurso(){
+ 
+ 
+ 
+     $('#win_edit').window('close');
+ 
+ var province = document.getElementById("province_edit").value;
+                 var year = document.getElementById("year_edit").value;
+                 var industry = document.getElementById("industry_edit").value;
+                 var industry = document.getElementById("value_edit").value;
+                 console.log(province);
+                 console.log(year);
+                 console.log(industry);
+                 console.log(value);
+                 var dobles_comillas = String.fromCharCode(34);
+ 
+                 var url = "/api/v1/workers/"+year+"/"+value;
+                 var data = "{"+dobles_comillas+"province"+dobles_comillas+":"+dobles_comillas+province+dobles_comillas+","+dobles_comillas+"year"+dobles_comillas+":"+year+","+dobles_comillas+"industry"+dobles_comillas+":"+industry+","+dobles_comillas+"value"+dobles_comillas+":"+value+"}";         
+ 
+ 
+                 url = url + "?apikey=" + document.getElementById("apikey_valida").value ;
+ 
+ 
+                 var request = $.ajax({
+                 url : url,
+                 type : "PUT",
+                 data: data,
+             dataType: "JSON",
+             contentType: "application/json"
+             });
+ 
+ 
+  request.always((jqXHR, status) =>{
+ 
+     var statusCode = jqXHR.status;
+ 
+ 
+     if(statusCode == 200)
+                     {
+ 
+                         var request = $.ajax({
+                 url : "/api/v1/workers?apikey=sos",
+                 type : "GET",
+             });
+ 
+                         request.done((data,status) =>{
+ 
+                             $('#workers-data').datagrid('loadData',data);
+                             $('#workers-data').datagrid('getData');
+ 
+                     });
+ 
+ 
+ 
+                     }
+ 
+                     if(statusCode == 400)
+                     {
+                         alert("Los datos introducidos no son validos.");
+                     }
+ 
+                     if(statusCode == 401)
+                     {
+                         alert("Necesita introducir una apikey valida para modificar un recurso.");
+                     }
+ 
+ 
+ 
+  });
+  
+ }
 
-  <label>Page: </label><select id="pag" onchange="paginacion2()">
-  <option value="0">1</option>
-  <option value="1">2</option>
-  <option value="2">3</option>
-  <option value="3">4</option>
-  <option value="4">5</option>
-</select>
+
+//============================================================================================================
+
+function cancel_search_resources(){
+$('#win_search').window('close');
+}
+function cancelar_modificacion_recurso(){
+$('#win_edit').window('close');
+}
+function seleccion_checkbox_apikey(){
+if(document.getElementById("checkbox_apikey").checked)
+{
+    document.getElementById("apikey").type = "text";
+}
+else
+{
+    document.getElementById("apikey").type = "password";
+}
+}
+function cancelar_registro_recurso(){
+    $('#win').window('close');
+}
+function cancelar_apikey(){
+    $('#win_apikey').window('close');
+}
+function guardar_apikey(){
+    document.getElementById("apikey_valida").value = document.getElementById("apikey").value;
+    $('#win_apikey').window('close');
+}
+function registra_recurso(){
+    $('#win').window('close');
+var province = document.getElementById("province").value;
+                var year = document.getElementById("year").value;
+                var industry = document.getElementById("industry").value;
+                var value = document.getElementById("value").value;
+                var dobles_comillas = String.fromCharCode(34);
+                var url = "/api/v1/workers";
+                var data = "{"+dobles_comillas+"province"+dobles_comillas+":"+dobles_comillas+province+dobles_comillas+","+dobles_comillas+"year"+dobles_comillas+":"+year+","+dobles_comillas+"industry"+dobles_comillas+":"+industry+","+dobles_comillas+"value"+dobles_comillas+":"+value+"}";         
+                url = url + "?apikey=" + document.getElementById("apikey_valida").value +year+ "/" + industry;
+                var request = $.ajax({
+                url : url,
+                type : "POST",
+                data: data,
+            dataType: "JSON",
+            contentType: "application/json"
+            });
+                request.always((jqXHR, status) =>{
+                    var statusCode = jqXHR.status;
+                    if(statusCode == 201)
+                    {
+                        var request = $.ajax({
+                url : "/api/v1/workers?apikey=sos",
+                type : "GET",
+            });
+                        request.done((data,status) =>{
+                            $('#workers-data   ').datagrid('loadData',data);
+                            $('#workers-data').datagrid('getData');
+                    });
+                    }
+                    if(statusCode == 400)
+                    {
+                        alert("Los datos introducidos no son validos.");
+                    }
+                    if(statusCode == 401)
+                    {
+                        alert("Necesita introducir una apikey valida para insertar un nuevo recurso.");
+                    }
+                    if(statusCode == 409)
+                    {
+                        alert("Ya existe otro recurso con el mismo pais y año.");
+                    }
+            });
+}
+            function newResource(){
+                document.getElementById("province").value = "";
+                document.getElementById("year").value = "";
+                document.getElementById("industry").value = "";
+                document.getElementById("value").value = "";
+                document.getElementById("win").style.hidden = "default";
+                   $('#win').window({
+                     width:600,
+                     height:400,
+                     modal:true,
+                     title:"Enter new resource"
+    }); 
+        }
+                function editResource(){
+                    document.getElementById("win_edit").style.hidden = "default";
+                    var column = $('#workers-data').datagrid('getSelected');
+                    document.getElementById("province_edit").value = column.province;
+                    document.getElementById("year_edit").value = column.year;
+                    document.getElementById("industry_edit").value = column.industry;
+                    document.getElementById("value_edit").value = column.value;
+                $('#win_edit').window({
+                     width:600,
+                     height:400,
+                     modal:true,
+                     title:"Edit resource"
+    }); 
+            }
+            function destroyResource(){
+                var column = $('#workers-data').datagrid('getSelected');
+                var url = "/api/v1/workers";
+                url = url + "/" + year + "/" + industry + "?apikey=" + document.getElementById("apikey_valida").value;
+               var request = $.ajax({
+                url : url,
+                type : "DELETE"
+            });
+               request.done((data,status) =>{
+                var request = $.ajax({
+                url : "/api/v1/workers?apikey=sos",
+                type : "GET"
+            });
+                request.done((data,status) =>{
+                $('#workers-data').datagrid('loadData',data);
+                $('#workers-data').datagrid('getData');
+            });
+            });
+               request.always((jqXHR, status) =>{
+    var statusCode = jqXHR.status;
+    if (statusCode == 401)
+    {
+        alert("Necesita introducir una apikey valida para eliminar el recurso.");
+    }
+});
+            }
+            function loadData(){
+                var url = "/api/v1/workers/loadInitialData?apikey="+document.getElementById("apikey_valida").value;
+                var request = $.ajax({
+                url : url,
+                type : "GET"
+            });
+                request.done((data,status) =>{
+                var request = $.ajax({
+                url : "/api/v1/workers?apikey=sos",
+                type : "GET"
+            });
+                request.done((data,status) =>{
+                $('#workers-data').datagrid('loadData',data);
+                $('#workers-data').datagrid('getData');
+            });               
+            });
+                request.always((jqXHR, status) =>{
+                    var statusCode = jqXHR.status;
+                    if (statusCode == 401)
+                    {
+                        alert("Necesita introducir una apikey valida para cargar los datos.");
+                    }
+            });
+            }
+            function searchResource(){
+                document.getElementById("year_search").value = "";
+                document.getElementById("industry_search").value = "";
+                document.getElementById("year_search").disabled = true;
+                document.getElementById("industry_search").disabled = true;
+                document.getElementById("checkbox_year_search").checked = false;
+                document.getElementById("checkbox_industry_search").checked = false;
+                $('#win_search').window({
+                     width:600,
+                     height:400,
+                     modal:true,
+                     title:"Search resource"
+    }); 
+                
+                
+            }
+            function enterApikey(){
+                document.getElementById("apikey").value = document.getElementById("apikey_valida").value;
+                document.getElementById("apikey").type = "password";
+                document.getElementById("checkbox_apikey").checked = false;
+                document.getElementById("win_apikey").style.hidden = "default";
+                   $('#win_apikey').window({
+                     width:600,
+                     height:400,
+                     modal:true,
+                     title:"Enter apikey"
+    }); 
+            }
+</script>
+
+
+
+<script>
+        $(document).ready(() => {
+            var request = $.ajax({
+                url : "/api/v1/workers?apikey=sos"
+            });
+            request.done((data,status) =>{
+                $('#workers-data').datagrid({
+                   data: data,
+                   singleSelect : true,
+                   toolbar: '#toolbar',
+        columns:[[
+            {field:'province',title:'Province',width:150},
+            {field:'year',title:'Year',width:150},
+            {field:'industry',title:'Industry',width:200},
+            {field:'value',title:'Value',width:200}
+        ]]
+    });
+            });
+    });
+</script>
+
+
+
+    </head>
+    <body>
+
+
+    <center><table id="workers-data" title="Resources" style="width:710px"></table></center>
+
+
+
+    <div id="toolbar">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newResource()">New</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editResource()">Edit</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="destroyResource()">Remove</a>
+     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="searchResource()">Search</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-secret" plain="true" onclick="loadData()">Load</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-key" plain="true" onclick="enterApikey()">Apikey</a>
+    </div>
+
+
+
+    <div id="win" hidden="hidden">
+
+    <form id="formulario_registro">
+        <center><table><tr><td>&nbsp;</td></tr>
+            <tr>
+   <td>Province:</td><td><input id="province"/></td></tr><tr><td>&nbsp;</td></tr>
+   <tr><td>Year:</td><td><input id="year"/></td></tr><tr><td>&nbsp;</td></tr>
+   <tr><td>Industry:</td><td><input id="industry"/></td></tr><tr><td>&nbsp;</td></tr>
+   <tr><td>Value:</td><td><input id="value"/></td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+   <tr><td><input type="button" value="Aceptar" onclick = "registra_recurso()"/></td>
+   <td><input type="button" value="Cancelar" onclick = "cancelar_registro_recurso()"/></td></tr></table></center>
+    </form>    
+
+    </div>
+
+
+
+
+    <div id="win_apikey" hidden="hidden">
+
+    <form id="formulario_apikey">
+        <center><table><tr><td>&nbsp;</td></tr>
+            <tr>
+    <td>Apikey:</td><td><input type = "password" id="apikey"/></td></tr><tr><td>&nbsp;</td></tr>
+    <tr><td>Show apikey:</td><td><input id="checkbox_apikey" type="checkbox" onClick="seleccion_checkbox_apikey()"/></td></tr>
+    <input id="apikey_valida" hidden="hidden"/><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+    <tr><td><input type="button" value="Guardar" onclick="guardar_apikey()"/></td><td><input type="button" value="Cancelar" onclick = "cancelar_apikey()"/></td></tr></table></center>
+    </form>    
+
+    </div>
+
+
+
+
+    <div id="win_edit" hidden="hidden">
+
+         <form id="formulario_modificacion">
+        <center><table><tr><td>&nbsp;</td></tr>
+            <tr>
+   <td>Province:</td><td><input id="province_edit" /></td></tr><tr><td>&nbsp;</td></tr>
+   <tr><td>Year:</td><td><input id="year_edit" /></td></tr><tr><td>&nbsp;</td></tr>
+   <tr><td>Industry:</td><td><input id="industry_edit"/></td></tr><tr><td>&nbsp;</td></tr>
+   <tr><td>Value:</td><td><input id="value_edit" disabled="disabled"/></td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+   <tr><td><input type="button" value="Modificar" onclick = "modifica_recurso()"/></td>
+   <td><input type="button" value="Cancelar" onclick = "cancelar_modificacion_recurso()"/></td></tr></table></center>
+    </form>    
+
+
+    </div>
+
+
+
+
+
+    <div id="win_search" hidden="hidden">
+
+    <form id="formulario_search">
+        <center><table><tr><td>&nbsp;</td></tr>
+            <tr>
+    <td>Filter by year:</td><td>Filter by industry:</td></tr><tr><td>&nbsp;</td></tr>
+    <tr><td><input id="year_search" disabled="disabled"/></td><td><input id="industry_search" disabled="disabled"/></td></tr><tr><td>&nbsp;</td></tr>
+    <tr><td><input id="checkbox_year_search" type="checkbox" onclick="click_checkbox_year_search()"/></td><td><input id="checkbox_industry_search" type="checkbox" onclick="click_checkbox_industry_search()"/></td></tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td></tr>
+    <tr><td><input type="button" value="Search" onclick="search_resources()"/></td><td><input type="button" value="Cancel" onclick = "cancel_search_resources()"/></td></tr></table></center>
+    </form>    
+
+    </div>
+
+
+
+<center>
+    <div class="easyui-pagination" style="width:710px; border:1px solid #ccc;"
+        data-options="
+            total: 20,
+            pageSize: 5,
+            onSelectPage: function(pageNumber, pageSize){
+            var off = (pageNumber - 1) * pageSize;
+            var request = $.ajax({
+                url : '/api/v1/workers?limit='+pageSize+'&offset='+off+'&apikey=secret',
+                type : 'GET',
+            });
+                        request.done((data,status) =>{
+                            $('#workers-data').datagrid('loadData',data);
+                            $('#workers-data').datagrid('getData');
+                    });
+            }">
 </div>
-</div>
-
+</center>
     </body>
-</html>
+    </html>

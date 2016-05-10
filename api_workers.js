@@ -58,7 +58,7 @@ router.post ('/' ,(req, res) => {
     var filteredByYear = tools.findAllByProperty(workersData,
                                                      'year', datan.year);
     // year and province are the primary key
-    var existingDatum = tools.findByProperty(filteredByYear, 'industry', datan.industry);
+    var existingDatum = tools.findByProperty(filteredByYear, 'value', datan.value);
     if (existingDatum != undefined) {
         res.sendStatus(409); // already exist
         return;
@@ -102,16 +102,16 @@ router.get('/:industry', (req, res) => {
     res.send(industryData);
 });
 
-router.get('/:year/:industry', (req, res) => {
+router.get('/:year/:value', (req, res) => {
 	var apikey =req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
 	}
     var year = req.params.year;
-    var industry= req.params.industry;
+    var value= req.params.value;
     var filteredByYear = tools.findAllByProperty(workersData, 'year', year);
     //  year and industry are the primary key
-    var datan = tools.findByProperty(filteredByYear, 'industry', industry);
+    var datan = tools.findByProperty(filteredByYear, 'value', industry);
     if (datan == undefined) {
         res.sendStatus(404);
     } else {
@@ -130,10 +130,10 @@ router.put ('/:year/:industry', (req, res) => {
 		res.sendStatus(403);
 	}
     var year = req.params.year;
-    var industry = req.params.industry;
+    var value = req.params.value;
     var filteredByYear = tools.findAllByProperty(workersData, 'year', year);
     //  year and industry are the primary key
-    var datum = tools.findByProperty(filteredByYear, 'industry', industry);
+    var datum = tools.findByProperty(filteredByYear, 'value', industry);
     if (datum == undefined) {
         res.sendStatus(404);
         return;
@@ -155,14 +155,14 @@ router.put ('/:year/:industry', (req, res) => {
     res.sendStatus(200);
 });
 
-router.delete('/:year/:industry', (req, res) => {
+router.delete('/:year/:value', (req, res) => {
 	var apikey = req.query.apikey;
 	if(!(apikey && apikey == "sos")){
 		res.sendStatus(403);
 	}
     if (tools.removeByTwoProperties(workersData,
                                     'year', req.params.year,
-                                    'industry', req.params.industry)) {
+                                    'value', req.params.value)) {
         res.sendStatus(200);
     } else {
         res.sendStatus(404);
