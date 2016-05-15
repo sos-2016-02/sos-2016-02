@@ -8,6 +8,9 @@ var api_olders              = require('./api_olders');
 var api_workers             = require('./api_workers');
 var api_population          = require('./api_population');
 
+// __ VAR -> proxied APIs __
+var api_electrical_consume  = require('./api_electrical_consume');
+
 // __ VAR -> Others __
 var bodyParser = require('body-parser');
 var express    = require('express');
@@ -26,6 +29,9 @@ app.use('/api/sandbox/linux-distributions', api_linux_distributions);
 app.use('/api/v1/olders', api_olders);
 app.use('/api/v1/workers', api_workers);
 app.use('/api/v1/population', api_population);
+
+// proxied APIs
+app.use('/api/v1/electrical-consume', api_electrical_consume);
 
 // __ Other Parameters __
 app.use(bodyParser.json());

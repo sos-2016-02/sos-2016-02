@@ -1,5 +1,6 @@
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var cors = require('cors');
 var express = require('express');
 var router = express.Router();
 var controller = require('./controllers/api/population.js');
@@ -8,7 +9,7 @@ module.exports = router;
 
 router.use(bodyParser.json());
 router.use(passport.initialize());
-
+router.use(cors());
 
 router.get('/loadInitialData', controller.checkAuthentication, (req,res) => controller.loadInitialData(req, res) );
 
