@@ -8,15 +8,15 @@ var api_olders              = require('./api_olders');
 var api_workers             = require('./api_workers');
 var api_population          = require('./api_population');
 
-// __ VAR -> proxied APIs __
+// __ VAR -> proxied API's __
 var api_electrical_consume  = require('./api_electrical_consume');
+var api_price_of_oil        = require('./api_price_of_oil');
 
 // __ VAR -> Others __
 var bodyParser = require('body-parser');
 var express    = require('express');
 var tools      = require('./tools');
 var app        = express();
-
 var port       = (process.env.PORT || 3000);
 
 
@@ -30,17 +30,21 @@ app.use('/api/v1/olders', api_olders);
 app.use('/api/v1/workers', api_workers);
 app.use('/api/v1/population', api_population);
 
-// proxied APIs
+// __ proxied API's __
 app.use('/api/v1/electrical-consume', api_electrical_consume);
+app.use('/api/v1/oil', api_price_of_oil);
 
-// __ Other Parameters __
+// __ Other parameters __
 app.use(bodyParser.json());
 app.use('/', express.static(__dirname + '/static'));
 
 app.listen(port, () => {
-	console.log('Web server is running and listening on port: ' +port);
+	console.log('Web server is running and listening on port: ' + port);
 });
 
+
+
+// __ utils __
 app.get('/time', (req,res) => {
 	res.send(tools.getFecha());
 });
