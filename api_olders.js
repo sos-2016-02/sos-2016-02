@@ -1,9 +1,13 @@
 var apiCtl     = require('./controllers/api/olders.js');
 var bodyParser = require('body-parser');
 var express    = require('express');
+var request    = require('request');
+var cors       = require('cors');
 var router     = express.Router();
 
 router.use(bodyParser.json());
+
+router.use(cors());
 
 router.get   ('/loadInitialData', (req,res) => apiCtl.loadInitialData(req, res) );
 

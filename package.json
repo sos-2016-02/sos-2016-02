@@ -21,10 +21,12 @@
     "body-parser": "^1.15.0",
     "bootstrap": "^3.3.6",
     "bootstrap-table": "^1.10.1",
+    "cors": "^2.7.1",
     "express": "^4.13.4",
     "express-routes-versioning": "^0.3.0",
     "mongoose": "^4.4.10",
     "passport": "^0.3.2",
-    "passport-localapikey-update": "^0.5.0"
+    "passport-localapikey-update": "^0.5.0",
+    "request": "^2.72.0"
   }
 }

@@ -86,6 +86,7 @@ exports.getResourceByProvince = function (req,res) {
 		var minValue = (req.query.from == undefined) ? undefined : Number(req.query.from);
 		var maxValue = (req.query.to   == undefined) ? undefined : Number(req.query.to);
 		filteredData = tools.findAllByRange(filteredData, 'year', minValue, maxValue);
+		filteredData = tools.getInterval(filteredData,req.query.offset,req.query.limit);
 		res.send(filteredData);
 	} else {
 		res.sendStatus(404);
@@ -94,8 +95,9 @@ exports.getResourceByProvince = function (req,res) {
 
 exports.getResourceByYear = function (req,res) {
 	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
-	var yearId   = req.params.year;
+	var yearId       = req.params.year;
 	var filteredData = tools.findAllByProperty(data, 'year', yearId);
+	    filteredData = tools.getInterval(filteredData,req.query.offset,req.query.limit);
 	if (filteredData.length > 0)
 	{
 		res.send(filteredData);
@@ -109,6 +111,7 @@ exports.getResourceByProvinceYear = function (req,res) {
 	var provinceId   = req.params.province;
 	var yearId       = req.params.year;
 	var filteredData = tools.findAllByTwoProperties(data, 'province', provinceId, 'year', yearId);
+	    filteredData = tools.getInterval(filteredData,req.query.offset,req.query.limit);
 	if (filteredData.length > 0)
 	{
 		res.send(filteredData);
