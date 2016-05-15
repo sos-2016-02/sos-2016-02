@@ -5,11 +5,13 @@ var keyWrite = 'keyWrite';
 var data = tools.readJSONfromFile('data/olders_initial_data.json');
 
 exports.loadInitialData = function (req,res) {
+	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	data = tools.readJSONfromFile('data/olders_initial_data.json');
 	res.sendStatus(200);
 };
 
 exports.postOlders = function (req,res) {
+	if (!tools.checkApiKey(req, keyWrite)) { return res.sendStatus(401); }
 	var body = req.body;
 	var arrayJSON = [];
 	var arrayAUX  = [];
@@ -52,6 +54,7 @@ exports.postOlders = function (req,res) {
 };
 
 exports.getOlders = function (req,res) {
+	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	var subData = data;
 	subData = tools.findAllByMapProperties(subData,req.query);
 	subData = tools.selectFields(subData,req.query.fields);
@@ -76,6 +79,7 @@ exports.postResourceByProvinceYear = function (req,res) {
 };
 
 exports.getResourceByProvince = function (req,res) {
+	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	var provinceId   = req.params.province;
 	var filteredData = tools.findAllByProperty(data, 'province', provinceId);
 	if (filteredData.length > 0) {
@@ -90,6 +94,7 @@ exports.getResourceByProvince = function (req,res) {
 };
 
 exports.getResourceByYear = function (req,res) {
+	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	var yearId       = req.params.year;
 	var filteredData = tools.findAllByProperty(data, 'year', yearId);
 	    filteredData = tools.getInterval(filteredData,req.query.offset,req.query.limit);
@@ -102,6 +107,7 @@ exports.getResourceByYear = function (req,res) {
 };
 
 exports.getResourceByProvinceYear = function (req,res) {
+	if (!tools.checkApiKey(req, keyRead)) { return res.sendStatus(401); }
 	var provinceId   = req.params.province;
 	var yearId       = req.params.year;
 	var filteredData = tools.findAllByTwoProperties(data, 'province', provinceId, 'year', yearId);
@@ -115,6 +121,7 @@ exports.getResourceByProvinceYear = function (req,res) {
 };
 
 exports.putResourceByProvinceYear = function (req,res) {
+	if (!tools.checkApiKey(req, keyWrite)) { return res.sendStatus(401); }
 	var provinceId = req.params.province;
 	var yearId     = req.params.year;
 	var item       = req.body;
@@ -134,6 +141,7 @@ exports.putResourceByProvinceYear = function (req,res) {
 };
 
 exports.deleteResourceByProvinceYear = function (req,res) {
+	if (!tools.checkApiKey(req, keyWrite)) { return res.sendStatus(401); }
 	var provinceId = req.params.province;
 	var yearId     = req.params.year;
 	var statusCode;

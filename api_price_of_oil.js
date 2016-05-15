@@ -2,22 +2,22 @@ var express = require('express');
 var request = require('request');
 var router  = express.Router();
 
-var proxyPath = '/';
-var proxySrv  = 'https://sos-2016-01.herokuapp.com';
-var proxyURL  = '';
+var vProxyPath = '/';
+var vProxySrv  = 'https://sos-2016-01.herokuapp.com';
+var vProxyURL  = '';
 
 module.exports = router;
 
-router.use(proxyPath, function(req, res) {
-    proxyURL = proxySrv + req.baseUrl + req.url;
-    req.pipe(request(proxyURL, reqCallBack)).pipe(res);
+router.use(vProxyPath, function(req, res) {
+    vProxyURL = vProxySrv + req.baseUrl + req.url;
+    req.pipe(request(vProxyURL, reqCallBack)).pipe(res);
 });
 
-function reqCallBack(err, response, body) {
-    if (err) {
-        console.log(err);
+function reqCallBack(error, response, body) {
+    if (error) { 
+        console.error('proxy error: ' + error);
         res.sendStatus(503); // Service Unavailable
     } else {
-    	console.log("proxy to " + proxyURL);
+    	console.log('proxy to ' + vProxyURL);
     }
 }
