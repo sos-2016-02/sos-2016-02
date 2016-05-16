@@ -3,12 +3,29 @@ var bodyParser = require('body-parser');
 var express    = require('express');
 var request    = require('request');
 var cors       = require('cors');
+var governify  = require('governify');
 var router     = express.Router();
 
 router.use(bodyParser.json());
 
 // Allow external access
 router.use(cors());
+
+
+/*
+ NameSpace: sos-2016-test-basic
+ apiKey   : multiPlan_C2_sos-2016-test-basic_ag
+
+ NameSpace: sos-2016-test-premium
+ apiKey   : multiPlan_C4_sos-2016-test-premium_ag
+ */
+
+governify.control(router, {
+	  datestore  : "http://datastore.governify.io/api/v6.1/",
+	  namespace  : "sos-2016-test-basic",
+	  defautPath : "/api/v1"
+});
+
 
 // Load inital data
 router.get   ('/loadInitialData', (req,res) => apiCtl.loadInitialData(req, res) );
