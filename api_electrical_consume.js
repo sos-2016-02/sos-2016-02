@@ -4,8 +4,8 @@ var request = require('request');
 
 module.exports = router;
 
-var paths='/api/v1/electrical-consume';
-var apiServerHost = 'https://sos-2016-01.herokuapp.com';
+var paths='/api/v1/participants-number';
+var apiServerHost = 'https://sos-2016-05.herokuapp.com';
 
 router.use('/', function(req, res) {
     var url = apiServerHost + req.baseUrl + req.url;

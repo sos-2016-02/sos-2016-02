@@ -32,7 +32,7 @@ app.use('/api/v1/workers', api_workers);
 app.use('/api/v1/population', api_population);
 
 // __ proxied API's __
-app.use('/api/v1/electrical-consume', api_electrical_consume);
+app.use('/api/v1/participants-number', api_electrical_consume);
 app.use('/api/v1/oil', api_price_of_oil);
 app.use('/api/v1/population-unemployed-percentage-by-gender',api_compañero_grupo_04);
 // __ Other parameters __
