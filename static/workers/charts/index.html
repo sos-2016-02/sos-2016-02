@@ -2,28 +2,28 @@
   <head>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.min.js"></script>
     <script type="text/javascript">
+
+    <!--TENGO QUE HACER LLAMADA A LA API-->
+    $(document).ready(()=>{
+      var request =$ajax({
+      url:"/api/v1/workers"
+    });
+    request.done(data,status)=>({
+
+    });
+    
+
+    });var request =$ajax({
+      url:"/api/v1/workers"
+    });
+    request.done(data,status)=>{}
     
       google.charts.load('current', {'packages':['geochart']});
       google.charts.setOnLoadCallback(drawRegionsMap);
       google.charts.setOnLoadCallback(drawRegionsMap2);
-      function drawRegionsMap() {
-        var data_0_14 = google.visualization.arrayToDataTable([
-          ['Province', 'Popularity'],
-          ['Almeria', 200],
-          ['Barcelona', 300],
-          ['Burgos', 400],
-          ['Cadiz', 500],
-          ['Granada', 600],
-          ['Sevilla', 700]
-        ]);
-        var options = {colorAxis: {colors: ['#80FF70', '#5CAB52', '#264622']},
-          backgroundColor: '#81d4fa',
-          datalessRegionColor: '#E6E6AA',
-          defaultColor: '#f5f5f5'};
-        var chart = new google.visualization.GeoChart(document.getElementById('regions_div'));
-        chart.draw(data_0_14, options);
-      }
+      
 function drawRegionsMap2() {
         var data_15_64 = google.visualization.arrayToDataTable([
           ['Sevilla', 'Popularity'],

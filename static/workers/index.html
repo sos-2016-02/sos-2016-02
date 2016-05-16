@@ -176,7 +176,7 @@ var province = document.getElementById("province").value;
                 var dobles_comillas = String.fromCharCode(34);
                 var url = "/api/v1/workers";
                 var data = "{"+dobles_comillas+"province"+dobles_comillas+":"+dobles_comillas+province+dobles_comillas+","+dobles_comillas+"year"+dobles_comillas+":"+year+","+dobles_comillas+"industry"+dobles_comillas+":"+industry+","+dobles_comillas+"value"+dobles_comillas+":"+value+"}";         
-                url = url + "?apikey=" + document.getElementById("apikey_valida").value +year+ "/" + industry;
+                url = url + "?apikey=" + document.getElementById("apikey_valida").value;
                 var request = $.ajax({
                 url : url,
                 type : "POST",
@@ -226,11 +226,11 @@ var province = document.getElementById("province").value;
         }
                 function editResource(){
                     document.getElementById("win_edit").style.hidden = "default";
-                    var column = $('#workers-data').datagrid('getSelected');
-                    document.getElementById("province_edit").value = column.province;
-                    document.getElementById("year_edit").value = column.year;
-                    document.getElementById("industry_edit").value = column.industry;
-                    document.getElementById("value_edit").value = column.value;
+                    var row = $('#workers-data').datagrid('getSelected');
+                    document.getElementById("province_edit").value = row.province;
+                    document.getElementById("year_edit").value = row.year;
+                    document.getElementById("industry_edit").value = row.industry;
+                    document.getElementById("value_edit").value = row.value;
                 $('#win_edit').window({
                      width:600,
                      height:400,
@@ -248,7 +248,7 @@ var province = document.getElementById("province").value;
             });
                request.done((data,status) =>{
                 var request = $.ajax({
-                url : "/api/v1/workers?apikey=sos",
+                url : "/api/v1/workers/year/industry?apikey=sos",
                 type : "GET"
             });
                 request.done((data,status) =>{
@@ -316,6 +316,30 @@ var province = document.getElementById("province").value;
                      title:"Enter apikey"
     }); 
             }
+
+
+    function paginationExample(path) {
+    hello('workers')
+        .api(path, {limit: 1})
+        .then(
+            function callback(resp) {
+                if (resp.paging && resp.paging.next) {
+                    if (confirm('Got workers-data ' + resp.data[0].province + '. Get another?')) {
+                        // Call the API again but with the 'resp.paging.next` path
+                        paginationExample(resp.paging.next);
+                    }
+                }
+                else {
+                    alert('Got workers-data ' + resp.data[0].province);
+                }
+            },
+            function() {
+                alert('Whoops something went wrong !');
+            }
+        );
+}
+
+paginationExample('api/v1/workers');
 </script>
 
 
@@ -439,7 +463,7 @@ var province = document.getElementById("province").value;
             onSelectPage: function(pageNumber, pageSize){
             var off = (pageNumber - 1) * pageSize;
             var request = $.ajax({
-                url : '/api/v1/workers?limit='+pageSize+'&offset='+off+'&apikey=secret',
+                url : '/api/v1/workers?limit='+pageSize+'&offset='+off+'&apikey=sos',
                 type : 'GET',
             });
                         request.done((data,status) =>{

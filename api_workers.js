@@ -7,7 +7,17 @@ var router     = express.Router();
 router.use(bodyParser.json());
 var workersData = loadInitialData();
 
+var cors = require('cors');
 
+var api = express();
+
+api.use(bodyParser.json());
+api.use(cors());
+api.get("/api",(req,res)=>{
+  res.semd({name :"gui trued",genre : "drama", year : "2013"})
+});
+
+api.listen(12345);
 
 function loadInitialData() {
     arr = [];
@@ -111,7 +121,7 @@ router.get('/:year/:value', (req, res) => {
     var value= req.params.value;
     var filteredByYear = tools.findAllByProperty(workersData, 'year', year);
     //  year and industry are the primary key
-    var datan = tools.findByProperty(filteredByYear, 'value', industry);
+    var datan = tools.findByProperty(filteredByYear, 'value', value);
     if (datan == undefined) {
         res.sendStatus(404);
     } else {
@@ -119,7 +129,7 @@ router.get('/:year/:value', (req, res) => {
     }
 });
 
-router.post('/:year/:industry', function (req,res) {
+router.post('/:year/:value', function (req,res) {
 	res.sendStatus(405);
 });
 
@@ -133,7 +143,7 @@ router.put ('/:year/:industry', (req, res) => {
     var value = req.params.value;
     var filteredByYear = tools.findAllByProperty(workersData, 'year', year);
     //  year and industry are the primary key
-    var datum = tools.findByProperty(filteredByYear, 'value', industry);
+    var datum = tools.findByProperty(filteredByYear, 'value', value);
     if (datum == undefined) {
         res.sendStatus(404);
         return;
@@ -142,7 +152,7 @@ router.put ('/:year/:industry', (req, res) => {
     nuevoDato = req.body;
     var clavePrimariaNoLaMisma =
             datum.year != nuevoDato.year ||
-            datum.industry != nuevoDato.industry;
+            datum.value != nuevoDato.value;
     if (clavePrimariaNoLaMisma) {
         res.sendStatus(400);
         return;
@@ -150,7 +160,7 @@ router.put ('/:year/:industry', (req, res) => {
 
     tools.removeByTwoProperties(workersData,
                                 'year', year,
-                                'industry', industry);
+                                'value', value);
     workersData.push(nuevoDato);
     res.sendStatus(200);
 });
