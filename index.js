@@ -16,25 +16,10 @@ var api_compañero_grupo_04  = require('./api_compañero_grupo_04');
 // __ VAR -> Others __
 var bodyParser = require('body-parser');
 var express    = require('express');
-var governify  = require('governify');
 var tools      = require('./tools');
 var app        = express();
 var port       = (process.env.PORT || 3000);
 
-
-/*
-NameSpace: sos-2016-test-basic
-apiKey   : multiPlan_C2_sos-2016-test-basic_ag
-
-NameSpace: sos-2016-test-premium
-apiKey   : multiPlan_C4_sos-2016-test-premium_ag
-*/
-
-governify.control(app, {
-	datestore  : "http://datastore.governify.io/api/v6.1/",
-	namespace  : "sos-2016-test-basic",
-	defautPath : "/api/v1"
-});
 
 // __ URI -> API's Version 0 __
 app.use('/api/sandbox/books', api_books);
