@@ -22,6 +22,6 @@ router.use(paths, function(req, res) {
   })).pipe(res);
 });
 
-router.use(express.static('.'));
+//router.use(express.static('.'));
 
 
