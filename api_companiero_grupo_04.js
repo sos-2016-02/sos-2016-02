@@ -1,11 +1,16 @@
 var request = require( 'request');
 var express =require('express');
 var router  = express.Router();
+var bodyParser = require('body-parser');
 
-module.exports = router;
+var app = express();
+ 
+router.use(bodyParser.json());
+router.use(express.static(__dirname+"/")); 
 
-var paths='/api/v1/population-unemployed-percentage-by-gender';
+var paths='/';
 var apiServerHost = 'https://sos-2016-04.herokuapp.com';
+
 
 router.use(paths, function(req, res) {
   var url = apiServerHost + req.baseUrl + req.url;
@@ -22,6 +27,13 @@ router.use(paths, function(req, res) {
   })).pipe(res);
 });
 
+/*var port =(process.env.PORT || 3000);
+
+app.listen(port,()=>{
+  console.log("Listening on port " + port);
+});*/
+
+
 //router.use(express.static('.'));
 
-
+module.exports = router;

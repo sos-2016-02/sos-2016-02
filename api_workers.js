@@ -6,6 +6,13 @@ var fs = require('fs');
 var router     = express.Router();
 router.use(bodyParser.json());
 var workersData = loadInitialData();
+var governify = require('governify');
+
+/*governify.control(app,{
+  datastore: "http://datastore.governify.io/api/v6.1/",
+  namespace: "sos-2016-02-cle",
+  defaultPath: "/api"
+});*/
 
 var cors = require('cors');
 
