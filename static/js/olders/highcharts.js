@@ -4,7 +4,7 @@ var vAPIname    = "olders";
 //var vServer     = "http://localhost:3000";
 var vServer     = "https://sos-2016-02.herokuapp.com";
 
-var vApiKeyRead = "keyRead";
+var vApiKeyRead = "multiPlan_C4_sos-2016-02-mac_ag";
 
 var vDataCategories = [];
 var vDataSeries     = [];

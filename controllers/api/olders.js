@@ -1,6 +1,4 @@
 var tools    = require('../../tools.js');
-var keyRead  = 'keyRead';
-var keyWrite = 'keyWrite';
 
 var data = tools.readJSONfromFile('data/olders_initial_data.json');
 
