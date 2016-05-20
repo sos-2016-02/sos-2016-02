@@ -11,18 +11,15 @@ router.use(bodyParser.json());
 // Allow external access
 router.use(cors());
 
-
 /*
- NameSpace: sos-2016-test-basic
- apiKey   : multiPlan_C2_sos-2016-test-basic_ag
-
- NameSpace: sos-2016-test-premium
- apiKey   : multiPlan_C4_sos-2016-test-premium_ag
+ NameSpace     : sos-2016-02-mac
+ apiKey (  10) : multiPlan_C2_sos-2016-02-mac_ag
+ apiKey (1000) : multiPlan_C4_sos-2016-02-mac_ag
  */
 
 governify.control(router, {
 	  datestore  : "http://datastore.governify.io/api/v6.1/",
-	  namespace  : "sos-2016-test-basic",
+	  namespace  : "sos-2016-02-mac",
 	  defautPath : "/api/v1"
 });
 

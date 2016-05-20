@@ -67,6 +67,7 @@ function showMessage(pCode, pText) {
         case 200:
         case 201: vClass = "msgOK";    vType = "OK: ";    break;
         case 401:
+        case 402:
         case 404:
         case 409: vClass = "msgERROR"; vType = "ERROR: "; break;
 		case 999: vClass = "msgINFO";  vType = "INFO: ";  break;
