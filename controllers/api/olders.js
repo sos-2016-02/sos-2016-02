@@ -63,7 +63,6 @@ exports.putOlders = function (req,res) {
 };
 
 exports.deleteOlders = function (req,res) {
-	if (!tools.checkApiKey(req, keyWrite)) { return res.sendStatus(401); }
 	data = [];
 	res.sendStatus(200);
 };
