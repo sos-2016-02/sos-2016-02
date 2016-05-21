@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
-// var passport = require('passport');
 var cors = require('cors');
 var governify  = require('governify');
 
@@ -10,7 +9,6 @@ var controller = require('./controllers/api/population.js');
 module.exports = router;
 router.use(bodyParser.json());
 router.use(cors());
-// router.use(passport.initialize());
 
 governify.control(router, {
 	  datastore  : 'http://datastore.governify.io/api/v6.1/',
