@@ -1,15 +1,22 @@
+var express = require('express');
+var router = express.Router();
 var bodyParser = require('body-parser');
 // var passport = require('passport');
 var cors = require('cors');
-var express = require('express');
-var router = express.Router();
+var governify  = require('governify');
+
 var controller = require('./controllers/api/population.js');
 
 module.exports = router;
-
 router.use(bodyParser.json());
-// router.use(passport.initialize());
 router.use(cors());
+// router.use(passport.initialize());
+
+governify.control(router, {
+	  datastore  : 'http://datastore.governify.io/api/v6.1/',
+	  namespace  : 'sos-2016-02-vg',
+	  defautPath : '/api/v1/population'
+});
 
 router.get('/loadInitialData', (req,res) => controller.loadInitialData(req, res) );
 
