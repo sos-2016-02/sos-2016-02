@@ -2,6 +2,7 @@
 
 var API_POPULATION_URL = "/api/v1/population";
 var ERROR_MESSAGE_WRONG_API_KEY = "The API key that you provided has been refused, check for any typo";
+var ERROR_MESSAGE_QUOTA = "The API key that you provided has been refused: Your quota is spent";
 
 // TODO find in doc how to get a DataTable object from
 // an existing one
@@ -31,9 +32,13 @@ $(document).ready(function() {
     // disable default alert box which has a cryptic message
     // when an error occurs (wrong API key for example)
     $.fn.dataTable.ext.errMode = function (e) {
-        if(e.jqXHR.status == 401) {
+        if(e.jqXHR.status == 402) {
             dataTable.clear().draw(); // don't let data when it's not possible to load it
             window.alert(ERROR_MESSAGE_WRONG_API_KEY);
+        }
+        if(e.jqXHR.status == 429) {
+            dataTable.clear().draw(); // don't let data when it's not possible to load it
+            window.alert(ERROR_MESSAGE_QUOTA);
         }
     };
 
@@ -145,9 +150,12 @@ function performAjaxRequest({url, type, data, doneCallback, alwaysCallback}) {
     request.fail(function (jqXHR, textStatus, errorThrown){
         if (jqXHR.status == 409) {
             window.alert("The datum that you are trying to add already exists(same province and year)");
-        } else if (jqXHR.status == 401) {
+        } else if (jqXHR.status == 402) {
             dataTable.clear().draw(); // don't let data when it's not possible to load it
             window.alert(ERROR_MESSAGE_WRONG_API_KEY);
+        } else if (jqXHR.status == 429) {
+            dataTable.clear().draw(); // don't let data when it's not possible to load it
+            window.alert(ERROR_MESSAGE_QUOTA);
         }
         console.error(
             "The following error occurred: "+
