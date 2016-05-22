@@ -1,6 +1,6 @@
-//var vServer     = "http://192.168.1.200:3000";
+var vServer     = "http://192.168.1.200:3000";
 //var vServer     = "http://localhost:3000";
-var vServer     = "https://sos-2016-02.herokuapp.com";
+//var vServer     = "https://sos-2016-02.herokuapp.com";
 var vURL        = "";
 var vApiKeyLSA  = "multiPlan_C4_sos-2016-02-mac_ag";
 var vApiKeyOUT  = "5e056c500a1c4b6a7110b50d807bade5";
@@ -26,12 +26,12 @@ function getAllData_serie1(pQuery) {
 
   request.done(function(data, status, jqXHR){
     getData_serie1(data);
-    getAllData_serie2("Brazil");
+    getAllData_serie2();
   });
 }
 
 function getData_serie1(data){
-  var vPeople   = [];
+  var vPeople      = [];
   vPeople.push(Math.abs(this.men-this.women));
   vDataCategories_serie1.push(2015);
   var vDataPeople  = {};
@@ -40,8 +40,8 @@ function getData_serie1(data){
   vDataSeries.push(vDataPeople);
 }
 
-function getAllData_serie2(pQuery) {
-  var vURL    = "https://api.clubrural.com/api.php?claveapi=" + vApiKeyOUT + "&type=provincias&idprov=41";
+function getAllData_serie2() {
+  var vURL    = vServer + "/api.php?claveapi=" + vApiKeyOUT + "&type=provincias&idprov=41";
 
   var request = $.ajax({
      url        : vURL

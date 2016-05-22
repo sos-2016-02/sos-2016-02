@@ -12,8 +12,9 @@ var api_population          = require('./api_population');
 var api_electrical_consume  = require('./api_electrical_consume');
 var api_price_of_oil        = require('./api_price_of_oil');
 var api_companiero_grupo_04 = require('./api_companiero_grupo_04');
+var api_club_rural          = require('./api_club_rural');
 
-// __ VAR -> Others __
+// __ VAR -> General __
 var bodyParser = require('body-parser');
 var express    = require('express');
 var tools      = require('./tools');
@@ -34,7 +35,12 @@ app.use('/api/v1/population', api_population);
 // __ proxied API's __
 app.use('/api/v1/participants-number', api_electrical_consume);
 app.use('/api/v1/oil', api_price_of_oil);
-app.use('/api/v1/population-unemployed-percentage-by-gender',api_companiero_grupo_04);
+app.use('/api/v1/population-unemployed-percentage-by-gender', api_companiero_grupo_04);
+
+// __proxied external API's __
+app.use('/api/external/club-rural', api_club_rural);
+
+
 
 // __ Other parameters __
 app.use(bodyParser.json());
