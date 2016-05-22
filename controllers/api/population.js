@@ -13,10 +13,11 @@ exports.loadInitialData = (req, res) => {
 exports.postNewDatum = (req, res) => {
     var datum = req.body;
     var fieldIsMissing =
-            datum.province == undefined ||
-            datum.year == undefined ||
-            datum.number == undefined;
-
+            tools.missing(datum.province) ||
+            tools.missing(datum.year) ||
+            tools.missing(datum.number) ||
+            tools.missing(datum.birthplace) ||
+            tools.missing(datum.age);
     if (fieldIsMissing) {
         res.sendStatus(400);
         return;
