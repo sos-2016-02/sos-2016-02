@@ -1,6 +1,6 @@
-var vServer     = "http://192.168.1.200:3000";
+//var vServer     = "http://192.168.1.200:3000";
 //var vServer     = "http://localhost:3000";
-//var vServer     = "https://sos-2016-02.herokuapp.com";
+var vServer     = "https://sos-2016-02.herokuapp.com";
 var vURL        = "";
 var vApiKeyLSA  = "multiPlan_C4_sos-2016-02-mac_ag";
 var vApiKeyOUT  = "5e056c500a1c4b6a7110b50d807bade5";
@@ -31,9 +31,13 @@ function getAllData_serie1(pQuery) {
 }
 
 function getData_serie1(data){
+  vDataCategories_serie1.push("Sevilla");
+
   var vPeople      = [];
-  vPeople.push(Math.abs(this.men-this.women));
-  vDataCategories_serie1.push(2015);
+  $.each(data, function(){
+      vPeople.push(Math.abs(this.men-this.women));
+  });
+
   var vDataPeople  = {};
   vDataPeople.name = 'PEOPLE';
   vDataPeople.data = vPeople;
@@ -63,12 +67,12 @@ function getData_serie2(data){
   vDataCategories_serie2.push(2015);
 
   var vAlojamiento   = [];
-  //var vAlojamiento[0]=data.length;
+  vAlojamiento[0]    = parseInt( data.getElementsByTagName('count')[0].firstChild.nodeValue );
   
   var a = this.count;
 
   var vDataDiesel    = {};
-  vDataDiesel.name   = 'ALOJAMIENTOS';
+  vDataDiesel.name   = 'RURAL HOUSES';
   vDataDiesel.data   = vAlojamiento;
   vDataSeries.push(vDataDiesel);
 }
@@ -83,10 +87,10 @@ function showGraph() {
           type: 'column'
       },
       title: {
-          text: 'Men olders than 18 in Seville + Price of Diesel in Bazil (scaled 10E4)'
+          text: 'Difference Men/Women olders than 18 + Number of Rural Houses'
       },
       subtitle: {
-          text: 'Integration data from diferent groups of SOS'
+          text: 'Integration data from external data'
       },
       xAxis: {
           categories: vDataCategories_serie1,

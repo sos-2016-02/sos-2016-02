@@ -40,10 +40,9 @@ $(document).ready(function(){
 	
 	function setDefaultValues() {
 		$('input[name=txtURL]').val("");
-		// https://sos-2016-02.herokuapp.com
-		// http://localhost:3000
-		// http://192.168.1.200:3000
-		$('#txtServer').val("http://192.168.1.200:3000");
+		$('#txtServer').val("https://sos-2016-02.herokuapp.com");
+		//$('#txtServer').val("http://localhost:3000");
+		//$('#txtServer').val("http://192.168.1.200:3000");
 		$('#txtURI').val("");
 		$('#txtKey').val("multiPlan_C4_sos-2016-02-mac_ag");
 	}
