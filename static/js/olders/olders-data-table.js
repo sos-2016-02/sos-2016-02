@@ -38,8 +38,6 @@ $(document).ready(function(){
 		obtenerDireccion();
 	});
 	
-
-
 	function setDefaultValues() {
 		$('input[name=txtURL]').val("");
 		// https://sos-2016-02.herokuapp.com
@@ -67,7 +65,7 @@ $(document).ready(function(){
 		var vParam = "";
 		if ($("#apikey").val() != ""){
 			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
-			vParam = vParam + vChar + "apikey=" + $("#txtKey").val()
+			vParam = vParam + vChar + "apiKey=" + $("#txtKey").val()
 		}
 		if ($("#txtOffset").val() != ""){
 			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
@@ -132,7 +130,7 @@ $(document).ready(function(){
 		$("#txtReceived").html( "" );
 		var vType     = $("input[type=radio]:checked").attr("id");
 		var vDataJSON = $("#txtData").val();
-		var vURL      = obtenerURLBase() + "loadInitialData?apikey=" + $("#txtKey").val();
+		var vURL      = obtenerURLBase() + "loadInitialData?apiKey=" + $("#txtKey").val();
 
 		var request = $.ajax({
 			 url        : vURL

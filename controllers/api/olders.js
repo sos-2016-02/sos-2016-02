@@ -107,7 +107,7 @@ exports.getResourceByProvinceYear = function (req,res) {
 	{
 		res.send(filteredData);
 	} else {
-		res.sendStatus(400);
+		res.sendStatus(404);
 	}
 };
 
