@@ -1,9 +1,9 @@
-//var vServer     = "http://192.168.1.200:3000";
+var vServer     = "http://192.168.1.200:3000";
 //var vServer     = "http://localhost:3000";
-var vServer     = "https://sos-2016-02.herokuapp.com";
+//var vServer     = "https://sos-2016-02.herokuapp.com";
 var vURL        = "";
 var vApiKeyLSA  = "multiPlan_C4_sos-2016-02-mac_ag";
-var vApiKeyOUT  = "correct-key-1";
+var vApiKeyOUT  = "multiPlan_C4_sos-2016-02-vg_ag1";
 
 var vDataCategories_serie1 = [];
 var vDataCategories_serie2 = [];
@@ -58,7 +58,6 @@ function getAllData_serie2(pQuery) {
 
   request.done(function(data, status, jqXHR){
     getData_serie2(data);
-    fusionarSerie1Serie2();
     showGraph();
   });
 }
@@ -71,10 +70,10 @@ function getData_serie2(data){
   $.each(data, function(){
       vDataCategories_serie2.push(this.province);
       //vPopulation.push(this.number);
-      //Sólo insertamos los valores leidos en su posición
-      //si encontramos coincidencias posicionales con las nuestras
-      var indexInSerie1 = vDataCategories_serie1.indexOf(this.province);
-      vPopulation.splice(indexInSerie1,0,this.number);
+      //Insertamos en el array vPopulation su valor
+      //pero en la misma posición que se corresponda
+      //con la provincia en vDataCategories_serie1 que corresponda.
+      vPopulation[vDataCategories_serie1.indexOf(this.province)] = this.number;
 
   });
 
@@ -82,10 +81,6 @@ function getData_serie2(data){
   vDataPopulation.name = 'Population';
   vDataPopulation.data = vPopulation;
   vDataSeries.push(vDataPopulation);
-}
-
-function fusionarSerie1Serie2() {
-  var a = 1;
 }
 
 function showGraph() {
@@ -101,7 +96,7 @@ function showGraph() {
           text: 'Men olders than 18 years old + Number of population'
       },
       subtitle: {
-          text: 'Source: ine.es'
+          text: 'Integration data from same group of SOS'
       },
       xAxis: {
           categories: vDataCategories_serie1,
