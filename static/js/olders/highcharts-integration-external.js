@@ -41,7 +41,7 @@ function getData_serie1(data){
 }
 
 function getAllData_serie2(pQuery) {
-  var vURL    = "http://api.clubrural.com/api.php?claveapi=" + vApiKeyOUT + "&type=provincias&idprov=41";
+  var vURL    = "https://api.clubrural.com/api.php?claveapi=" + vApiKeyOUT + "&type=provincias&idprov=41";
 
   var request = $.ajax({
      url        : vURL
