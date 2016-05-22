@@ -41,7 +41,7 @@ function getData_serie1(data){
 }
 
 function getAllData_serie2() {
-  var vURL    = vServer + "/api.php?claveapi=" + vApiKeyOUT + "&type=provincias&idprov=41";
+  var vURL    = vServer + "/api/proxy/club-rural/api.php?claveapi=" + vApiKeyOUT + "&type=provincias&idprov=41";
 
   var request = $.ajax({
      url        : vURL
@@ -64,10 +64,12 @@ function getData_serie2(data){
 
   var vAlojamiento   = [];
   //var vAlojamiento[0]=data.length;
+  
+  var a = this.count;
 
   var vDataDiesel    = {};
   vDataDiesel.name   = 'ALOJAMIENTOS';
-  vDataDiesel.data   = vAlojamientos;
+  vDataDiesel.data   = vAlojamiento;
   vDataSeries.push(vDataDiesel);
 }
 

@@ -9,7 +9,7 @@ var vProxyURL  = '';
 module.exports = router;
 
 router.use(vProxyPath, function(req, res) {
-    vProxyURL = vProxySrv + req.baseUrl + req.url;
+    vProxyURL = vProxySrv + req.url;
     req.pipe(request(vProxyURL, reqCallBack)).pipe(res);
 });
 
