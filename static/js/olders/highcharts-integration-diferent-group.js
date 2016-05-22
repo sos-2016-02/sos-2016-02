@@ -1,6 +1,3 @@
-//var vServer     = "http://192.168.1.200:3000";
-//var vServer     = "http://localhost:3000";
-var vServer     = "https://sos-2016-02.herokuapp.com";
 var vURL        = "";
 var vApiKeyLSA  = "multiPlan_C4_sos-2016-02-mac_ag";
 var vApiKeyOUT  = "multiPlan_C4_sos-2016-01-fjfr";
@@ -14,7 +11,7 @@ $(document).ready(function() {
 });
 
 function getAllData_serie1(pQuery) {
-  var vURL    = vServer + "/api/v1/olders/" + pQuery + "?apikey=" + vApiKeyLSA;
+  var vURL    = "/api/v1/olders/" + pQuery + "?apikey=" + vApiKeyLSA;
 
   var request = $.ajax({
      url        : vURL
@@ -46,7 +43,7 @@ function getData_serie1(data){
 }
 
 function getAllData_serie2(pQuery) {
-  var vURL    = vServer + "/api/v1/oil/" + pQuery + "?apikey=" + vApiKeyOUT;
+  var vURL    = "/api/v1/oil/" + pQuery + "?apikey=" + vApiKeyOUT;
 
   var request = $.ajax({
      url        : vURL

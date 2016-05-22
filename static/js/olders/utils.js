@@ -55,7 +55,8 @@ function createTableData(objArray) {
 }
 
 function obtenerURLBase() {
-	vURLBase    = vServer + "/api/" + vAPIversion + "/" + vAPIname + "/";
+	//vURLBase    = vServer + "/api/" + vAPIversion + "/" + vAPIname + "/";
+    vURLBase = "/api/" + vAPIversion + "/" + vAPIname + "/";
 	return vURLBase;		
 }
 

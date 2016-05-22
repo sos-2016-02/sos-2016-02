@@ -40,11 +40,9 @@ $(document).ready(function(){
 	
 	function setDefaultValues() {
 		$('input[name=txtURL]').val("");
-		$('#txtServer').val("https://sos-2016-02.herokuapp.com");
-		//$('#txtServer').val("http://localhost:3000");
-		//$('#txtServer').val("http://192.168.1.200:3000");
+		$('#txtServer').val("");
 		$('#txtURI').val("");
-		$('#txtKey').val("multiPlan_C4_sos-2016-02-mac_ag");
+		$('#txtkey').val("multiPlan_C4_sos-2016-02-mac_ag");
 	}
 
 	function obtenerDireccion() {
@@ -64,7 +62,7 @@ $(document).ready(function(){
 		var vParam = "";
 		if ($("#apikey").val() != ""){
 			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
-			vParam = vParam + vChar + "apiKey=" + $("#txtKey").val()
+			vParam = vParam + vChar + "apikey=" + $("#txtkey").val()
 		}
 		if ($("#txtOffset").val() != ""){
 			var vChar  = ( vParam.indexOf("?")==-1) ? "?" : "&";
