@@ -3,7 +3,7 @@ var vServer     = "http://192.168.1.200:3000";
 //var vServer     = "https://sos-2016-02.herokuapp.com";
 var vURL        = "";
 var vApiKeyLSA  = "multiPlan_C4_sos-2016-02-mac_ag";
-var vApiKeyOUT  = "multiPlan_C4_sos-2016-02-vg_ag1";
+var vApiKeyOUT  = "multiPlan_C4_sos-2016-02-vg_ag";
 
 var vDataCategories_serie1 = [];
 var vDataCategories_serie2 = [];

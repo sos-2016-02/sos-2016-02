@@ -3,14 +3,14 @@ var vServer     = "http://192.168.1.200:3000";
 //var vServer     = "https://sos-2016-02.herokuapp.com";
 var vURL        = "";
 var vApiKeyLSA  = "multiPlan_C4_sos-2016-02-mac_ag";
-var vApiKeyOUT  = "multiPlan_C4_sos-2016-02-vg_ag1";
+var vApiKeyOUT  = "multiPlan_C4_sos-2016-01-fjfr";
 
 var vDataCategories_serie1 = [];
 var vDataCategories_serie2 = [];
 var vDataSeries            = [];
 
 $(document).ready(function() {
-  getAllData_serie1("2015");
+  getAllData_serie1("Sevilla");
 });
 
 function getAllData_serie1(pQuery) {
@@ -27,7 +27,7 @@ function getAllData_serie1(pQuery) {
   request.done(function(data, status, jqXHR){
     getData_serie1(data);
     getAllData_serie2("loadInitialData");
-    getAllData_serie2("2015");
+    getAllData_serie2("Brazil");
   });
 }
 
@@ -35,7 +35,7 @@ function getData_serie1(data){
   var vMen   = [];
 
   $.each(data, function(){
-      vDataCategories_serie1.push(this.province);
+      vDataCategories_serie1.push(this.year);
       vMen.push(this.men);
   });
 
@@ -46,7 +46,7 @@ function getData_serie1(data){
 }
 
 function getAllData_serie2(pQuery) {
-  var vURL    = vServer + "/api/v1/population/" + pQuery + "?apikey=" + vApiKeyOUT;
+  var vURL    = vServer + "/api/v1/oil/" + pQuery + "?apikey=" + vApiKeyOUT;
 
   var request = $.ajax({
      url        : vURL
@@ -63,24 +63,26 @@ function getAllData_serie2(pQuery) {
 }
 
 function getData_serie2(data){
-  var vPopulation   = [];
+  if (data == "OK") return;
+
+  var vDiesel   = [];
   // inicializamos a 0 tantos valores de la serie 2 como valores tenga la serie 1
-  for (i=0 ; i<vDataSeries[0].data.length; i++ ) { vPopulation[i] = 0; }
+  for (i=0 ; i<vDataSeries[0].data.length; i++ ) { vDiesel[i] = 0; }
 
   $.each(data, function(){
-      vDataCategories_serie2.push(this.province);
+      vDataCategories_serie2.push(this.year);
       //vPopulation.push(this.number);
-      //Insertamos en el array vPopulation su valor
+      //Insertamos en el array vDiesel su valor
       //pero en la misma posición que se corresponda
-      //con la provincia en vDataCategories_serie1 que corresponda.
-      vPopulation[vDataCategories_serie1.indexOf(this.province)] = this.number;
+      //con el año en vDataCategories_serie1 que corresponda.
+      vDiesel[vDataCategories_serie1.indexOf(this.year)] = this.diesel*10000;
 
   });
 
-  var vDataPopulation  = {};
-  vDataPopulation.name = 'Population';
-  vDataPopulation.data = vPopulation;
-  vDataSeries.push(vDataPopulation);
+  var vDataDiesel  = {};
+  vDataDiesel.name = 'Oil';
+  vDataDiesel.data = vDiesel;
+  vDataSeries.push(vDataDiesel);
 }
 
 function showGraph() {
@@ -93,10 +95,10 @@ function showGraph() {
           type: 'column'
       },
       title: {
-          text: 'Men olders than 18 years old + Number of population'
+          text: 'Men olders than 18 in Seville + Price of Diesel in Bazil (scaled 10E4)'
       },
       subtitle: {
-          text: 'Integration data from same group of SOS'
+          text: 'Integration data from diferent groups of SOS'
       },
       xAxis: {
           categories: vDataCategories_serie1,
