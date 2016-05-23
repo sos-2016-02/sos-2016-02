@@ -3,45 +3,61 @@
   <head>
     <meta charset="utf-8" />
     <title>sos-2016-02</title>
-    <style>
-      .rowTitle{
-      background-color: #eeeeee;
-      font-size: x-large;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="/css/main_css.css" />
+    <script src="/js/jquery-2.2.3.min.js"></script>
+    <script src="/js/main_js.js"></script>
   </head>
   <body>
-    <h1>Hello World from group 02</h1>
+    <div id="container-main">
+    <h1>Group SOS-2016-02</h1>
+
     <a href="/about">about</a><br/><br/>
-    <table border = "0">
-      <tr><td colspan="2" class="rowTitle">Olders</td></tr>
-      <tr><td>Description</td><td><i>Population of men and women 18 years old.</i></td></tr>
-      <tr><td>SLA</td><td><a href='http://portal.governify.io/app/#/portal?configurl=http:%2F%2Flabs.isa.us.es%2Fir%2Fmacifredo%2FGovernify-API%2FPlans%2Fportal-config.json' target="_blank">Buy Plan</a>&nbsp;&nbsp;<i>sos-2016-02-mac</i></td></tr>
-      <tr><td>GUI</td><td><a href='/olders'>view</a></td></tr>
-      <tr><td>Chart</td><td><a href='/olders/charts'>view</a></td></tr>
-      <tr><td>HighCharts</td><td><a href='/olders/highcharts'>view</a></td></tr>
-      <tr><td>Video</td><td><a href='#'>view</a></td></tr>
-      <tr><td colspan="2"><br/><b>Integrations others API</b></td></tr>
-      <tr><td>Same group</td><td><a href='/olders/integration-same-group'>Olders-Population</a></td></tr>
-      <tr><td>Diferent group</td><td><a href='/olders/integration-diferent-group'>Olders-Diesel</a></td></tr>
-      <tr><td>External 1/2</td><td><a href='/olders/integration-external-1'>Olders-ClubRural</a></td></tr>
-      <tr><td>External 2/2</td><td><a href='/olders/integration-external-2'>Olders-Wheather</a></td></tr>
-      <tr><td colspan="2"><hr/></td></tr>
-      <tr><td colspan="2" class="rowTitle">Population</td></tr>
-      <tr><td>Description</td><td><i>The number of people from EU and South America, with age ranges (e.g. 15-19, 20-24), by province and by years.</i></td></tr>
-      <tr><td>API key</td>
-        <td><a href='http://portal.governify.io/app/#/portal?configurl=http:%2F%2Flabs.isa.us.es%2Fir%2Fvictor%2FGovernify-API%2FPlans%2Fportal-config.json' target="_blank">Get it here</a> using client ID "sos-2016-02-vg"</td>
-      </tr>
-      <tr><td>GUI</td><td><a href='/population'>view</a></td></tr>
-      <tr><td>Chart</td><td><a href='/population/charts'>view</a></td></tr>
+
+    <div class="accordion-container">
+      <a href="#" class="accordion-titulo">Olders<span class="toggle-icon"></span></a>
+      <div class="accordion-content">
+        <table border="0">
+          <tr><td>Description:</td><td><i>Population of men and women 18 years old.</i></td></tr>
+          <tr><td>SLA</td><td><a href='http://portal.governify.io/app/#/portal?configurl=http:%2F%2Flabs.isa.us.es%2Fir%2Fmacifredo%2FGovernify-API%2FPlans%2Fportal-config.json' target="_blank">Buy Plan</a>&nbsp;&nbsp;<i>sos-2016-02-mac</i></td></tr>
+          <tr><td>GUI</td><td><a href='/olders'>view</a></td></tr>
+          <tr><td>Chart</td><td><a href='/olders/charts'>view</a></td></tr>
+          <tr><td>HighCharts</td><td><a href='/olders/highcharts'>view</a></td></tr>
           <tr><td>Video</td><td><a href='#'>view</a></td></tr>
-      <tr><td colspan="2"><hr/></td></tr>
-      <tr><td colspan="2" class="rowTitle">Workers</td></tr>
-      <tr><td>Description</td><td><i>Labor market activity, employment and unemployment survey working population.</i></td></tr>
-      <tr><td>GUI</td><td><a href='/workers'>view</a></td></tr>
-      <tr><td>Chart</td><td><a href='/workers/charts'>view</a></td></tr>
-      <tr><td>Video</td><td><a href='#'>view</a></td></tr>
-      <tr><td colspan="2"><hr/></td></tr>
-    </table>
+          <tr><td colspan="2"><br/><b>Integrations others API</b></td></tr>
+          <tr><td>Same group</td><td><a href='/olders/integration-same-group'>Olders-Population</a></td></tr>
+          <tr><td>Diferent group</td><td><a href='/olders/integration-diferent-group'>Olders-Diesel</a></td></tr>
+          <tr><td>External 1/2</td><td><a href='/olders/integration-external-1'>Olders-ClubRural</a></td></tr>
+          <tr><td>External 2/2</td><td><a href='/olders/integration-external-2'>Olders-Wheather</a></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="accordion-container">
+      <a href="#" class="accordion-titulo">Population<span class="toggle-icon"></span></a>
+      <div class="accordion-content">
+        <table border="0">
+          <tr><td>Description:</td><td><i>The number of people from EU and South America, with age ranges (e.g. 15-19, 20-24), by province and by years.</i></td></tr>
+          <tr><td>API key</td>
+            <td><a href='http://portal.governify.io/app/#/portal?configurl=http:%2F%2Flabs.isa.us.es%2Fir%2Fvictor%2FGovernify-API%2FPlans%2Fportal-config.json' target="_blank">Get it here</a> using client ID "sos-2016-02-vg"</td>
+          </tr>
+          <tr><td>GUI</td><td><a href='/population'>view</a></td></tr>
+          <tr><td>Chart</td><td><a href='/population/charts'>view</a></td></tr>
+          <tr><td>Video</td><td><a href='#'>view</a></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="accordion-container">
+      <a href="#" class="accordion-titulo">Workers<span class="toggle-icon"></span></a>
+      <div class="accordion-content">
+        <table border="0">
+          <tr><td>Description:</td><td><i>Labor market activity, employment and unemployment survey working population.</i></td></tr>
+          <tr><td>GUI</td><td><a href='/workers'>view</a></td></tr>
+          <tr><td>Chart</td><td><a href='/workers/charts'>view</a></td></tr>
+          <tr><td>Video</td><td><a href='#'>view</a></td></tr>
+        </table>
+      </div>
+    </div>
+
   </body>
 </html>

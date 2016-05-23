@@ -23,7 +23,6 @@ governify.control(router, {
 	  defautPath : "/api/v1"
 });
 
-
 // Load inital data
 router.get   ('/loadInitialData', (req,res) => apiCtl.loadInitialData(req, res) );
 
