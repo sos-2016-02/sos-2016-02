@@ -18,7 +18,7 @@ $(document).ready(function() {
         "paging": false,
         "info": false,
         "ajax": {
-            "url": API_POPULATION_URL + makeUrlParams(),
+            "url": API_POPULATION_URL + makeUrlParamsWithSearch(),
             "dataSrc": ""
         },
         "columns": [
@@ -133,7 +133,7 @@ function paginationNextButtonListener(event) {
 // helpers /////////////////////////////////////////////////////////////////////
 
 function refreshUrlAndReload() {
-    var newUrl = API_POPULATION_URL + makeUrlParams();
+    var newUrl = API_POPULATION_URL + makeUrlParamsWithSearch();
     dataTable.ajax.url(newUrl).load();
 }
 
@@ -231,17 +231,21 @@ function deleteDatumListener(event) {
     });
 }
 
-function makeUrlParams(additionalParams = "") {
-    paginationLimit = parseInt(byId("pagination-select").value, 10);
+
+// for requests that want also to use search
+function makeUrlParamsWithSearch() {
+    var params = makeUrlParams();
     var yearOrCityQuery = $("#search-year-or-city-input").val();
+    return "/" + yearOrCityQuery + params;
+}
+
+function makeUrlParams() {
+    paginationLimit = parseInt(byId("pagination-select").value, 10);
     var params =
-            "/" + yearOrCityQuery +
             "?apikey=" + byId("api-key-input").value +
             "&limit=" + paginationLimit +
             "&offset=" + paginationOffset +
-            makeMinPopulationUrlParams() +
-            additionalParams;
-
+            makeMinPopulationUrlParams();
     return params;
 }
 

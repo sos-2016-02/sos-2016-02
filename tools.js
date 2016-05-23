@@ -159,4 +159,9 @@ exports.sortJsonArrayByProperty = function(objArray, prop, direction){
             return ( (a < b) ? -1*direct : ((a > b) ? 1*direct : 0) );
         });
     }
-}
+};
+
+
+exports.missing = (attribute) => {
+    return attribute == undefined || attribute == '';
+};
