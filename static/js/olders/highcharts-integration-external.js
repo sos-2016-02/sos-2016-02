@@ -2,9 +2,7 @@ var vURL        = "";
 var vApiKeyLSA  = "multiPlan_C4_sos-2016-02-mac_ag";
 var vApiKeyOUT  = "5e056c500a1c4b6a7110b50d807bade5";
 
-var vDataCategories_serie1 = [];
-var vDataCategories_serie2 = [];
-var vDataSeries            = [];
+var vDataSerie  = [];
 
 $(document).ready(function() {
   getAllData_serie1("Sevilla/2015");
@@ -28,17 +26,12 @@ function getAllData_serie1(pQuery) {
 }
 
 function getData_serie1(data){
-  vDataCategories_serie1.push("Sevilla");
-
-  var vPeople      = [];
+  var vElto = [];
+  vElto.push('PEOPLE');
   $.each(data, function(){
-      vPeople.push(Math.abs(this.men-this.women));
+      vElto.push(Math.abs(this.men-this.women));
   });
-
-  var vDataPeople  = {};
-  vDataPeople.name = 'PEOPLE';
-  vDataPeople.data = vPeople;
-  vDataSeries.push(vDataPeople);
+  vDataSerie.push(vElto);
 }
 
 function getAllData_serie2() {
@@ -54,24 +47,35 @@ function getAllData_serie2() {
 
   request.done(function(data, status, jqXHR){
     getData_serie2(data);
-    showGraph();
+    setData();
   });
 }
 
 function getData_serie2(data){
   if (data == "OK") return;
 
-  vDataCategories_serie2.push(2015);
+  var vElto = [];
+  vElto.push('RURAL-HOUSES');
+  vElto.push( parseInt( data.getElementsByTagName('count')[0].firstChild.nodeValue ) );
+  vDataSerie.push(vElto);
+}
 
-  var vAlojamiento   = [];
-  vAlojamiento[0]    = parseInt( data.getElementsByTagName('count')[0].firstChild.nodeValue );
-  
-  var a = this.count;
+function setData(){
+  asignarPorcentajes();
+  vDataSerie.push ({
+                    name: 'Proprietary or Undetectable',
+                    y: 0.2,
+                    dataLabels: {
+                        enabled: false
+                    }});
+  showGraph();
+}
 
-  var vDataDiesel    = {};
-  vDataDiesel.name   = 'RURAL HOUSES';
-  vDataDiesel.data   = vAlojamiento;
-  vDataSeries.push(vDataDiesel);
+function asignarPorcentajes(){
+  var valor1 = vDataSerie[0][1];
+  var valor2 = vDataSerie[1][1];
+  vDataSerie[0][1] = (valor1+valor2) / valor1 * 10;
+  vDataSerie[1][1] = (valor1+valor2) / valor2 * 10;
 }
 
 function showGraph() {
@@ -79,41 +83,43 @@ function showGraph() {
     colors: ['#0000FF', '#FF0000']
   });
 
-  $('#container').highcharts({
-      chart: {
-          type: 'column'
-      },
-      title: {
-          text: 'Difference Men/Women olders than 18 + Number of Rural Houses'
-      },
-      subtitle: {
-          text: 'Integration data from external data'
-      },
-      xAxis: {
-          categories: vDataCategories_serie1,
-          crosshair: true
-      },
-      yAxis: {
-          min: 0,
-          title: {
-              text: 'Results of integration'
-          }
-      },
-      tooltip: {
-          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-              '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-          footerFormat: '</table>',
-          shared: true,
-          useHTML: true
-      },
-      plotOptions: {
-          column: {
-              pointPadding: 0.2,
-              borderWidth: 0
-          }
-      },
-      series: vDataSeries
-  });
+    $('#container').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 0,
+            plotShadow: false
+        },
+        title: {
+            text: 'People vs<br/>Rural-Houses',
+            align: 'center',
+            verticalAlign: 'middle',
+            y: 40
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    enabled: true,
+                    distance: -50,
+                    style: {
+                        fontWeight: 'bold',
+                        color: 'white',
+                        textShadow: '0px 1px 2px black'
+                    }
+                },
+                startAngle: -90,
+                endAngle: 90,
+                center: ['50%', '75%']
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'People vs Rural-Houses',
+            innerSize: '50%',
+            data: vDataSerie
+        }]
+    });
 
 }
