@@ -15,6 +15,7 @@ var api_companiero_grupo_04 = require('./api_companiero_grupo_04');
 var api_proxy_open_weather  = require('./api_proxy_weather');
 var api_proxy_club_rural    = require('./api_proxy_club_rural');
 var api_proxy_citybikes     = require('./api_proxy_citybikes');
+var api_proxy_governify     = require('./api_proxy_governify');
 
 
 // __ VAR -> General __
@@ -43,6 +44,7 @@ app.use('/api/v1/population-unemployed-percentage-by-gender', api_companiero_gru
 app.use('/api/proxy/open-weather', api_proxy_open_weather);
 app.use('/api/proxy/club-rural',   api_proxy_club_rural);
 app.use('/api/proxy/citybikes',    api_proxy_citybikes);
+app.use('/api/proxy/governify',    api_proxy_governify);
 
 
 // __ Other parameters __
