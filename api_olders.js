@@ -16,13 +16,13 @@ router.use(cors());
  apiKey (  10) : multiPlan_C2_sos-2016-02-mac_ag
  apiKey (1000) : multiPlan_C4_sos-2016-02-mac_ag
  */
-/*
+
 governify.control(router, {
 	  datestore  : "http://datastore.governify.io/api/v6.1/",
 	  namespace  : "sos-2016-02-mac",
 	  defautPath : "/api/v1"
 });
-*/
+
 
 // Load inital data
 router.get   ('/loadInitialData', (req,res) => apiCtl.loadInitialData(req, res) );
