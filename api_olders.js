@@ -13,8 +13,8 @@ router.use(cors());
 
 /*
  NameSpace     : sos-2016-02-mac
- apiKey (  10) : multiPlan_C2_sos-2016-02-mac_ag
- apiKey (1000) : multiPlan_C4_sos-2016-02-mac_ag
+ Plan (  10)   : multiPlan_C2_sos-2016-02-mac_ag
+ Plan (1000)   : multiPlan_C4_sos-2016-02-mac_ag
  */
 
 governify.control(router, {
