@@ -62,12 +62,6 @@ function getData_serie2(data){
 
 function setData(){
   asignarPorcentajes();
-  vDataSerie.push ({
-                    name: 'Proprietary or Undetectable',
-                    y: 0.2,
-                    dataLabels: {
-                        enabled: false
-                    }});
   showGraph();
 }
 
@@ -83,43 +77,37 @@ function showGraph() {
     colors: ['#0000FF', '#FF0000']
   });
 
-    $('#container').highcharts({
+  $('#container').highcharts({
         chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: 0,
-            plotShadow: false
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
         },
         title: {
-            text: 'People vs<br/>Rural-Houses<br/>~ Sevilla ~',
-            align: 'center',
-            verticalAlign: 'middle',
-            y: 40
+            text: 'Difference between men and women VS number of rural houses [Sevilla]'
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
         },
         plotOptions: {
             pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
                 dataLabels: {
                     enabled: true,
-                    distance: -50,
-                    style: {
-                        fontWeight: 'bold',
-                        color: 'white',
-                        textShadow: '0px 1px 2px black'
-                    }
-                },
-                startAngle: -90,
-                endAngle: 90,
-                center: ['50%', '75%']
+                    format: '{point.name}'
+                }
             }
         },
         series: [{
             type: 'pie',
-            name: 'People vs Rural-Houses',
-            innerSize: '50%',
+            name: 'Browser share',
             data: vDataSerie
         }]
-    });
+      });
 
 }

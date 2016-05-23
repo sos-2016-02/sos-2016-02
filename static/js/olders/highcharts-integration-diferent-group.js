@@ -92,7 +92,7 @@ function showGraph() {
           type: 'column'
       },
       title: {
-          text: 'Men olders than 18 in Seville + Price of Diesel in Bazil (scaled 10E4)'
+          text: 'Men olders than 18 in Seville VS Price of Diesel in Bazil (scaled 10E4)'
       },
       subtitle: {
           text: 'Integration data from diferent groups of SOS'

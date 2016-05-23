@@ -90,7 +90,7 @@ function showGraph() {
           type: 'column'
       },
       title: {
-          text: 'Men olders than 18 years old + Number of population'
+          text: 'Men olders than 18 years old VS Number of population'
       },
       subtitle: {
           text: 'Integration data from same group of SOS'
