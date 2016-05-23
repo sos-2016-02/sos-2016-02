@@ -90,7 +90,7 @@ function showGraph() {
             plotShadow: false
         },
         title: {
-            text: 'People vs<br/>Rural-Houses',
+            text: 'People vs<br/>Rural-Houses<br/>~ Sevilla ~',
             align: 'center',
             verticalAlign: 'middle',
             y: 40

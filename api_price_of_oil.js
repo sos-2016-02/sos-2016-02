@@ -16,7 +16,7 @@ router.use(vProxyPath, function(req, res) {
 function reqCallBack(error, response, body) {
     if (error) { 
         console.error('proxy error: ' + error);
-        res.sendStatus(503); // Service Unavailable
+        response.sendStatus(503); // Service Unavailable
     } else {
     	console.log('proxy to ' + vProxyURL);
     }

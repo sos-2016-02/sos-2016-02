@@ -3,7 +3,7 @@ var request = require('request');
 var router  = express.Router();
 
 var vProxyPath = '/';
-var vProxySrv  = 'https://api.clubrural.com';
+var vProxySrv  = 'http://api.openweathermap.org/data/2.5';
 var vProxyURL  = '';
 
 module.exports = router;
@@ -13,10 +13,10 @@ router.use(vProxyPath, function(req, res) {
     req.pipe(request(vProxyURL, reqCallBack)).pipe(res);
 });
 
-function reqCallBack(error, response, body) {
+function reqCallBack(error, res, body) {
     if (error) { 
         console.error('proxy error: ' + error);
-        response.sendStatus(503); // Service Unavailable
+        res.sendStatus(503); // Service Unavailable
     } else {
     	console.log('proxy to ' + vProxyURL);
     }

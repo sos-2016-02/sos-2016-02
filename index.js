@@ -12,6 +12,7 @@ var api_population          = require('./api_population');
 var api_electrical_consume  = require('./api_electrical_consume');
 var api_price_of_oil        = require('./api_price_of_oil');
 var api_companiero_grupo_04 = require('./api_companiero_grupo_04');
+var api_proxy_open_weather  = require('./api_proxy_weather');
 var api_proxy_club_rural    = require('./api_proxy_club_rural');
 var api_proxy_citybikes     = require('./api_proxy_citybikes');
 
@@ -30,8 +31,8 @@ app.use('/api/sandbox/films', api_films);
 app.use('/api/sandbox/linux-distributions', api_linux_distributions);
 
 // __ URI -> APIs Version 1 __
-app.use('/api/v1/olders', api_olders);
-app.use('/api/v1/workers', api_workers);
+app.use('/api/v1/olders',     api_olders);
+app.use('/api/v1/workers',    api_workers);
 app.use('/api/v1/population', api_population);
 
 // __ proxied APIs __
@@ -39,8 +40,9 @@ app.use('/api/v1/participants-number', api_electrical_consume);
 app.use('/api/v1/oil', api_price_of_oil);
 app.use('/api/v1/population-unemployed-percentage-by-gender', api_companiero_grupo_04);
 
-app.use('/api/proxy/club-rural', api_proxy_club_rural);
-app.use('/api/proxy/citybikes', api_proxy_citybikes);
+app.use('/api/proxy/open-weather', api_proxy_open_weather);
+app.use('/api/proxy/club-rural',   api_proxy_club_rural);
+app.use('/api/proxy/citybikes',    api_proxy_citybikes);
 
 
 // __ Other parameters __
