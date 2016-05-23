@@ -45,9 +45,15 @@ exports.deleteAllData = (req, res) => {
 
 
 exports.getPopulationData = (req, res) => {
-    var data = tools.getInterval(populationData,
-                                 req.query.offset,
-                                 req.query.limit);
+    var data = populationData;
+    if (req.query.minPopulation != undefined) {
+        data = data.filter((datum) => {
+            return datum['number'] >= req.query.minPopulation;
+        });
+    }
+    data = tools.getInterval(data,
+                             req.query.offset,
+                             req.query.limit);
     res.send(data);
 };
 
@@ -60,6 +66,7 @@ exports.getDataByProvince = (req, res) => {
             return datum['number'] >= req.query.minPopulation;
         });
     }
+
     var paginatedData = tools.getInterval(provinceData,
                                  req.query.offset,
                                  req.query.limit);
@@ -69,7 +76,15 @@ exports.getDataByProvince = (req, res) => {
 exports.getDataByYear = (req, res) => {
     var year = req.params.year;
     var data = tools.findAllByProperty(populationData, 'year', year);
-    res.send(data);
+    if (req.query.minPopulation != undefined) {
+        data = data.filter((datum) => {
+            return datum['number'] >= req.query.minPopulation;
+        });
+    }
+    var paginatedData = tools.getInterval(data,
+                                          req.query.offset,
+                                          req.query.limit);
+    res.send(paginatedData);
 };
 
 exports.getDatum = (req, res) => {
