@@ -105,7 +105,7 @@ function showGraph() {
         },
         series: [{
             type: 'pie',
-            name: 'Browser share',
+            name: 'Relation rate',
             data: vDataSerie
         }]
       });
