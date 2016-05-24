@@ -16,11 +16,27 @@
       .arc path {
       stroke: #fff;
       }
+
+      .tooltip {
+      position: absolute;
+      text-align: center;
+      width: 95px;
+      height: 40px;
+      padding: 8px;
+      margin-top: -20px;
+      font: 10px sans-serif;
+      background: #ddd;
+      pointer-events: none;
+      }
     </style>
   </head>
 
   <body>
     <h1>Integration of population with OpenStreetMap</h1>
+    <div style="display: none;" class="tooltip">
+      <p id="percentage"></p>
+      <p id="age"></p>
+    </div>
     <script src="/js/population/integration-openstreetmap.js"></script>
   </body>
 </html>
