@@ -12,7 +12,7 @@ node++
 %2835.871246850027966,-9.909667968749998,43.96119063892024,5.11962890625%29;
 out+body;`;
 
-var WIDTH = 960,
+var WIDTH = 600,
     HEIGHT = 500,
     radius = Math.min(WIDTH, HEIGHT) / 2;
 
@@ -25,6 +25,7 @@ function ready(error, provincePopulationData, provinceCapitalOsmObject) {
     if (error) {
         console.log(error);
         window.alert("Something went wrong when retreiving the data, see the console");
+        return;
     }
     var data = extractData(provincePopulationData, provinceCapitalOsmObject);
     drawPieChart(data);
@@ -34,7 +35,8 @@ function extractData(provincePopulationData, provinceCapitalOsmObject) {
     var provincePopulation = provincePopulationData.number;
     var provinceCapitalPopulation = provinceCapitalOsmObject.elements[0].tags.population;
     var data = [
-        {"name": "Sevilla(province)", "population": provincePopulation},
+        {"name": "Sevilla(province)", "population": provincePopulation,
+         "age": provincePopulationData.age},
         {"name": "Sevilla(city)", "population": provinceCapitalPopulation},
     ];
     return data;
@@ -42,9 +44,12 @@ function extractData(provincePopulationData, provinceCapitalOsmObject) {
 
 function drawPieChart(data) {
     var g = svg.selectAll(".arc")
-            .data(pie(data))
-            .enter().append("g")
-            .attr("class", "arc");
+        .data(pie(data))
+      .enter().append("g")
+        .attr("class", "arc")
+        .on("mouseover", mouseOver)
+        .on("mousemove", mouseMove)
+        .on("mouseout", mouseOut);
 
     g.append("path")
         .attr("d", arc)
@@ -54,8 +59,8 @@ function drawPieChart(data) {
         .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
         .attr("dy", ".35em")
         .text(function(d) { return d.data.name; });
-}
 
+}
 
 var color = d3.scale.ordinal()
         .range(["#98abc5", "#ff8c00"]);
@@ -77,3 +82,34 @@ var svg = d3.select("body").append("svg")
         .attr("height", HEIGHT)
         .append("g")
         .attr("transform", "translate(" + WIDTH / 2 + "," + HEIGHT / 2 + ")");
+
+var tooltip = d3.select(".tooltip");
+
+function mouseMove(d) {
+    var X_OFFSET_WITH_MOUSE = 50;
+    var Y_OFFSET_WITH_MOUSE = 40;
+    tooltip
+        .style("left", (d3.event.pageX - X_OFFSET_WITH_MOUSE) + "px")
+        .style("top", (d3.event.pageY - Y_OFFSET_WITH_MOUSE) + "px");
+
+}
+
+function mouseOver(d) {
+    var rawPercentage = (d.endAngle - d.startAngle)/(2*Math.PI)*100;
+    var percentage = d3.round(rawPercentage, 2) + "%";
+    var tooltipText = percentage;
+    if (d.data.age != undefined) {
+        d3.select("#age").text("age: " + d.data.age);
+    } else {
+        d3.select("#age").text("");
+    }
+
+    tooltip
+        .style("display", "inline")
+        .select("#percentage")
+        .text(tooltipText);
+}
+
+function mouseOut() {
+    tooltip.style("display", "none");
+}

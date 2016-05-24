@@ -43,7 +43,7 @@ function ready(error, es, population) {
         .on("mouseout", mouseOut);
 }
 
-var div = d3.select("body").append("div")
+var tooltip = d3.select("body").append("div")
         .attr("class", "tooltip")
         .style("display", "none");
 
@@ -52,13 +52,13 @@ function mouseMove(d) {
     var population = provinceToPopulationMap[province];
     if (population == undefined) population = "N/A";
 
-    div.text(province + ": " + population)
+    tooltip.text(province + ": " + population)
         .style("left", (d3.event.pageX - 34) + "px")
         .style("top", (d3.event.pageY - 12) + "px");
 }
 
-function mouseOver() { div.style("display", "inline"); }
-function mouseOut() { div.style("display", "none"); }
+function mouseOver() { tooltip.style("display", "inline"); }
+function mouseOut() { tooltip.style("display", "none"); }
 
 function colorFromPopulation(province, populationData) {
     population = provinceToPopulationMap[province.properties.nombre];
