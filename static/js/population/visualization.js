@@ -1,5 +1,5 @@
 // d is the common name of a datum
-// g is and SVG element it's a container used to group other SVG elements
+// g is an SVG element it's a container used to group other SVG elements
 
 var provinceToPopulationMap;
 
