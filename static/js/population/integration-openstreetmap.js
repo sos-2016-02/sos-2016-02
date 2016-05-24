@@ -22,7 +22,10 @@ queue()
     .await(ready);
 
 function ready(error, provincePopulationData, provinceCapitalOsmObject) {
-    if (error) throw error;
+    if (error) {
+        console.log(error);
+        window.alert("Something went wrong when retreiving the data, see the console");
+    }
     var data = extractData(provincePopulationData, provinceCapitalOsmObject);
     drawPieChart(data);
 }
