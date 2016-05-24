@@ -10,8 +10,6 @@ var dataTable;
 var paginationLimit = 10;
 var paginationOffset = 0;
 
-var byId = function(id) {return document.getElementById(id);};
-
 $(document).ready(function() {
     dataTable = $("#population-data-table").DataTable({
         "ordering": false,
@@ -270,4 +268,8 @@ $.fn.serializeObject = function() {
         }
     });
     return o;
+};
+
+function byId(id) {
+    return document.getElementById(id);
 };
