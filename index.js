@@ -11,6 +11,7 @@ var api_population          = require('./api_population');
 // __ VAR -> proxied APIs __
 var api_electrical_consume  = require('./api_electrical_consume');
 var api_price_of_oil        = require('./api_price_of_oil');
+var api_CO2_emisions        = require('./api_CO2_emisions');
 var api_companiero_grupo_04 = require('./api_companiero_grupo_04');
 var api_proxy_open_weather  = require('./api_proxy_weather');
 var api_proxy_club_rural    = require('./api_proxy_club_rural');
@@ -39,6 +40,7 @@ app.use('/api/v1/population', api_population);
 // __ proxied APIs __
 app.use('/api/v1/participants-number', api_electrical_consume);
 app.use('/api/v1/oil', api_price_of_oil);
+app.use('/api/v1/CO2', api_CO2_emisions);
 app.use('/api/v1/population-unemployed-percentage-by-gender', api_companiero_grupo_04);
 
 app.use('/api/proxy/open-weather', api_proxy_open_weather);

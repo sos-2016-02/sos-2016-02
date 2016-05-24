@@ -28,7 +28,7 @@ function getAllData_serie1(pQuery) {
 
 function getData_serie1(data){
   var vElto = [];
-  vElto.push('PEOPLE');
+  vElto.push('WOMEN');
   $.each(data, function(){
       vElto.push(this.women / 1000);
   });
@@ -59,7 +59,7 @@ function getData_serie2(data){
   var gradosCentigrados = gradosKelvin - 273.15;
 
   var vElto = [];
-  vElto.push('WEATHER');
+  vElto.push('TEMPERATURE');
   vElto.push(gradosCentigrados);
   
   vDataSerie.push(vElto);

@@ -1,6 +1,6 @@
 var vURL        = "";
 var vApiKeyLSA  = "multiPlan_C4_sos-2016-02-mac_ag";
-var vApiKeyOUT  = "multiPlan_C4_sos-2016-01-fjfr";
+var vApiKeyOUT  = "multiPlan_C4_sos-2016-01-grc_ag";
 
 var vDataCategories_serie1 = [];
 var vDataCategories_serie2 = [];
@@ -24,7 +24,7 @@ function getAllData_serie1(pQuery) {
   request.done(function(data, status, jqXHR){
     getData_serie1(data);
     getAllData_serie2("loadInitialData");
-    getAllData_serie2("Brazil");
+    getAllData_serie2("spain");
   });
 }
 
@@ -43,7 +43,7 @@ function getData_serie1(data){
 }
 
 function getAllData_serie2(pQuery) {
-  var vURL    = "/api/v1/oil/" + pQuery + "?apikey=" + vApiKeyOUT;
+  var vURL    = "/api/v1/CO2/" + pQuery + "?apikey=" + vApiKeyOUT;
 
   var request = $.ajax({
      url        : vURL
@@ -62,23 +62,23 @@ function getAllData_serie2(pQuery) {
 function getData_serie2(data){
   if (data == "OK") return;
 
-  var vDiesel   = [];
+  var vCO2   = [];
   // inicializamos a 0 tantos valores de la serie 2 como valores tenga la serie 1
-  for (i=0 ; i<vDataSeries[0].data.length; i++ ) { vDiesel[i] = 0; }
+  for (i=0 ; i<vDataSeries[0].data.length; i++ ) { vCO2[i] = 0; }
 
   $.each(data, function(){
       vDataCategories_serie2.push(this.year);
       //vPopulation.push(this.number);
-      //Insertamos en el array vDiesel su valor
+      //Insertamos en el array vCO2 su valor
       //pero en la misma posición que se corresponda
       //con el año en vDataCategories_serie1 que corresponda.
-      vDiesel[vDataCategories_serie1.indexOf(this.year)] = this.diesel*10000;
+      vCO2[vDataCategories_serie1.indexOf(Number(this.year))] = this.co2kg*100;
 
   });
 
   var vDataDiesel  = {};
-  vDataDiesel.name = 'Oil';
-  vDataDiesel.data = vDiesel;
+  vDataDiesel.name = 'CO<sub>2</sub>';
+  vDataDiesel.data = vCO2;
   vDataSeries.push(vDataDiesel);
 }
 
@@ -92,10 +92,10 @@ function showGraph() {
           type: 'column'
       },
       title: {
-          text: 'Men olders than 18 in Seville VS Price of Diesel in Bazil (scaled 10E4)'
+          text: 'Men olders than 18 in Seville VS Kg CO2 emissions in Spain (scaled 10E2)'
       },
       subtitle: {
-          text: 'Integration data from diferent groups of SOS'
+          text: 'Integration data from diferent group of SOS'
       },
       xAxis: {
           categories: vDataCategories_serie1,
