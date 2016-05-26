@@ -82,44 +82,36 @@ function getData_serie2(data){
 
 function showGraph() {
   Highcharts.setOptions({
-    colors: ['#0000FF', '#FF0000']
+    colors: ['#0000FF', '#FF00FF']
   });
 
-  $('#container').highcharts({
-      chart: {
-          type: 'column'
-      },
-      title: {
-          text: 'Men olders than 18 years old VS Number of population'
-      },
-      subtitle: {
-          text: 'Integration data from same group of SOS'
-      },
-      xAxis: {
-          categories: vDataCategories_serie1,
-          crosshair: true
-      },
-      yAxis: {
-          min: 0,
-          title: {
-              text: 'Results of integration'
-          }
-      },
-      tooltip: {
-          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-              '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-          footerFormat: '</table>',
-          shared: true,
-          useHTML: true
-      },
-      plotOptions: {
-          column: {
-              pointPadding: 0.2,
-              borderWidth: 0
-          }
-      },
-      series: vDataSeries
-  });
+    $('#container').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Men olders than 18 years old VS Number of population'
+        },
+        subtitle: {
+            text: 'Integration data from same group of SOS'
+        },
+        xAxis: {
+            categories: vDataCategories_serie1
+        },
+        yAxis: {
+            title: {
+                text: 'Results of integration'
+            }
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: false
+                },
+                enableMouseTracking: true
+            }
+        },
+        series: vDataSeries
+    });
 
 }
