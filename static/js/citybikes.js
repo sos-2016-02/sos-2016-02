@@ -3,8 +3,12 @@
 
 // WARNING: I've added a lot of mess to the orignal code to adapt it
 // a big refactor has yet to be done
+"use strict";
 
 var BIKE_STATION_DATA_URL = "/api/proxy/citybikes/v2/networks/sevici";
+
+var TOOLTIP_OFFSET_WITH_MOUSE_X = 80;
+var TOOLTIP_OFFSET_WITH_MOUSE_Y = 60;
 
 // lattice size
 var n = Math.ceil(Math.sqrt(257));
@@ -23,6 +27,7 @@ var tooltip;
 
 // document ready
 document.addEventListener("DOMContentLoaded", function(event) {
+    tooltip = d3.select(".tooltip");
     // download data and display it
     queue()
         .defer(d3.json, BIKE_STATION_DATA_URL)
@@ -36,7 +41,6 @@ function ready(error, bikeStationsData) {
         return;
     }
 
-    tooltip = d3.select(".tooltip");
     var stations = bikeStationsData.network.stations;
     createNodesAndLinks(stations);
     drawLattice();
@@ -53,7 +57,6 @@ function createNodesAndLinks(stations) {
             nodeSize: nodeSize
         };
     });
-
     for (var y = 0; y < n; ++y) {
         for (var x = 0; x < n; ++x) {
             if (y > 0) links.push({source: (y - 1) * n + x, target: y * n + x});
@@ -109,9 +112,6 @@ function dragsubject() {
     return simulation.find(d3.event.x - latticeStartPositionX,
                            d3.event.y - latticeStartPositionY);
 }
-
-var TOOLTIP_OFFSET_WITH_MOUSE_X = 80;
-var TOOLTIP_OFFSET_WITH_MOUSE_Y = 60;
 
 function dragstarted() {
     if (!d3.event.active) simulation.alphaTarget(0.3).restart();
