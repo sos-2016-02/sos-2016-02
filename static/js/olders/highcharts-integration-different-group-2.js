@@ -87,41 +87,57 @@ function showGraph() {
     colors: ['#0000FF', '#FF0000']
   });
 
-  $('#container').highcharts({
-      chart: {
-          type: 'column'
-      },
-      title: {
-          text: 'Men olders than 18 in Seville VS Kg CO2 emissions in Spain (scaled 10E2)'
-      },
-      subtitle: {
-          text: 'Integration data from diferent group of SOS'
-      },
-      xAxis: {
-          categories: vDataCategories_serie1,
-          crosshair: true
-      },
-      yAxis: {
-          min: 0,
-          title: {
-              text: 'Results of integration'
-          }
-      },
-      tooltip: {
-          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-              '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-          footerFormat: '</table>',
-          shared: true,
-          useHTML: true
-      },
-      plotOptions: {
-          column: {
-              pointPadding: 0.2,
-              borderWidth: 0
-          }
-      },
-      series: vDataSeries
-  });
+    $('#container').highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Men olders than 18 in Seville VS Kg CO2 emissions in Spain (scaled 10E2)'
+        },
+        subtitle: {
+            text: 'Integration data from diferent group of SOS'
+        },
+        xAxis: {
+            categories: vDataCategories_serie1,
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Results of integration',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ' millions'
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -40,
+            y: 80,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },
+        credits: {
+            enabled: false
+        },
+        series: vDataSeries
+    });
 
 }
