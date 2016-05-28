@@ -68,7 +68,7 @@ function drawLattice() {
     context = canvas.getContext("2d"),
     width = canvas.width,
     height = canvas.height;
-    latticeStartPositionX = width / 3.2;
+    latticeStartPositionX = width / 3.05;
     latticeStartPositionY = height / 2.5;
 
     d3.select(canvas)
