@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Representation of the bike sharing stations in Seville</title>
+    <meta charset="utf-8" />
+    <script src="/js/d3/d3.v4.0.0-alpha.44.min.js" charset="utf-8"></script>
+    <script src="/js/d3/queue.v1.min.js"></script>
+    <script src="/js/citybikes.js"></script>
+    <style>
+      .tooltip {
+      position: absolute;
+      text-align: center;
+      padding: 0px;
+      padding-left: 4px;
+      padding-right: 4px;
+      font: 10px sans-serif;
+      background: #ddd;
+      pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Representation of the bike sharing stations in Seville</h1>
+    <canvas width="1200" height="960"></canvas>
+    <div style="display: none;" class="tooltip">
+      <p id="name"></p>
+      <p id="free-bikes"></p>
+    </div>
+    <p>Nothing to see here!</p>
+  </body>
+</html>
