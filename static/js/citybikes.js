@@ -92,13 +92,14 @@ function ticked() {
 
     context.beginPath();
     links.forEach(drawLink);
-    context.strokeStyle = "#aaa";
+    context.strokeStyle = "#ff7f0e";
     context.stroke();
 
     context.beginPath();
     nodes.forEach(drawNode);
+    context.fillStyle = "#1f77b4";
     context.fill();
-    context.strokeStyle = "#fff";
+    context.strokeStyle = "#1f77b4";
     context.stroke();
 
     context.restore();
