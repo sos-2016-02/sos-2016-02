@@ -7,6 +7,7 @@ var populationData = [];
 
 exports.loadInitialData = (req, res) => {
     populationData = JSON.parse(fs.readFileSync('data/population_initial_data.json', 'utf8'));
+    populationData.sort(compareDatumByYearAndProvince);
     res.sendStatus(200);
 };
 
@@ -35,6 +36,7 @@ exports.postNewDatum = (req, res) => {
     // number is received as a string a must by persisted as an int
     datum['number'] = parseInt(datum['number'], 10);
     populationData.push(datum);
+    populationData.sort(compareDatumByYearAndProvince);
     res.sendStatus(201);
 };
 
@@ -124,6 +126,7 @@ exports.putDatumToUpdate = (req, res) => {
                                 'province', province,
                                 'year', year);
     populationData.push(newDatum);
+    populationData.sort(compareDatumByYearAndProvince);
     res.sendStatus(200);
 };
 
@@ -136,3 +139,9 @@ exports.deleteDatum = (req, res) => {
         res.sendStatus(404);
     }
 };
+
+function compareDatumByYearAndProvince(datum1, datum2) {
+    var yearComparaison = datum1.year - datum2.year;
+    if (yearComparaison != 0) return yearComparaison;
+    return datum1.province.localeCompare(datum2.province);
+}

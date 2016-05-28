@@ -161,7 +161,6 @@ exports.sortJsonArrayByProperty = function(objArray, prop, direction){
     }
 };
 
-
-exports.missing = (attribute) => {
+exports.missing = function (attribute) {
     return attribute == undefined || attribute == '';
 };
