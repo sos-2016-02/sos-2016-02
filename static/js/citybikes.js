@@ -13,7 +13,7 @@ var TOOLTIP_OFFSET_WITH_MOUSE_Y = 60;
 // lattice size
 var n = Math.ceil(Math.sqrt(257));
 
-var nodes;
+var nodes, stationNodes, emptyStationNodes;
 var links = [];
 
 var canvas,
@@ -57,6 +57,12 @@ function createNodesAndLinks(stations) {
             nodeSize: nodeSize
         };
     });
+    stationNodes = nodes.filter((d) => {
+        return d.stationData != undefined;
+    });
+    emptyStationNodes = stationNodes.filter((d) => {
+        return d.stationData.free_bikes == 0;
+    });
     for (var y = 0; y < n; ++y) {
         for (var x = 0; x < n; ++x) {
             if (y > 0) links.push({source: (y - 1) * n + x, target: y * n + x});
@@ -99,10 +105,17 @@ function ticked() {
     context.stroke();
 
     context.beginPath();
-    nodes.forEach(drawNode);
+    stationNodes.forEach(drawNode);
     context.fillStyle = "#1f77b4";
     context.fill();
     context.strokeStyle = "#1f77b4";
+    context.stroke();
+
+    context.beginPath();
+    emptyStationNodes.forEach(drawNode);
+    context.fillStyle = "#ff0000";
+    context.fill();
+    context.strokeStyle = "#ff0000";
     context.stroke();
 
     context.restore();
@@ -153,7 +166,6 @@ function drawLink(d) {
 }
 
 function drawNode(d) {
-    if (d.stationData == undefined) return;
     context.moveTo(d.x + d.nodeSize, d.y);
     context.arc(d.x, d.y, d.nodeSize, 0, 2 * Math.PI);
 }
