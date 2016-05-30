@@ -59,7 +59,7 @@ function showGraph() {
           type: 'column'
       },
       title: {
-          text: 'Population of men and women 18 years old.'
+          text: 'Number of men and women olders 18 years old.'
       },
       subtitle: {
           text: 'Source: ine.es'
